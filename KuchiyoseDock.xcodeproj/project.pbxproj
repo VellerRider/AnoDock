@@ -1,0 +1,546 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		1AA9EEEF2CE4019F002D8348 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AA9EED52CE4019E002D8348 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1AA9EEDC2CE4019E002D8348;
+			remoteInfo = KuchiyoseDock;
+		};
+		1AA9EEF92CE4019F002D8348 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AA9EED52CE4019E002D8348 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1AA9EEDC2CE4019E002D8348;
+			remoteInfo = KuchiyoseDock;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1AA9EEDD2CE4019E002D8348 /* KuchiyoseDock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KuchiyoseDock.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AA9EEEE2CE4019F002D8348 /* KuchiyoseDockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KuchiyoseDockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AA9EEF82CE4019F002D8348 /* KuchiyoseDockUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KuchiyoseDockUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		1AA9EEDF2CE4019E002D8348 /* KuchiyoseDock */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = KuchiyoseDock;
+			sourceTree = "<group>";
+		};
+		1AA9EEF12CE4019F002D8348 /* KuchiyoseDockTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = KuchiyoseDockTests;
+			sourceTree = "<group>";
+		};
+		1AA9EEFB2CE4019F002D8348 /* KuchiyoseDockUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = KuchiyoseDockUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1AA9EEDA2CE4019E002D8348 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AA9EEEB2CE4019F002D8348 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AA9EEF52CE4019F002D8348 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1AA9EED42CE4019E002D8348 = {
+			isa = PBXGroup;
+			children = (
+				1AA9EEDF2CE4019E002D8348 /* KuchiyoseDock */,
+				1AA9EEF12CE4019F002D8348 /* KuchiyoseDockTests */,
+				1AA9EEFB2CE4019F002D8348 /* KuchiyoseDockUITests */,
+				1AA9EEDE2CE4019E002D8348 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1AA9EEDE2CE4019E002D8348 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1AA9EEDD2CE4019E002D8348 /* KuchiyoseDock.app */,
+				1AA9EEEE2CE4019F002D8348 /* KuchiyoseDockTests.xctest */,
+				1AA9EEF82CE4019F002D8348 /* KuchiyoseDockUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1AA9EEDC2CE4019E002D8348 /* KuchiyoseDock */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1AA9EF022CE4019F002D8348 /* Build configuration list for PBXNativeTarget "KuchiyoseDock" */;
+			buildPhases = (
+				1AA9EED92CE4019E002D8348 /* Sources */,
+				1AA9EEDA2CE4019E002D8348 /* Frameworks */,
+				1AA9EEDB2CE4019E002D8348 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				1AA9EEDF2CE4019E002D8348 /* KuchiyoseDock */,
+			);
+			name = KuchiyoseDock;
+			packageProductDependencies = (
+			);
+			productName = KuchiyoseDock;
+			productReference = 1AA9EEDD2CE4019E002D8348 /* KuchiyoseDock.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1AA9EEED2CE4019F002D8348 /* KuchiyoseDockTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1AA9EF052CE4019F002D8348 /* Build configuration list for PBXNativeTarget "KuchiyoseDockTests" */;
+			buildPhases = (
+				1AA9EEEA2CE4019F002D8348 /* Sources */,
+				1AA9EEEB2CE4019F002D8348 /* Frameworks */,
+				1AA9EEEC2CE4019F002D8348 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1AA9EEF02CE4019F002D8348 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1AA9EEF12CE4019F002D8348 /* KuchiyoseDockTests */,
+			);
+			name = KuchiyoseDockTests;
+			packageProductDependencies = (
+			);
+			productName = KuchiyoseDockTests;
+			productReference = 1AA9EEEE2CE4019F002D8348 /* KuchiyoseDockTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		1AA9EEF72CE4019F002D8348 /* KuchiyoseDockUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1AA9EF082CE4019F002D8348 /* Build configuration list for PBXNativeTarget "KuchiyoseDockUITests" */;
+			buildPhases = (
+				1AA9EEF42CE4019F002D8348 /* Sources */,
+				1AA9EEF52CE4019F002D8348 /* Frameworks */,
+				1AA9EEF62CE4019F002D8348 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1AA9EEFA2CE4019F002D8348 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1AA9EEFB2CE4019F002D8348 /* KuchiyoseDockUITests */,
+			);
+			name = KuchiyoseDockUITests;
+			packageProductDependencies = (
+			);
+			productName = KuchiyoseDockUITests;
+			productReference = 1AA9EEF82CE4019F002D8348 /* KuchiyoseDockUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1AA9EED52CE4019E002D8348 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1610;
+				LastUpgradeCheck = 1610;
+				TargetAttributes = {
+					1AA9EEDC2CE4019E002D8348 = {
+						CreatedOnToolsVersion = 16.1;
+					};
+					1AA9EEED2CE4019F002D8348 = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = 1AA9EEDC2CE4019E002D8348;
+					};
+					1AA9EEF72CE4019F002D8348 = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = 1AA9EEDC2CE4019E002D8348;
+					};
+				};
+			};
+			buildConfigurationList = 1AA9EED82CE4019E002D8348 /* Build configuration list for PBXProject "KuchiyoseDock" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1AA9EED42CE4019E002D8348;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 1AA9EEDE2CE4019E002D8348 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1AA9EEDC2CE4019E002D8348 /* KuchiyoseDock */,
+				1AA9EEED2CE4019F002D8348 /* KuchiyoseDockTests */,
+				1AA9EEF72CE4019F002D8348 /* KuchiyoseDockUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1AA9EEDB2CE4019E002D8348 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AA9EEEC2CE4019F002D8348 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AA9EEF62CE4019F002D8348 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1AA9EED92CE4019E002D8348 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AA9EEEA2CE4019F002D8348 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AA9EEF42CE4019F002D8348 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1AA9EEF02CE4019F002D8348 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1AA9EEDC2CE4019E002D8348 /* KuchiyoseDock */;
+			targetProxy = 1AA9EEEF2CE4019F002D8348 /* PBXContainerItemProxy */;
+		};
+		1AA9EEFA2CE4019F002D8348 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1AA9EEDC2CE4019E002D8348 /* KuchiyoseDock */;
+			targetProxy = 1AA9EEF92CE4019F002D8348 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1AA9EF002CE4019F002D8348 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		1AA9EF012CE4019F002D8348 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		1AA9EF032CE4019F002D8348 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = KuchiyoseDock/KuchiyoseDock.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"KuchiyoseDock/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.KuchiyoseDock;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		1AA9EF042CE4019F002D8348 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = KuchiyoseDock/KuchiyoseDock.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"KuchiyoseDock/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.KuchiyoseDock;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		1AA9EF062CE4019F002D8348 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.KuchiyoseDockTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KuchiyoseDock.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KuchiyoseDock";
+			};
+			name = Debug;
+		};
+		1AA9EF072CE4019F002D8348 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.KuchiyoseDockTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KuchiyoseDock.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KuchiyoseDock";
+			};
+			name = Release;
+		};
+		1AA9EF092CE4019F002D8348 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.KuchiyoseDockUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = KuchiyoseDock;
+			};
+			name = Debug;
+		};
+		1AA9EF0A2CE4019F002D8348 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.KuchiyoseDockUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = KuchiyoseDock;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1AA9EED82CE4019E002D8348 /* Build configuration list for PBXProject "KuchiyoseDock" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1AA9EF002CE4019F002D8348 /* Debug */,
+				1AA9EF012CE4019F002D8348 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1AA9EF022CE4019F002D8348 /* Build configuration list for PBXNativeTarget "KuchiyoseDock" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1AA9EF032CE4019F002D8348 /* Debug */,
+				1AA9EF042CE4019F002D8348 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1AA9EF052CE4019F002D8348 /* Build configuration list for PBXNativeTarget "KuchiyoseDockTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1AA9EF062CE4019F002D8348 /* Debug */,
+				1AA9EF072CE4019F002D8348 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1AA9EF082CE4019F002D8348 /* Build configuration list for PBXNativeTarget "KuchiyoseDockUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1AA9EF092CE4019F002D8348 /* Debug */,
+				1AA9EF0A2CE4019F002D8348 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1AA9EED52CE4019E002D8348 /* Project object */;
+}
