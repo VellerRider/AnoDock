@@ -6,8 +6,12 @@
 //
 
 import Foundation
-
-class CustomDockSettings: ObservableObject {
+// includes:
+// 1. content mirror system or not
+// 2. dock style
+// 3. animation
+// 4. other stuff
+class DockSettings: ObservableObject {
     @Published var mirrorSystem: Bool// dock content mirror system or not
     @Published var animationSpeed: Double
 //    @Published var dockStyle: DockStyle

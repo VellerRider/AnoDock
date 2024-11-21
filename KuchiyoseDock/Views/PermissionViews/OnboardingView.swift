@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 struct OnboardingView: View {
-    @Binding var showOnboarding: Bool // 添加 Binding
 
     var body: some View {
         VStack {
@@ -23,18 +22,18 @@ struct OnboardingView: View {
 
             Button("Grant Permissions") {
                 // 在完成权限授权后隐藏 Onboarding
-                grantAccessibilityPermissions()
-                showOnboarding = false
+                goGrantAccessibilityPermissions()
             }
             .padding()
         }
         .frame(width: 400, height: 300)
     }
 
-    func grantAccessibilityPermissions() {
-        if !AXIsProcessTrusted() {
-            let options: CFDictionary = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true] as CFDictionary
-            AXIsProcessTrustedWithOptions(options)
-        }
+    func goGrantAccessibilityPermissions() {
+        // two methods to open system settings window
+        NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")!)
+//        NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture")!)
+
+        
     }
 }

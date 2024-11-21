@@ -10,23 +10,30 @@ import SwiftUI
 
 @main
 struct KuchiyoseDockApp: App {
-    @StateObject private var systemdocksetting = SystemDockSettings() // 使用 @StateObject 来管理 DockSettings
     @StateObject private var hotkey = HotKeySettings()
-    @StateObject private var customdocksetting = CustomDockSettings()
+    @StateObject private var customdocksetting = DockSettings()
     @StateObject private var appsetting = AppSettings()
-    @State private var showOnboarding = true // 控制是否显示引导界面
 
+
+    
+    @EnvironmentObject var dockObserver: DockPreferencesObserver
+    @StateObject private var appStateMonitor = AppStateMonitor()
+    
     var body: some Scene {
         WindowGroup {
-            if showOnboarding {
-                OnboardingView(showOnboarding: $showOnboarding) // 引导用户授权
-                    .environmentObject(appsetting)
+            if (!AXIsProcessTrusted()) {
+                OnboardingView()
             } else {
-                EmptyView() // 不显示任何视图，应用后台运行
+                ContentView()
+                    .environmentObject(dockObserver)
+                    .onAppear {
+                    // 加载本地保存的 Dock 项目
+                    dockObserver.loadDockItemsFromLocal()
+                    }
             }
         }
         Settings {
-            SettingsView() // SwiftUI 原生设置窗口
+            SettingsView()
                 .environmentObject(systemdocksetting)
                 .environmentObject(hotkey)
                 .environmentObject(customdocksetting)
@@ -37,10 +44,3 @@ struct KuchiyoseDockApp: App {
 }
 
 
-#Preview {
-    ContentView()
-        .environmentObject(SystemDockSettings())
-        .environmentObject(HotKeySettings())
-        .environmentObject(CustomDockSettings())
-        .environmentObject(AppSettings())
-}

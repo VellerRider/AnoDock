@@ -12,14 +12,18 @@ struct SettingsView: View {
     
     var body: some View {
         TabView {
-            GeneralSettingsView(dockstyle: .systemdefault)
+            GeneralSettingsView()
                 .tabItem {
                     Label("General", systemImage: "gear")
                 }
-            
-            AppearanceSettingsView()
+            EditDockView()
                 .tabItem {
-                    Label("Appearance", systemImage: "paintpalette")
+                    Label("Dock Content", systemImage: "pin.circle")
+                }
+            
+            DockSettingsView()
+                .tabItem {
+                    Label("Appearance", systemImage: "line.horizontal.3.circle.fill")
                 }
             
             ShortcutsSettingsView()
@@ -30,4 +34,8 @@ struct SettingsView: View {
         .padding()
         .frame(width: 960, height: 540)
     }
+}
+
+#Preview {
+    SettingsView()
 }

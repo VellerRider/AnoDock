@@ -7,15 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1AC70B1C2CEAC735009BA776 /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B1B2CEAC735009BA776 /* AppearanceSettingsView.swift */; };
-		1AC70B1E2CEAC8E5009BA776 /* CircleDockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B1D2CEAC8E5009BA776 /* CircleDockView.swift */; };
+		1A66D76A2CEEDFA200BDE735 /* DockSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A66D7692CEEDFA200BDE735 /* DockSettingsView.swift */; };
+		1A66D7742CEEE26500BDE735 /* AppStateMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A66D7732CEEE26500BDE735 /* AppStateMonitor.swift */; };
+		1A66D77A2CEEEFE100BDE735 /* RecentObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A66D7792CEEEFE100BDE735 /* RecentObserver.swift */; };
+		1A66D77C2CEEF1AF00BDE735 /* DockContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A66D77B2CEEF1AF00BDE735 /* DockContent.swift */; };
+		1A66D77E2CEEF3F500BDE735 /* EditDockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A66D77D2CEEF3F500BDE735 /* EditDockView.swift */; };
+		1A93ED212CED74280064545A /* DockObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A93ED202CED74280064545A /* DockObserver.swift */; };
+		1A93ED232CED7ADE0064545A /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A93ED222CED7ADD0064545A /* test.swift */; };
+		1A93ED282CED8F420064545A /* DockItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A93ED272CED8F420064545A /* DockItemsView.swift */; };
+		1A93ED2B2CED90530064545A /* DockItemSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A93ED2A2CED90530064545A /* DockItemSection.swift */; };
+		1A93ED302CEDA8260064545A /* DockAccessibilityUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A93ED2F2CEDA8260064545A /* DockAccessibilityUtil.swift */; };
 		1AC70B212CEACAA3009BA776 /* DockItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B202CEACAA3009BA776 /* DockItem.swift */; };
-		1AC70B232CEAD448009BA776 /* OriginDockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B222CEAD448009BA776 /* OriginDockView.swift */; };
-		1AC70B252CEAD4E4009BA776 /* SystemDockSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B242CEAD4E4009BA776 /* SystemDockSettings.swift */; };
 		1AC70B272CEAD627009BA776 /* KuchiyoseDockApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B262CEAD627009BA776 /* KuchiyoseDockApp.swift */; };
 		1AC70B2A2CEADB39009BA776 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B292CEADB39009BA776 /* OnboardingView.swift */; };
 		1AC70B2C2CEADDB9009BA776 /* HotKeySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B2B2CEADDB9009BA776 /* HotKeySettings.swift */; };
-		1AC70B2F2CEAE7C2009BA776 /* CustomDockSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B2E2CEAE7C2009BA776 /* CustomDockSettings.swift */; };
+		1AC70B2F2CEAE7C2009BA776 /* DockSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B2E2CEAE7C2009BA776 /* DockSettings.swift */; };
 		1AC70B312CEAE7CC009BA776 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B302CEAE7CC009BA776 /* AppSettings.swift */; };
 		1AEC4EE82CEA9E7500523CC1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AEC4ED62CEA9E7500523CC1 /* Preview Assets.xcassets */; };
 		1AEC4EE92CEA9E7500523CC1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AEC4EDA2CEA9E7500523CC1 /* Assets.xcassets */; };
@@ -46,18 +52,25 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A66D7692CEEDFA200BDE735 /* DockSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockSettingsView.swift; sourceTree = "<group>"; };
+		1A66D7732CEEE26500BDE735 /* AppStateMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateMonitor.swift; sourceTree = "<group>"; };
+		1A66D7792CEEEFE100BDE735 /* RecentObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentObserver.swift; sourceTree = "<group>"; };
+		1A66D77B2CEEF1AF00BDE735 /* DockContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockContent.swift; sourceTree = "<group>"; };
+		1A66D77D2CEEF3F500BDE735 /* EditDockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDockView.swift; sourceTree = "<group>"; };
+		1A93ED202CED74280064545A /* DockObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockObserver.swift; sourceTree = "<group>"; };
+		1A93ED222CED7ADD0064545A /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
+		1A93ED272CED8F420064545A /* DockItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockItemsView.swift; sourceTree = "<group>"; };
+		1A93ED2A2CED90530064545A /* DockItemSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockItemSection.swift; sourceTree = "<group>"; };
+		1A93ED2E2CEDA6D70064545A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		1A93ED2F2CEDA8260064545A /* DockAccessibilityUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockAccessibilityUtil.swift; sourceTree = "<group>"; };
 		1AA9EEDD2CE4019E002D8348 /* KuchiyoseDock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KuchiyoseDock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AA9EEEE2CE4019F002D8348 /* KuchiyoseDockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KuchiyoseDockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AA9EEF82CE4019F002D8348 /* KuchiyoseDockUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KuchiyoseDockUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		1AC70B1B2CEAC735009BA776 /* AppearanceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettingsView.swift; sourceTree = "<group>"; };
-		1AC70B1D2CEAC8E5009BA776 /* CircleDockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleDockView.swift; sourceTree = "<group>"; };
 		1AC70B202CEACAA3009BA776 /* DockItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockItem.swift; sourceTree = "<group>"; };
-		1AC70B222CEAD448009BA776 /* OriginDockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginDockView.swift; sourceTree = "<group>"; };
-		1AC70B242CEAD4E4009BA776 /* SystemDockSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemDockSettings.swift; sourceTree = "<group>"; };
 		1AC70B262CEAD627009BA776 /* KuchiyoseDockApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KuchiyoseDockApp.swift; sourceTree = "<group>"; };
 		1AC70B292CEADB39009BA776 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		1AC70B2B2CEADDB9009BA776 /* HotKeySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKeySettings.swift; sourceTree = "<group>"; };
-		1AC70B2E2CEAE7C2009BA776 /* CustomDockSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDockSettings.swift; sourceTree = "<group>"; };
+		1AC70B2E2CEAE7C2009BA776 /* DockSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockSettings.swift; sourceTree = "<group>"; };
 		1AC70B302CEAE7CC009BA776 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		1AEC4ED62CEA9E7500523CC1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1AEC4EDA2CEA9E7500523CC1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -109,6 +122,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A93ED1F2CED741D0064545A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		1A93ED242CED8E590064545A /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				1A93ED202CED74280064545A /* DockObserver.swift */,
+				1A93ED2F2CEDA8260064545A /* DockAccessibilityUtil.swift */,
+				1A66D7732CEEE26500BDE735 /* AppStateMonitor.swift */,
+				1A66D7792CEEEFE100BDE735 /* RecentObserver.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
 		1AA9EED42CE4019E002D8348 = {
 			isa = PBXGroup;
 			children = (
@@ -140,7 +171,6 @@
 		1AC70B282CEADB30009BA776 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				1AC70B292CEADB39009BA776 /* OnboardingView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -148,6 +178,7 @@
 		1AC70B2D2CEAE5B1009BA776 /* PermissionViews */ = {
 			isa = PBXGroup;
 			children = (
+				1AC70B292CEADB39009BA776 /* OnboardingView.swift */,
 			);
 			path = PermissionViews;
 			sourceTree = "<group>";
@@ -155,10 +186,10 @@
 		1AC70B322CEAE7D3009BA776 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				1AC70B242CEAD4E4009BA776 /* SystemDockSettings.swift */,
 				1AC70B2B2CEADDB9009BA776 /* HotKeySettings.swift */,
-				1AC70B2E2CEAE7C2009BA776 /* CustomDockSettings.swift */,
+				1AC70B2E2CEAE7C2009BA776 /* DockSettings.swift */,
 				1AC70B302CEAE7CC009BA776 /* AppSettings.swift */,
+				1A66D77B2CEEF1AF00BDE735 /* DockContent.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -174,14 +205,18 @@
 		1AEC4EE72CEA9E7500523CC1 /* KuchiyoseDock */ = {
 			isa = PBXGroup;
 			children = (
+				1A93ED2E2CEDA6D70064545A /* Info.plist */,
 				1AC70B262CEAD627009BA776 /* KuchiyoseDockApp.swift */,
-				1AC70B282CEADB30009BA776 /* Helpers */,
 				1AEC4EF72CEA9E7800523CC1 /* Views */,
 				1AEC4EDA2CEA9E7500523CC1 /* Assets.xcassets */,
 				1AEC4EE22CEA9E7500523CC1 /* KuchiyoseDock.entitlements */,
 				1AEC4ED72CEA9E7500523CC1 /* Preview Content */,
 				1AC70B1F2CEACA75009BA776 /* Model */,
 				1AC70B322CEAE7D3009BA776 /* Settings */,
+				1A93ED1F2CED741D0064545A /* Components */,
+				1A93ED242CED8E590064545A /* Util */,
+				1AC70B282CEADB30009BA776 /* Helpers */,
+				1A93ED222CED7ADD0064545A /* test.swift */,
 			);
 			path = KuchiyoseDock;
 			sourceTree = "<group>";
@@ -191,7 +226,6 @@
 			children = (
 				1AEC4EDB2CEA9E7500523CC1 /* ContentView.swift */,
 				1AC70B2D2CEAE5B1009BA776 /* PermissionViews */,
-				1AEC4EF92CEA9EBC00523CC1 /* DockViews */,
 				1AEC4EF82CEA9EB100523CC1 /* SettingViews */,
 			);
 			path = Views;
@@ -203,21 +237,23 @@
 				1AEC4EE42CEA9E7500523CC1 /* SettingsView.swift */,
 				1AEC4EE12CEA9E7500523CC1 /* GeneralSettingsView.swift */,
 				1AEC4EE52CEA9E7500523CC1 /* ShortcutsSettingsView.swift */,
-				1AC70B1B2CEAC735009BA776 /* AppearanceSettingsView.swift */,
+				1A66D7692CEEDFA200BDE735 /* DockSettingsView.swift */,
+				1A66D77D2CEEF3F500BDE735 /* EditDockView.swift */,
+				1AEC4EF92CEA9EBC00523CC1 /* DockEditor */,
 			);
 			path = SettingViews;
 			sourceTree = "<group>";
 		};
-		1AEC4EF92CEA9EBC00523CC1 /* DockViews */ = {
+		1AEC4EF92CEA9EBC00523CC1 /* DockEditor */ = {
 			isa = PBXGroup;
 			children = (
 				1AEC4EDC2CEA9E7500523CC1 /* CustomDockView.swift */,
-				1AEC4EDF2CEA9E7500523CC1 /* DockItemView.swift */,
 				1AEC4EE62CEA9E7500523CC1 /* VisualEffectView.swift */,
-				1AC70B1D2CEAC8E5009BA776 /* CircleDockView.swift */,
-				1AC70B222CEAD448009BA776 /* OriginDockView.swift */,
+				1A93ED272CED8F420064545A /* DockItemsView.swift */,
+				1A93ED2A2CED90530064545A /* DockItemSection.swift */,
+				1AEC4EDF2CEA9E7500523CC1 /* DockItemView.swift */,
 			);
-			path = DockViews;
+			path = DockEditor;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -363,20 +399,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1AC70B2F2CEAE7C2009BA776 /* CustomDockSettings.swift in Sources */,
+				1A66D77A2CEEEFE100BDE735 /* RecentObserver.swift in Sources */,
+				1AC70B2F2CEAE7C2009BA776 /* DockSettings.swift in Sources */,
 				1AEC4EEC2CEA9E7500523CC1 /* ContentView.swift in Sources */,
 				1AEC4EED2CEA9E7500523CC1 /* CustomDockView.swift in Sources */,
 				1AEC4EF02CEA9E7500523CC1 /* DockItemView.swift in Sources */,
-				1AC70B252CEAD4E4009BA776 /* SystemDockSettings.swift in Sources */,
+				1A66D77E2CEEF3F500BDE735 /* EditDockView.swift in Sources */,
+				1A66D77C2CEEF1AF00BDE735 /* DockContent.swift in Sources */,
 				1AEC4EF22CEA9E7500523CC1 /* GeneralSettingsView.swift in Sources */,
-				1AC70B232CEAD448009BA776 /* OriginDockView.swift in Sources */,
-				1AC70B1C2CEAC735009BA776 /* AppearanceSettingsView.swift in Sources */,
-				1AC70B1E2CEAC8E5009BA776 /* CircleDockView.swift in Sources */,
+				1A66D76A2CEEDFA200BDE735 /* DockSettingsView.swift in Sources */,
+				1A93ED232CED7ADE0064545A /* test.swift in Sources */,
+				1A93ED282CED8F420064545A /* DockItemsView.swift in Sources */,
 				1AEC4EF42CEA9E7500523CC1 /* SettingsView.swift in Sources */,
 				1AEC4EF52CEA9E7500523CC1 /* ShortcutsSettingsView.swift in Sources */,
+				1A93ED302CEDA8260064545A /* DockAccessibilityUtil.swift in Sources */,
+				1A66D7742CEEE26500BDE735 /* AppStateMonitor.swift in Sources */,
 				1AEC4EF62CEA9E7500523CC1 /* VisualEffectView.swift in Sources */,
 				1AC70B2C2CEADDB9009BA776 /* HotKeySettings.swift in Sources */,
 				1AC70B272CEAD627009BA776 /* KuchiyoseDockApp.swift in Sources */,
+				1A93ED2B2CED90530064545A /* DockItemSection.swift in Sources */,
+				1A93ED212CED74280064545A /* DockObserver.swift in Sources */,
 				1AC70B212CEACAA3009BA776 /* DockItem.swift in Sources */,
 				1AC70B2A2CEADB39009BA776 /* OnboardingView.swift in Sources */,
 				1AC70B312CEAE7CC009BA776 /* AppSettings.swift in Sources */,
@@ -545,8 +587,10 @@
 				DEVELOPMENT_TEAM = G7ZSY874L2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = KuchiyoseDock/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = KuchiyoseDock;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "This app need to know what apps in your dock to make a perfect replicate. Your privacy is in your hands.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -575,8 +619,10 @@
 				DEVELOPMENT_TEAM = G7ZSY874L2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = KuchiyoseDock/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = KuchiyoseDock;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "This app need to know what apps in your dock to make a perfect replicate. Your privacy is in your hands.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

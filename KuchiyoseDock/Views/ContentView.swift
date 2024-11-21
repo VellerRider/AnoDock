@@ -8,12 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var dockObserver: DockPreferencesObserver
+    
     var body: some View {
-        Text("KuchiyoseDock is running in background")
-            .frame(width: 300, height: 200)
+        VStack {
+            Text("Here are all items")
+            DockItemsView()
+        }
+        .padding()
+        Text("Try dragging and dropping items")
+            .frame(width: 800, height: 600)
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(DockPreferencesObserver())
+        .environmentObject(AppSettings())
 }

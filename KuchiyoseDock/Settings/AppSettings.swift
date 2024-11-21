@@ -5,6 +5,10 @@
 //  Created by John Yang on 11/17/24.
 //
 
+// app setting includes:
+// app appearance
+// start at login
+// ...and more
 import Foundation
 
 class AppSettings: ObservableObject {
