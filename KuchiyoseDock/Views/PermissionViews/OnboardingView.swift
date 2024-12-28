@@ -2,6 +2,8 @@
 //  OnboardingView.swift
 //  KuchiyoseDock
 //
+//  Ask new user for permission.
+// 
 //  Created by John Yang on 11/17/24.
 //
 

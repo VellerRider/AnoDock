@@ -1,14 +1,14 @@
 //
 //  ContentView.swift
 //  KuchiyoseDock
-//
+//  Entrance of the program
 //  Created by John Yang on 11/12/24.
 //
 
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var dockObserver: DockPreferencesObserver
+    @EnvironmentObject var dockObserver: DockObserver
     
     var body: some View {
         VStack {
@@ -23,6 +23,6 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .environmentObject(DockPreferencesObserver())
+        .environmentObject(DockObserver())
         .environmentObject(AppSettings())
 }

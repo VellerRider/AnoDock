@@ -2,13 +2,15 @@
 //  AppSettings.swift
 //  KuchiyoseDock
 //
-//  Created by John Yang on 11/17/24.
+//  Created by John Yang on 12/19/24.
 //
 
-// app setting includes:
-// app appearance
-// start at login
-// ...and more
+//  app setting includes:
+//  app appearance
+//  start at login
+//  check update
+//  ...and more
+
 import Foundation
 
 class AppSettings: ObservableObject {

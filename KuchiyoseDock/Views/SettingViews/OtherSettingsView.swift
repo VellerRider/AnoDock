@@ -1,26 +1,29 @@
 //
 //  DockSettingsView.swift
 //  KuchiyoseDock
-//
-//  Created by John Yang on 11/20/24.
-//
+//  Start at login, auto update, permission check-again etc.
+//  Maybe could allow user to change system dock settings from here.
+//  Created by John Yang on 11/20/
+
+/*
+    Should store some non-essential settings here
+    
+ */
 
 import Foundation
 import SwiftUI
 
-struct DockSettingsView : View {
+struct OtherSettingsView : View {
     @EnvironmentObject var appsetting: AppSettings
-    @EnvironmentObject var customdocksetting: DockSettings
 
     var body: some View {
         
         HStack {
             
             Form {
-                Text("Dock Setting")
+                Text("Other Setting")
             }
             
-            // go to system dock setting
             Button(action: {
                 NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.Desktop-Settings.extension")!)
             }) {

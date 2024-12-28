@@ -1,7 +1,7 @@
 //
 //  VisualEffectView.swift
 //  KuchiyoseDock
-//
+//  Visual effects when summoning dock.
 //  Created by John Yang on 11/17/24.
 //
 

@@ -1,7 +1,7 @@
 //
 //  SettingsView.swift
 //  KuchiyoseDock
-//
+//  The View for app setting 
 //  Created by John Yang on 11/17/24.
 //
 
@@ -16,20 +16,20 @@ struct SettingsView: View {
                 .tabItem {
                     Label("General", systemImage: "gear")
                 }
-            EditDockView()
+            DockEditorView()
                 .tabItem {
                     Label("Dock Content", systemImage: "pin.circle")
                 }
-            
-            DockSettingsView()
-                .tabItem {
-                    Label("Appearance", systemImage: "line.horizontal.3.circle.fill")
-                }
-            
             ShortcutsSettingsView()
                 .tabItem {
                     Label("Shortcuts", systemImage: "keyboard")
                 }
+            
+            OtherSettingsView()
+                .tabItem {
+                    Label("Other", systemImage: "line.horizontal.3.circle.fill")
+                }
+            
         }
         .padding()
         .frame(width: 960, height: 540)

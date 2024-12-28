@@ -2,6 +2,8 @@
 //  ShortcutsSettingsView.swift
 //  KuchiyoseDock
 //
+//  Setting tab for changing shortcuts
+//
 //  Created by John Yang on 11/17/24.
 //
 
