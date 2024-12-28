@@ -7,9 +7,9 @@
 
 
 // observe dock's app, implement these functions
-// 1. check what's added to dock, or removed from dock. Only main app and folder.
-// 2. check in-dock app when is opened or closed.
-// 3. help with recent apps. track latest closed app or files.
+// 1. Track dock configuration. Check what's added to dock, or removed from dock. Only main app and folder.
+// 2. Watch in-dock app when is opened or closed.
+// 3. TODO: help with recent apps. track latest closed app or files.
 
 import Foundation
 import Cocoa

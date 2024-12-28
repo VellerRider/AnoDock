@@ -10,7 +10,7 @@ import SwiftUI
 
 struct DockItemView: View {
     let item: DockItem
-    @EnvironmentObject var appStateMonitor: AppStateMonitor
+//    @EnvironmentObject var appStateMonitor: AppStateMonitor
     
     var interactive: Bool = true // 默认为可交互模式
     
@@ -87,11 +87,10 @@ struct DockItemView: View {
     // MARK: - isRunning Computed Property
     private var isRunning: Bool {
         // We only have a running state for apps
+        // DockObserver update app's state automatically. So no need to do more here.
         switch item.type {
-        case let .app(bundleIdentifier):
-            // If there's a bundle ID, see if it's running
-            guard let bundleIdentifier = bundleIdentifier else { return false }
-            return appStateMonitor.runningApplications.contains(bundleIdentifier)
+        case .app:
+            return item.isRunning
         case .folder:
             // Folders are never "running"
             return false

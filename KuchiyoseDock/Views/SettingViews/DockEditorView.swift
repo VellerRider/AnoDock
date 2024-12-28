@@ -18,6 +18,8 @@ struct DockEditorView : View {
             Form {
                 Text("Here are what's in your dock")
             }
+            CustomDockView()
+            
 
             
         }

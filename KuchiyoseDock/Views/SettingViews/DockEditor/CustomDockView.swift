@@ -9,15 +9,16 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct CustomDockView: View {
-    @State private var dockItems: [DockItem] = DockDataManager.shared.loadDockItems()
-    @StateObject private var appStateMonitor = AppStateMonitor()
+//    @State private var dockItems: [DockItem] = DockDataManager.shared.loadDockItems()
+//    @StateObject private var appStateMonitor = AppStateMonitor()
+    @EnvironmentObject var dockObserver: DockObserver
     
     var body: some View {
         VStack {
             HStack {
-                ForEach(dockItems) { item in
+                ForEach(dockObserver.dockItems) { item in
                     DockItemView(item: item)
-                        .environmentObject(appStateMonitor)
+//                        .environmentObject(appStateMonitor)
                         .onTapGesture {
                             openDockItem(item)
                         }
@@ -51,9 +52,11 @@ struct CustomDockView: View {
         for provider in providers {
             if provider.hasItemConformingToTypeIdentifier("public.file-url") {
                 provider.loadItem(forTypeIdentifier: "public.file-url", options: nil) { (item, error) in
-                    guard let data = item as? Data,
-                          let url = URL(dataRepresentation: data, relativeTo: nil),
-                          url.pathExtension == "app" else { return }
+                    guard
+                        let data = item as? Data,
+                        let url = URL(dataRepresentation: data, relativeTo: nil),
+                        url.pathExtension == "app"
+                    else { return }
 
                     let newItem = DockItem(
                         id: UUID(),
@@ -65,8 +68,9 @@ struct CustomDockView: View {
                     )
                     
                     DispatchQueue.main.async {
-                        dockItems.append(newItem)
-                        DockDataManager.shared.saveDockItems(dockItems)
+                        // Update observer’s array, not the local array
+                        dockObserver.dockItems.append(newItem)
+                        dockObserver.saveDockItems()  // Use the observer’s save method
                     }
                 }
             }
@@ -79,17 +83,17 @@ struct CustomDockView: View {
         let panel = NSOpenPanel()
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
-        panel.allowedContentTypes = [UTType.application]
+        panel.allowedContentTypes = [.application]
         if panel.runModal() == .OK, let url = panel.url {
-            if let newItem = createDockItem(from: url) {
-                dockItems.append(newItem)
-                DockDataManager.shared.saveDockItems(dockItems)
+            if let newItem = createNewAppItem(from: url) {
+                dockObserver.dockItems.append(newItem)
+                dockObserver.saveDockItems()
             }
         }
     }
     
     // helper function to create a dock item
-    private func createDockItem(from url: URL) -> DockItem? {
+    private func createNewAppItem(from url: URL) -> DockItem? {
         guard url.pathExtension == "app" else { return nil }
         return DockItem(
             id: UUID(),
@@ -107,14 +111,12 @@ struct CustomDockView: View {
             id: UUID(),
             name: "New Folder",
             iconName: "folderIcon.png",
-            url: URL(fileURLWithPath: "/"), // Placeholder folder path
+            url: URL(fileURLWithPath: "/"),
             isRunning: false,
             type: .folder(items: [])
         )
-        
-        print("New Folder Created: \(newFolder.name)")
-        dockItems.append(newFolder)
-        DockDataManager.shared.saveDockItems(dockItems)
+        dockObserver.dockItems.append(newFolder)
+        dockObserver.saveDockItems()
     }
     
 //    // add folders to dock using drag and drop
@@ -141,18 +143,17 @@ struct CustomDockView: View {
         switch item.type {
         case .app:
             NSWorkspace.shared.open(item.url)
-        // placeholder
         case .folder(let items):
             print("Folder contains \(items.count) items")
         }
     }
     
     private func updateRunningStates() {
-        for index in dockItems.indices {
-            switch dockItems[index].type {
+        for index in dockObserver.dockItems.indices {
+            switch dockObserver.dockItems[index].type {
             case .app(let bundleIdentifier):
                 if let bundleIdentifier = bundleIdentifier {
-                    dockItems[index].isRunning = !NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).isEmpty
+                    dockObserver.dockItems[index].isRunning = !NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).isEmpty
                 }
             case .folder:
                 // No action needed for folders

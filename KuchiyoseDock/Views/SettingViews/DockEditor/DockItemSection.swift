@@ -3,8 +3,11 @@
 //  KuchiyoseDock
 //
 //  Created by John Yang on 11/19/24.
-//  create a container for custom items
 //
+
+
+//  create a container for custom items
+
 import SwiftUI
 
 struct DockItemSectionView: View {

@@ -21,6 +21,8 @@
 		1A93ED282CED8F420064545A /* DockItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A93ED272CED8F420064545A /* DockItemsView.swift */; };
 		1A93ED2B2CED90530064545A /* DockItemSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A93ED2A2CED90530064545A /* DockItemSection.swift */; };
 		1A93ED302CEDA8260064545A /* DockAccessibilityUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A93ED2F2CEDA8260064545A /* DockAccessibilityUtil.swift */; };
+		1AA1CABC2D1FCBBB00933295 /* DockWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA1CABB2D1FCBBB00933295 /* DockWindowManager.swift */; };
+		1AA1CABE2D1FCBF700933295 /* CustomDockOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA1CABD2D1FCBF700933295 /* CustomDockOverlayView.swift */; };
 		1AC70B212CEACAA3009BA776 /* DockItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B202CEACAA3009BA776 /* DockItem.swift */; };
 		1AC70B272CEAD627009BA776 /* KuchiyoseDockApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B262CEAD627009BA776 /* KuchiyoseDockApp.swift */; };
 		1AC70B2A2CEADB39009BA776 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B292CEADB39009BA776 /* OnboardingView.swift */; };
@@ -69,6 +71,8 @@
 		1A93ED2A2CED90530064545A /* DockItemSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockItemSection.swift; sourceTree = "<group>"; };
 		1A93ED2E2CEDA6D70064545A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1A93ED2F2CEDA8260064545A /* DockAccessibilityUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockAccessibilityUtil.swift; sourceTree = "<group>"; };
+		1AA1CABB2D1FCBBB00933295 /* DockWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockWindowManager.swift; sourceTree = "<group>"; };
+		1AA1CABD2D1FCBF700933295 /* CustomDockOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDockOverlayView.swift; sourceTree = "<group>"; };
 		1AA9EEDD2CE4019E002D8348 /* KuchiyoseDock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KuchiyoseDock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AA9EEEE2CE4019F002D8348 /* KuchiyoseDockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KuchiyoseDockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AA9EEF82CE4019F002D8348 /* KuchiyoseDockUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KuchiyoseDockUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,6 +138,7 @@
 				1AEC4EDF2CEA9E7500523CC1 /* DockItemView.swift */,
 				1AEC4EE62CEA9E7500523CC1 /* VisualEffectView.swift */,
 				1A93ED272CED8F420064545A /* DockItemsView.swift */,
+				1AA1CABD2D1FCBF700933295 /* CustomDockOverlayView.swift */,
 			);
 			path = DockView;
 			sourceTree = "<group>";
@@ -188,6 +193,7 @@
 		1AC70B282CEADB30009BA776 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				1AA1CABB2D1FCBBB00933295 /* DockWindowManager.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -419,11 +425,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AA1CABC2D1FCBBB00933295 /* DockWindowManager.swift in Sources */,
 				1A66D77A2CEEEFE100BDE735 /* RecentObserver.swift in Sources */,
 				1AC70B2F2CEAE7C2009BA776 /* GeneralSettings.swift in Sources */,
 				1AEC4EEC2CEA9E7500523CC1 /* ContentView.swift in Sources */,
 				1A548BCD2D17A29200DA8D4A /* SystemDockSettings.swift in Sources */,
 				1A8DB8472D13FD4B00A2338B /* CustomDockSettings.swift in Sources */,
+				1AA1CABE2D1FCBF700933295 /* CustomDockOverlayView.swift in Sources */,
 				1AEC4EED2CEA9E7500523CC1 /* CustomDockView.swift in Sources */,
 				1AEC4EF02CEA9E7500523CC1 /* DockItemView.swift in Sources */,
 				1A66D77E2CEEF3F500BDE735 /* DockEditorView.swift in Sources */,
