@@ -5,6 +5,7 @@
 //  Created by John Yang on 11/17/24.
 //
 
+// View for single item in the dock UI
 import SwiftUI
 
 struct DockItemView: View {
@@ -49,7 +50,7 @@ struct DockItemView: View {
         })
     }
     
-    // MARK: - show all apps in the dock
+    // MARK: - right click menu for the item
     @ViewBuilder
     private func contextMenuItems(item: DockItem) -> some View {
         switch item.type {
@@ -70,13 +71,16 @@ struct DockItemView: View {
             }
             
         case let .folder(items):
-            Button("打开文件夹") {
-                NSWorkspace.shared.open(item.url)
+            // TODO: - modal pop up and show apps inside, allow user to click and open.
+            Button("编辑文件夹") {
+                
             }
-            Button("显示在 Finder 中") {
-                NSWorkspace.shared.activateFileViewerSelecting([item.url])
+            Button("重命名") {
+                
             }
-            // You can add more folder-related actions here
+            Button("删除文件夹") {
+                
+            }
         }
     }
     
