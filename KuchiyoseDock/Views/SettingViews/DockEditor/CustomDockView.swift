@@ -9,33 +9,45 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct CustomDockView: View {
-//    @State private var dockItems: [DockItem] = DockDataManager.shared.loadDockItems()
-//    @StateObject private var appStateMonitor = AppStateMonitor()
     @EnvironmentObject var dockObserver: DockObserver
+    
+    let columns = [
+        GridItem(.adaptive(minimum: 80), spacing: 16)
+    ]
     
     var body: some View {
         VStack {
-            HStack {
-                ForEach(dockObserver.dockItems) { item in
-                    DockItemView(item: item)
-//                        .environmentObject(appStateMonitor)
-                        .onTapGesture {
-                            openDockItem(item)
-                        }
+            // (FIX) Use a grid, so items wrap as the window shrinks
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 16) {
+                    ForEach(dockObserver.dockItems.indices, id: \.self) { index in
+                        let item = dockObserver.dockItems[index]
+                        DockItemView(item: item)
+                            .onTapGesture {
+                                openDockItem(item)
+                            }
+                            // (FIX) Draggable
+                            .onDrag {
+                                // Provide the item’s index or ID
+                                let provider = NSItemProvider(object: "\(index)" as NSString)
+                                return provider
+                            }
+                            .onDrop(of: [.text], isTargeted: nil) { providers in
+                                handleDropReorder(providers: providers, fromIndex: index)
+                            }
+                    }
                 }
-            }
-            .onDrop(of: ["public.file-url"], isTargeted: nil) { providers in
-                handleDrop(providers: providers)
+                .padding()
             }
             
             HStack {
-                // Add App Button
+                // Add App
                 Button(action: addNewApp) {
                     Image(systemName: "plus")
                         .font(.title)
                 }
                 
-                // Create Folder Button
+                // Create Folder
                 Button(action: createNewFolder) {
                     Image(systemName: "folder.badge.plus")
                         .font(.title)
@@ -47,7 +59,31 @@ struct CustomDockView: View {
         }
     }
     
-    // drag and drop apps to this view to modify custom dock
+    // (FIX) Reorder logic for drag & drop among items
+    private func handleDropReorder(providers: [NSItemProvider], fromIndex: Int) -> Bool {
+        // We'll see if there's a text, presumably the old index
+        for provider in providers {
+            provider.loadItem(forTypeIdentifier: UTType.text.identifier, options: nil) { item, error in
+                guard let str = item as? String,
+                      let oldIndex = Int(str),
+                      oldIndex != fromIndex
+                else { return }
+                
+                DispatchQueue.main.async {
+                    withAnimation {
+                        // Perform reorder
+                        let movingItem = dockObserver.dockItems.remove(at: oldIndex)
+                        dockObserver.dockItems.insert(movingItem, at: fromIndex)
+                        dockObserver.saveDockItems()
+                    }
+                }
+            }
+        }
+        return true
+    }
+    
+    // (FIX) Use the same old logic for dropping .app files
+    // but now we also do reordering
     private func handleDrop(providers: [NSItemProvider]) -> Bool {
         for provider in providers {
             if provider.hasItemConformingToTypeIdentifier("public.file-url") {
@@ -57,7 +93,7 @@ struct CustomDockView: View {
                         let url = URL(dataRepresentation: data, relativeTo: nil),
                         url.pathExtension == "app"
                     else { return }
-
+                    
                     let newItem = DockItem(
                         id: UUID(),
                         name: url.deletingPathExtension().lastPathComponent,
@@ -68,9 +104,8 @@ struct CustomDockView: View {
                     )
                     
                     DispatchQueue.main.async {
-                        // Update observer’s array, not the local array
                         dockObserver.dockItems.append(newItem)
-                        dockObserver.saveDockItems()  // Use the observer’s save method
+                        dockObserver.saveDockItems()
                     }
                 }
             }
@@ -78,7 +113,6 @@ struct CustomDockView: View {
         return true
     }
     
-    // add apps to custom dock using button
     private func addNewApp() {
         let panel = NSOpenPanel()
         panel.canChooseFiles = true
@@ -92,20 +126,19 @@ struct CustomDockView: View {
         }
     }
     
-    // helper function to create a dock item
     private func createNewAppItem(from url: URL) -> DockItem? {
         guard url.pathExtension == "app" else { return nil }
         return DockItem(
             id: UUID(),
             name: url.deletingPathExtension().lastPathComponent,
-            iconName: saveIconToFile(icon: NSWorkspace.shared.icon(forFile: url.path), name: url.lastPathComponent),
+            iconName: saveIconToFile(icon: NSWorkspace.shared.icon(forFile: url.path),
+                                     name: url.lastPathComponent),
             url: url,
             isRunning: false,
             type: .app(bundleIdentifier: Bundle(path: url.path)?.bundleIdentifier)
         )
     }
     
-    // create a new folder to custom dock using button
     private func createNewFolder() {
         let newFolder = DockItem(
             id: UUID(),
@@ -119,31 +152,11 @@ struct CustomDockView: View {
         dockObserver.saveDockItems()
     }
     
-//    // add folders to dock using drag and drop
-//    private func addFolder(from url: URL) {
-//        let newFolder = DockItem(
-//            id: UUID(),
-//            name: url.lastPathComponent,
-//            iconName: "folderIcon.png", // Replace with logic to save the actual folder icon
-//            url: url,
-//            isRunning: false,
-//            type: .folder(items: [])
-//        )
-//        
-//        // Add the folder to your data
-//        // This is where you might save the folder contents
-//        DispatchQueue.main.async {
-//            // Add folder handling logic here
-//            print("Folder Added: \(newFolder.name)")
-//        }
-//    }
-        
-    // open app in dock editor, not necessary
     private func openDockItem(_ item: DockItem) {
         switch item.type {
         case .app:
             NSWorkspace.shared.open(item.url)
-        case .folder(let items):
+        case let .folder(items):
             print("Folder contains \(items.count) items")
         }
     }
@@ -153,10 +166,10 @@ struct CustomDockView: View {
             switch dockObserver.dockItems[index].type {
             case .app(let bundleIdentifier):
                 if let bundleIdentifier = bundleIdentifier {
-                    dockObserver.dockItems[index].isRunning = !NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).isEmpty
+                    dockObserver.dockItems[index].isRunning =
+                        !NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).isEmpty
                 }
             case .folder:
-                // No action needed for folders
                 continue
             }
         }

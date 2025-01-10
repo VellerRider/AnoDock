@@ -10,137 +10,200 @@ import SwiftUI
 
 struct DockItemView: View {
     let item: DockItem
-//    @EnvironmentObject var appStateMonitor: AppStateMonitor
+    var interactive: Bool = true
     
-    var interactive: Bool = true // 默认为可交互模式
-    
+    @State private var isHovering = false // 悬停状态
+
     var body: some View {
-        VStack {
-            // Try to load the icon
-            if let icon = loadIconFromFile(iconName: item.iconName) {
-                Image(nsImage: icon)
+            ZStack {
+                // 1. 显示主图标
+                loadIcon()
+
+                // 2. 显示指示灯（类似 macOS Dock 的小灰点）
+                if isRunning {
+                    Circle()
+                        .fill(Color.gray) // 灰色小点
+                        .frame(width: 4, height: 4)
+                        .offset(y: 34) // 调整位置，使其显示在图标下方
+                }
+                if isHovering {
+                    Text(item.name)
+                        .font(.system(size: 12)) // 更大的字体
+                        .padding(4)
+                        .background(Color.black.opacity(0.3)) // 背景黑色，带透明度
+                        .foregroundColor(.black.opacity(0.8))
+                        .cornerRadius(4)
+                        .offset(y: -50) // 显示在图标上方
+                        .transition(.opacity) // 淡入淡出效果
+                        .animation(.easeInOut(duration: 0.2), value: isHovering) // 动画效果
+
+                }
+            }
+        
+            .padding(4)
+            // 左键点击打开项目
+            .onTapGesture { openItem(item) }
+            // 右键菜单
+            .contextMenu(menuItems: {
+                if interactive {
+                    contextMenuItems(item: item)
+                }
+            })
+            .onHover { hovering in
+                isHovering = hovering // 监听鼠标悬停事件
+            }
+        }
+    
+    // MARK: - Icon Logic
+    @ViewBuilder
+    private func loadIcon() -> some View {
+        switch item.type {
+        case .app:
+            if let nsImage = loadIconFromFile(iconName: item.iconName) {
+                Image(nsImage: nsImage)
                     .resizable()
                     .frame(width: 64, height: 64)
                     .cornerRadius(8)
-                    .overlay(
-                        isRunning ? Circle()
-                            .fill(Color.green)
-                            .frame(width: 10, height: 10)
-                            .offset(x: 25, y: 25)
-                            : nil,
-                        alignment: .bottomTrailing
-                    )
+
             } else {
-                Rectangle()
-                    .fill(Color.gray)
+                // Gray fallback if no icon
+                Image(systemName: "app.fill")
+                    .resizable()
+                    .foregroundColor(.gray)
                     .frame(width: 64, height: 64)
                     .cornerRadius(8)
             }
             
-            Text(item.name)
-                .font(.caption)
-                .frame(width: 70)
-                .lineLimit(1)
+        case let .folder(folderItems):
+            folderThumbnail(folderItems)
+                .frame(width: 64, height: 64)
+                .cornerRadius(8)
         }
-        .padding(4)
-        .contextMenu(menuItems: {
-            if interactive {
-                contextMenuItems(item: item)
-            }
-        })
     }
     
-    // MARK: - right click menu for the item
+    /// If folder has items, show a 3x3 mosaic; otherwise a semi-translucent box
+    @ViewBuilder
+    private func folderThumbnail(_ folderItems: [DockItem]) -> some View {
+        if folderItems.isEmpty {
+            // (FIX) Show translucent box + folder glyph
+            ZStack {
+                Rectangle()
+                    .fill(Color.gray.opacity(0.2))   // semi-transparent
+                Image(systemName: "folder")
+                    .foregroundColor(.gray.opacity(0.7))
+                    .font(.system(size: 22))
+            }
+        } else {
+            // up to 9 sub-items mosaic
+            GeometryReader { geo in
+                let cellSize = geo.size.width / 3
+                let slice = folderItems.prefix(9)
+                ZStack {
+                    ForEach(slice.indices, id: \.self) { i in
+                        let row = i / 3
+                        let col = i % 3
+                        if let subIcon = loadIconFromFile(iconName: slice[i].iconName) {
+                            Image(nsImage: subIcon)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: cellSize, height: cellSize)
+                                .offset(
+                                    x: CGFloat(col)*cellSize - geo.size.width/2 + cellSize/2,
+                                    y: CGFloat(row)*cellSize - geo.size.height/2 + cellSize/2
+                                )
+                        } else {
+                            Rectangle()
+                                .fill(Color.gray.opacity(0.3))
+                                .frame(width: cellSize, height: cellSize)
+                                .offset(
+                                    x: CGFloat(col)*cellSize - geo.size.width/2 + cellSize/2,
+                                    y: CGFloat(row)*cellSize - geo.size.height/2 + cellSize/2
+                                )
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // MARK: - isRunning
+    private var isRunning: Bool {
+        switch item.type {
+        case .app:
+            return item.isRunning
+        case .folder:
+            return false
+        }
+    }
+
+    // MARK: - Left-click
+    private func openItem(_ dockItem: DockItem) {
+        switch dockItem.type {
+        case let .app(bundleID):
+            launchOrActivateApplication(bundleIdentifier: bundleID, url: dockItem.url)
+        case let .folder(subItems):
+            print("Folder with \(subItems.count) items. Not implemented.")
+        }
+    }
+    
+    // MARK: - Right-click menu
     @ViewBuilder
     private func contextMenuItems(item: DockItem) -> some View {
         switch item.type {
-        case let .app(bundleIdentifier):
+        case let .app(bundleID):
             Button("打开") {
-                launchOrActivateApplication(bundleIdentifier: bundleIdentifier, url: item.url)
+                launchOrActivateApplication(bundleIdentifier: bundleID, url: item.url)
             }
             if isRunning {
                 Button("退出") {
-                    quitApplication(bundleIdentifier: bundleIdentifier)
+                    quitApplication(bundleIdentifier: bundleID)
                 }
                 Button("隐藏") {
-                    hideApplication(bundleIdentifier: bundleIdentifier)
+                    hideApplication(bundleIdentifier: bundleID)
                 }
             }
             Button("显示在 Finder 中") {
                 NSWorkspace.shared.activateFileViewerSelecting([item.url])
             }
             
-        case let .folder(items):
-            // TODO: - modal pop up and show apps inside, allow user to click and open.
-            Button("编辑文件夹") {
-                
-            }
-            Button("重命名") {
-                
-            }
-            Button("删除文件夹") {
-                
-            }
-        }
-    }
-    
-    // MARK: - isRunning Computed Property
-    private var isRunning: Bool {
-        // We only have a running state for apps
-        // DockObserver update app's state automatically. So no need to do more here.
-        switch item.type {
-        case .app:
-            return item.isRunning
         case .folder:
-            // Folders are never "running"
-            return false
+            Button("编辑文件夹") { }
+            Button("重命名") { }
+            Button("删除文件夹") { }
         }
     }
-    
-    // MARK: - Icon Loading
+
+    // MARK: - Load icon from disk
     private func loadIconFromFile(iconName: String?) -> NSImage? {
-        guard let iconName = iconName else {
-            return nil
-        }
-        
-        let fileManager = FileManager.default
-        let appSupportDirectory = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-        
-        // Replace "YourAppName" with your actual directory name
-        let appDirectory = appSupportDirectory.appendingPathComponent("YourAppName")
-        let iconURL = appDirectory.appendingPathComponent(iconName)
-        
+        guard let iconName = iconName else { return nil }
+        let fm = FileManager.default
+        let supportDir = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+        let iconsDir = supportDir.appendingPathComponent("KuchiyoseDock/Icons")
+        let iconURL = iconsDir.appendingPathComponent(iconName)
         return NSImage(contentsOf: iconURL)
     }
     
-    // MARK: - Launch or Activate App
+    // MARK: - Launch/Activate
     private func launchOrActivateApplication(bundleIdentifier: String?, url: URL) {
         guard let bundleIdentifier = bundleIdentifier else { return }
-        
         if let runningApp = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).first {
-            runningApp.activate(options: [.activateAllWindows, .activateIgnoringOtherApps])
+            runningApp.activate(options: [.activateAllWindows])
         } else {
-            NSWorkspace.shared.openApplication(at: url,
-                                               configuration: NSWorkspace.OpenConfiguration(),
-                                               completionHandler: nil)
+            NSWorkspace.shared.openApplication(at: url, configuration: .init(), completionHandler: nil)
         }
     }
     
-    // MARK: - Quit Application
     private func quitApplication(bundleIdentifier: String?) {
         guard let bundleIdentifier = bundleIdentifier,
-              let runningApp = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).first else {
-            return
-        }
+              let runningApp = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).first
+        else { return }
         runningApp.terminate()
     }
     
-    // MARK: - Hide Application
     private func hideApplication(bundleIdentifier: String?) {
         guard let bundleIdentifier = bundleIdentifier,
-              let runningApp = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).first else {
-            return
-        }
+              let runningApp = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).first
+        else { return }
         runningApp.hide()
     }
 }

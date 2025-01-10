@@ -36,7 +36,7 @@ struct KuchiyoseDockApp: App {
                     }
                     .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("SummonDock"))) { _ in
                         if (!showDockWindow) {
-                            dockWindowManager.showDock(items: dockObserver.dockItems)
+                            dockWindowManager.showDock(observer: dockObserver)
                         } else {
                             dockWindowManager.hideDock()
                         }

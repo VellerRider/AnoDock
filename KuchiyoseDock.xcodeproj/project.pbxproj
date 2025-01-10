@@ -15,7 +15,6 @@
 		1A8DB8402D13E15A00A2338B /* DockDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8DB83F2D13E15A00A2338B /* DockDataManager.swift */; };
 		1A8DB8432D13FB8300A2338B /* HotKey in Frameworks */ = {isa = PBXBuildFile; productRef = 1A8DB8422D13FB8300A2338B /* HotKey */; };
 		1A8DB8452D13FCEA00A2338B /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8DB8442D13FCEA00A2338B /* AppSettings.swift */; };
-		1A8DB8472D13FD4B00A2338B /* CustomDockSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8DB8462D13FD4B00A2338B /* CustomDockSettings.swift */; };
 		1A93ED212CED74280064545A /* DockObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A93ED202CED74280064545A /* DockObserver.swift */; };
 		1A93ED232CED7ADE0064545A /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A93ED222CED7ADD0064545A /* test.swift */; };
 		1A93ED282CED8F420064545A /* DockItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A93ED272CED8F420064545A /* DockItemsView.swift */; };
@@ -37,6 +36,7 @@
 		1AEC4EF42CEA9E7500523CC1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EE42CEA9E7500523CC1 /* SettingsView.swift */; };
 		1AEC4EF52CEA9E7500523CC1 /* ShortcutsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EE52CEA9E7500523CC1 /* ShortcutsSettingsView.swift */; };
 		1AEC4EF62CEA9E7500523CC1 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EE62CEA9E7500523CC1 /* VisualEffectView.swift */; };
+		1AFC82702D31074100558430 /* testview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFC826F2D31074100558430 /* testview.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,7 +64,6 @@
 		1A78BBE92D000E7A003A8162 /* OtherSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherSettingsView.swift; sourceTree = "<group>"; };
 		1A8DB83F2D13E15A00A2338B /* DockDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockDataManager.swift; sourceTree = "<group>"; };
 		1A8DB8442D13FCEA00A2338B /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
-		1A8DB8462D13FD4B00A2338B /* CustomDockSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDockSettings.swift; sourceTree = "<group>"; };
 		1A93ED202CED74280064545A /* DockObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockObserver.swift; sourceTree = "<group>"; };
 		1A93ED222CED7ADD0064545A /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		1A93ED272CED8F420064545A /* DockItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockItemsView.swift; sourceTree = "<group>"; };
@@ -91,6 +90,7 @@
 		1AEC4EE42CEA9E7500523CC1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		1AEC4EE52CEA9E7500523CC1 /* ShortcutsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsSettingsView.swift; sourceTree = "<group>"; };
 		1AEC4EE62CEA9E7500523CC1 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
+		1AFC826F2D31074100558430 /* testview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testview.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -230,7 +230,6 @@
 			children = (
 				1A93ED2E2CEDA6D70064545A /* Info.plist */,
 				1AC70B262CEAD627009BA776 /* KuchiyoseDockApp.swift */,
-				1A8DB8462D13FD4B00A2338B /* CustomDockSettings.swift */,
 				1AEC4EF72CEA9E7800523CC1 /* Views */,
 				1AEC4EDA2CEA9E7500523CC1 /* Assets.xcassets */,
 				1AEC4EE22CEA9E7500523CC1 /* KuchiyoseDock.entitlements */,
@@ -241,6 +240,7 @@
 				1A93ED242CED8E590064545A /* Util */,
 				1AC70B282CEADB30009BA776 /* Helpers */,
 				1A93ED222CED7ADD0064545A /* test.swift */,
+				1AFC826F2D31074100558430 /* testview.swift */,
 			);
 			path = KuchiyoseDock;
 			sourceTree = "<group>";
@@ -430,7 +430,6 @@
 				1AC70B2F2CEAE7C2009BA776 /* GeneralSettings.swift in Sources */,
 				1AEC4EEC2CEA9E7500523CC1 /* ContentView.swift in Sources */,
 				1A548BCD2D17A29200DA8D4A /* SystemDockSettings.swift in Sources */,
-				1A8DB8472D13FD4B00A2338B /* CustomDockSettings.swift in Sources */,
 				1AA1CABE2D1FCBF700933295 /* CustomDockOverlayView.swift in Sources */,
 				1AEC4EED2CEA9E7500523CC1 /* CustomDockView.swift in Sources */,
 				1AEC4EF02CEA9E7500523CC1 /* DockItemView.swift in Sources */,
@@ -451,6 +450,7 @@
 				1A93ED212CED74280064545A /* DockObserver.swift in Sources */,
 				1AC70B212CEACAA3009BA776 /* DockItem.swift in Sources */,
 				1AC70B2A2CEADB39009BA776 /* OnboardingView.swift in Sources */,
+				1AFC82702D31074100558430 /* testview.swift in Sources */,
 				1A8DB8452D13FCEA00A2338B /* AppSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
