@@ -12,7 +12,6 @@ struct CustomDockOverlayView: View {
     
     var body: some View {
         ZStack {
-            // (FIX) Semi-transparent background
             VisualEffectView(material: .menu, blendingMode: .behindWindow)
                 .cornerRadius(36)
                 .overlay(
@@ -23,7 +22,7 @@ struct CustomDockOverlayView: View {
             VStack(spacing: 12) {
                 let apps = dockObserver.dockItems.filter { $0.isApp }
                 if !apps.isEmpty {
-                    HStack(spacing: 16) {
+                    HStack(spacing: 8) {
                         ForEach(apps) { item in
                             DockItemView(item: item, interactive: true)
                         }
@@ -32,15 +31,25 @@ struct CustomDockOverlayView: View {
                 
                 let folders = dockObserver.dockItems.filter { $0.isFolder }
                 if !folders.isEmpty {
-                    HStack(spacing: 16) {
+                    HStack(spacing: 8) {
                         ForEach(folders) { item in
                             DockItemView(item: item, interactive: true)
                         }
                     }
                 }
             }
-            .padding(16)
+            .padding(8)
         }
+        .background(
+            GeometryReader { geometry in
+                Color.clear
+                    .onAppear {
+                        print("Overlay View Size: \(geometry.size)")
+                    }
+            }
+        )
+        .fixedSize()
+
     }
 }
 

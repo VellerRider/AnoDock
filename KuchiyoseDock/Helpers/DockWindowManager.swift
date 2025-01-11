@@ -12,6 +12,9 @@
 import SwiftUI
 import AppKit
 
+import SwiftUI
+import AppKit
+
 class DockWindowManager {
     private var window: NSWindow?
     
@@ -23,86 +26,127 @@ class DockWindowManager {
         // 2. 包装成 NSHostingController
         let hostingController = NSHostingController(rootView: overlayView)
         hostingController.view.wantsLayer = true
-        hostingController.view.layer?.cornerRadius = 12
-        hostingController.view.layer?.masksToBounds = true
         
-        // 3. 测量视图大小
-        let proposedSize = NSSize(width: 600, height: 10_000)
+        // 3. 测量视图大小（这里先简单给个 600×600）
+        let proposedSize = NSSize(width: 600, height: 600)
         let idealSize = hostingController.sizeThatFits(in: proposedSize)
-        let finalWidth = min(idealSize.width, 800)
-        let finalHeight = min(idealSize.height, 600)
+        let finalWidth = idealSize.width
+        let finalHeight = idealSize.height
         
-        // 4. 获取屏幕、鼠标位置
-        guard let screen = NSScreen.main else { return }
+        // 4. 获取鼠标全局位置
+        let pointerGlobal = NSEvent.mouseLocation
+        
+        // 5. 找到鼠标当前所在的屏幕
+        guard let screen = NSScreen.screens.first(where: {
+            NSMouseInRect(pointerGlobal, $0.frame, false)
+        }) else {
+            // 如果意外找不到，那就直接用主屏
+            // 或者 return
+            guard let fallbackScreen = NSScreen.main else { return }
+            showDockOnScreen(
+                screen: fallbackScreen,
+                pointerGlobal: pointerGlobal,
+                finalWidth: finalWidth,
+                finalHeight: finalHeight,
+                hostingController: hostingController
+            )
+            return
+        }
+        
+        // 6. 真正展示 Dock
+        showDockOnScreen(
+            screen: screen,
+            pointerGlobal: pointerGlobal,
+            finalWidth: finalWidth,
+            finalHeight: finalHeight,
+            hostingController: hostingController
+        )
+    }
+    
+    /// 把在“某个 screen + 鼠标全局坐标”上创建窗口的逻辑单独封装一下
+    private func showDockOnScreen<V: View>(
+        screen: NSScreen,
+        pointerGlobal: NSPoint,
+        finalWidth: CGFloat,
+        finalHeight: CGFloat,
+        hostingController: NSHostingController<V>
+    ) {
         let screenFrame = screen.frame
-        let pointer = NSEvent.mouseLocation
         
-        // (可以增加一个 offset，让 Dock 不至于跟鼠标点重叠)
+        // 注意：screenFrame.origin 不一定是 (0, 0)，多显示器下有可能是负数
+        // 因此做相对计算时，要先把 pointerGlobal 转成“屏幕内坐标”：
+        let pointerLocalX = pointerGlobal.x - screenFrame.origin.x
+        let pointerLocalY = pointerGlobal.y - screenFrame.origin.y
+        
+        // offset，用于避免 Dock 紧贴鼠标
         let offset: CGFloat = 2
         
-        // 5. 先决定垂直：Dock 在鼠标的上方还是下方？
-        var originY: CGFloat
-        let distanceBottom = pointer.y           // 鼠标到屏幕底部距离
-        let distanceTop = screenFrame.height - pointer.y  // 鼠标到屏幕顶部距离
+        // 1. 垂直方向
+        var localOriginY: CGFloat
+        let distanceBottom = pointerLocalY
+        let distanceTop    = screenFrame.height - pointerLocalY
         
         if distanceBottom >= finalHeight {
             // 下方空间够 => Dock 顶部贴鼠标 => originY = pointer.y - finalHeight
-            originY = pointer.y - finalHeight - offset
+            localOriginY = pointerLocalY - finalHeight - offset
         } else if distanceTop >= finalHeight {
-            // 上方空间够 => Dock 底部贴鼠标 => originY = pointer.y
-            originY = pointer.y + offset
+            // 上方空间够 => Dock 底部贴鼠标 => originY = pointerLocalY + offset
+            localOriginY = pointerLocalY + offset
         } else {
             // 上下都不够完全容纳 => 看哪边空间更大
             if distanceBottom > distanceTop {
-                // 放底部
-                originY = offset  // 或者贴到底边 originY = 0
+                // 放屏幕底边
+                localOriginY = offset
             } else {
-                // 放顶部
-                originY = screenFrame.height - finalHeight - offset
+                // 放屏幕顶边
+                localOriginY = screenFrame.height - finalHeight - offset
             }
         }
         
-        // 6. 再决定水平：Dock 在鼠标的左侧还是右侧？
-        var originX: CGFloat
-        let distanceLeft = pointer.x
-        let distanceRight = screenFrame.width - pointer.x
+        // 2. 水平方向
+        var localOriginX: CGFloat
+        let distanceLeft  = pointerLocalX
+        let distanceRight = screenFrame.width - pointerLocalX
         
         if distanceRight >= finalWidth {
-            // 右侧空间够 => Dock 左边贴鼠标 => originX = pointer.x
-            originX = pointer.x + offset
+            // 右侧空间够 => Dock 左边贴鼠标
+            localOriginX = pointerLocalX + offset
         } else if distanceLeft >= finalWidth {
-            // 左侧空间够 => Dock 右边贴鼠标 => originX = pointer.x - finalWidth
-            originX = pointer.x - finalWidth - offset
+            // 左侧空间够 => Dock 右边贴鼠标
+            localOriginX = pointerLocalX - finalWidth - offset
         } else {
             // 左右都不够 => 看哪边空间更大
             if distanceLeft > distanceRight {
                 // 贴紧左边
-                originX = offset
+                localOriginX = offset
             } else {
                 // 贴紧右边
-                originX = screenFrame.width - finalWidth - offset
+                localOriginX = screenFrame.width - finalWidth - offset
             }
         }
         
-        // 7. 做一下 clamp，保证不出屏（如果你想允许部分出界，可忽略此步或只 clamp 部分边）
-        if originX < 0 {
-            originX = 0
+        // 3. Clamp，确保不超出这块屏幕
+        if localOriginX < 0 {
+            localOriginX = 0
         }
-        if originX + finalWidth > screenFrame.width {
-            originX = screenFrame.width - finalWidth
+        if localOriginX + finalWidth > screenFrame.width {
+            localOriginX = screenFrame.width - finalWidth
+        }
+        if localOriginY < 0 {
+            localOriginY = 0
+        }
+        if localOriginY + finalHeight > screenFrame.height {
+            localOriginY = screenFrame.height - finalHeight
         }
         
-        if originY < 0 {
-            originY = 0
-        }
-        if originY + finalHeight > screenFrame.height {
-            originY = screenFrame.height - finalHeight
-        }
-        print("dock: ", originX, originY, finalWidth, finalHeight)
-        print(NSEvent.mouseLocation)
+        // 4. 把它转回全局坐标，用于创建 NSWindow
+        let globalOriginX = screenFrame.origin.x + localOriginX
+        let globalOriginY = screenFrame.origin.y + localOriginY
         
-        // 8. 创建窗口
-        let newFrame = NSRect(x: originX, y: originY,
+        print("Dock final frame in global coords: \(globalOriginX), \(globalOriginY), \(finalWidth), \(finalHeight)")
+        
+        // 5. 创建窗口
+        let newFrame = NSRect(x: globalOriginX, y: globalOriginY,
                               width: finalWidth, height: finalHeight)
         let newWindow = NSWindow(
             contentRect: newFrame,
@@ -120,7 +164,7 @@ class DockWindowManager {
         newWindow.orderFront(nil)
         self.window = newWindow
         
-        // 9. 简单渐入动画
+        // 6. 简单渐入动画
         NSAnimationContext.runAnimationGroup { context in
             context.duration = 0.2
             newWindow.animator().alphaValue = 1
