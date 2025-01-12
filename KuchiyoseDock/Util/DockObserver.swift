@@ -25,7 +25,7 @@ class DockObserver: NSObject, ObservableObject {
 
     // array for recents for order
     @Published var recentApps: [DockItem] = []
-    
+    private var runningRecents: Int = 0   // track how many running recent apps
     private var maxRecentApps: Int { 5 }  // max limit out-of-dock recent apps
     
     private var pollTimer: Timer?
@@ -52,7 +52,7 @@ class DockObserver: NSObject, ObservableObject {
         
         // 启动一个每秒执行的 Timer，自动调用 updateRunningStates 和 updateRecentApplications
         pollTimer = Timer.scheduledTimer(
-            timeInterval: 2.5,
+            timeInterval: 1,
             target: self,
             selector: #selector(pollUpdate),
             userInfo: nil,
@@ -143,16 +143,17 @@ class DockObserver: NSObject, ObservableObject {
             print("Error: Attempted to insert nil into recentApps")
             return
         }
-        // reach max recent limit, pop last one
-        if recentApps.count >= maxRecentApps {
-            // 优先移除一个“未在运行的” DockItem
-            if let index = recentApps.lastIndex(where: { !$0.isRunning }) {
-                recentApps.remove(at: index)
-            } else {
-                // 如果都在运行，那就只能移除最旧的（数组第一个）
-                recentApps.removeLast()
-            }
-        }
+        // ignore max here. Only apply max limit when active app <= max
+//        // reach max recent limit, pop last one
+//        if recentApps.count >= maxRecentApps {
+//            // 优先移除一个“未在运行的” DockItem
+//            if let index = recentApps.lastIndex(where: { !$0.isRunning }) {
+//                recentApps.remove(at: index)
+//            } else {
+//                // 如果都在运行，那就只能移除最旧的（数组第一个）
+//                recentApps.removeLast()
+//            }
+//        }
         // 把新 item 加到开头
         recentApps.insert(newDockItem, at: 0)
     }
@@ -224,14 +225,26 @@ class DockObserver: NSObject, ObservableObject {
         for app in recentApps {
             app.isRunning = runningBundleIDs.contains(app.bundleID)
         }
-        // 总是重排recents
-        // 将 isRunning=true 的 DockItem 排在前面
-        // sort(by:) 是就地操作(in-place)
-        recentApps.sort { lhs, rhs in
-            // running 的排前面，non-running 排后面
-            // 若两者同是 running 或同是非 running，则保持原位置关系并不重要时可返回 false
-            // 如果需要稳定排序，需要另外实现算法或使用外部辅助空间
-            lhs.isRunning && !rhs.isRunning
+        // 稳定排序：将 isRunning = true 的排前面
+        recentApps = recentApps.enumerated()
+            .sorted { lhs, rhs in
+                let (lhsIndex, lhsApp) = lhs
+                let (rhsIndex, rhsApp) = rhs
+                if lhsApp.isRunning != rhsApp.isRunning {
+                    return lhsApp.isRunning && !rhsApp.isRunning
+                }
+                return lhsIndex < rhsIndex
+            }
+            .map { $0.element }
+        
+        // 更新 runningRecents 计数
+        runningRecents = recentApps.filter { $0.isRunning }.count
+        
+        // 如果 runningRecents 少于 maxRecentApps，则只保留前 maxRecentApps 个最近应用
+        if runningRecents > maxRecentApps {
+            recentApps = Array(recentApps.prefix(runningRecents))
+        } else {
+            recentApps = Array(recentApps.prefix(maxRecentApps))
         }
     }
 }
