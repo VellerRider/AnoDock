@@ -22,6 +22,7 @@ class DockWindowManager {
         // 1. 构建 SwiftUI overlay
         let overlayView = CustomDockOverlayView()
             .environmentObject(observer)
+        observer.refreshDock() // refresh everytime showing dock
         
         // 2. 包装成 NSHostingController
         let hostingController = NSHostingController(rootView: overlayView)
@@ -143,7 +144,7 @@ class DockWindowManager {
         let globalOriginX = screenFrame.origin.x + localOriginX
         let globalOriginY = screenFrame.origin.y + localOriginY
         
-        print("Dock final frame in global coords: \(globalOriginX), \(globalOriginY), \(finalWidth), \(finalHeight)")
+//        print("Dock final frame in global coords: \(globalOriginX), \(globalOriginY), \(finalWidth), \(finalHeight)")
         
         // 5. 创建窗口
         let newFrame = NSRect(x: globalOriginX, y: globalOriginY,

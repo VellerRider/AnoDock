@@ -13,7 +13,6 @@ struct ContentView: View {
     var body: some View {
         VStack {
             Text("Here are all items")
-            DockItemsView()
         }
         .padding()
         Text("Try dragging and dropping items")

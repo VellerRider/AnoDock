@@ -33,6 +33,7 @@ struct KuchiyoseDockApp: App {
 //                    .environmentObject(appsetting)
                     .onAppear {
                         dockObserver.loadDockItems()
+                        dockObserver.syncRecentApps()
                     }
                     .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("SummonDock"))) { _ in
                         if (!showDockWindow) {

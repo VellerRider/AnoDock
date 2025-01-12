@@ -9,9 +9,8 @@
 import SwiftUI
 
 struct DockItemView: View {
-    let item: DockItem
+    @ObservedObject var item: DockItem
     var interactive: Bool = true
-    
     @State private var isHovering = false // 悬停状态
 
     var body: some View {
@@ -20,7 +19,7 @@ struct DockItemView: View {
                 loadIcon()
 
                 // 2. 显示指示灯（类似 macOS Dock 的小灰点）
-                if isRunning {
+                if item.isRunning {
                     Circle()
                         .fill(Color.gray) // 灰色小点
                         .frame(width: 4, height: 4)
@@ -54,34 +53,27 @@ struct DockItemView: View {
             }
         }
     
-    // MARK: - Icon Logic
+    // MARK: - Icon Logic. Just for apps
     @ViewBuilder
     private func loadIcon() -> some View {
-        switch item.type {
-        case .app:
-            if let nsImage = loadIconFromFile(iconName: item.iconName) {
-                Image(nsImage: nsImage)
-                    .resizable()
-                    .frame(width: 64, height: 64)
-                    .cornerRadius(8)
+        if let nsImage = loadIconFromFile(iconName: item.iconName) {
+            Image(nsImage: nsImage)
+                .resizable()
+                .frame(width: 64, height: 64)
+                .cornerRadius(8)
 
-            } else {
-                // Gray fallback if no icon
-                Image(systemName: "app.fill")
-                    .resizable()
-                    .foregroundColor(.gray)
-                    .frame(width: 64, height: 64)
-                    .cornerRadius(8)
-            }
-            
-        case let .folder(folderItems):
-            folderThumbnail(folderItems)
+        } else {
+            // Gray fallback if no icon
+            Image(systemName: "app.fill")
+                .resizable()
+                .foregroundColor(.gray)
                 .frame(width: 64, height: 64)
                 .cornerRadius(8)
         }
+        
     }
     
-    /// If folder has items, show a 3x3 mosaic; otherwise a semi-translucent box
+    // If folder has items, show a 3x3 mosaic; otherwise a semi-translucent box
     @ViewBuilder
     private func folderThumbnail(_ folderItems: [DockItem]) -> some View {
         if folderItems.isEmpty {
@@ -125,52 +117,29 @@ struct DockItemView: View {
             }
         }
     }
-    
-    // MARK: - isRunning
-    private var isRunning: Bool {
-        switch item.type {
-        case .app:
-            return item.isRunning
-        case .folder:
-            return false
-        }
-    }
 
-    // MARK: - Left-click
+    // MARK: - Left-click. Just for Apps.
     private func openItem(_ dockItem: DockItem) {
-        switch dockItem.type {
-        case let .app(bundleID):
-            launchOrActivateApplication(bundleIdentifier: bundleID, url: dockItem.url)
-        case let .folder(subItems):
-            print("Folder with \(subItems.count) items. Not implemented.")
-        }
+        launchOrActivateApplication(bundleIdentifier: dockItem.bundleID, url: dockItem.url)
     }
     
     // MARK: - Right-click menu
     @ViewBuilder
     private func contextMenuItems(item: DockItem) -> some View {
-        switch item.type {
-        case let .app(bundleID):
             Button("打开") {
-                launchOrActivateApplication(bundleIdentifier: bundleID, url: item.url)
+                launchOrActivateApplication(bundleIdentifier: item.bundleID, url: item.url)
             }
-            if isRunning {
+            if item.isRunning {
                 Button("退出") {
-                    quitApplication(bundleIdentifier: bundleID)
+                    quitApplication(bundleIdentifier: item.bundleID)
                 }
                 Button("隐藏") {
-                    hideApplication(bundleIdentifier: bundleID)
+                    hideApplication(bundleIdentifier: item.bundleID)
                 }
             }
             Button("显示在 Finder 中") {
                 NSWorkspace.shared.activateFileViewerSelecting([item.url])
             }
-            
-        case .folder:
-            Button("编辑文件夹") { }
-            Button("重命名") { }
-            Button("删除文件夹") { }
-        }
     }
 
     // MARK: - Load icon from disk

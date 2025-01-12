@@ -7,23 +7,70 @@
 //  Created by John Yang on 11/17/24.
 //
 
+
+// Now only support app. TODO: Implement folder model later
+
 import Foundation
 import AppKit
 
 
-enum DockItemType: Codable {
-    case app(bundleIdentifier: String?)
-    case folder(items: [DockItem])
-}
 
-
-struct DockItem: Identifiable, Codable {
+class DockItem: Identifiable, Codable, Hashable, ObservableObject {
     let id: UUID
     let name: String
     let iconName: String // save icon
     let url: URL
-    var isRunning: Bool // for apps only
-    let type: DockItemType
+    let bundleID: String
+    @Published var isRunning: Bool // for apps only
+    
+    
+    // make this codable
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case iconName
+        case url
+        case bundleID
+        case isRunning
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decode(UUID.self, forKey: .id)
+        name = try c.decode(String.self, forKey: .name)
+        url = try c.decode(URL.self, forKey: .url)
+        iconName = try c.decode(String.self, forKey: .iconName)
+        bundleID = try c.decode(String.self, forKey: .bundleID)
+        isRunning = try c.decode(Bool.self, forKey: .isRunning)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var c = encoder.container(keyedBy: CodingKeys.self)
+        try c.encode(id, forKey: .id)
+        try c.encode(name, forKey: .name)
+        try c.encode(url, forKey: .url)
+        try c.encode(iconName, forKey: .iconName)
+        try c.encode(bundleID, forKey: .bundleID)
+        try c.encode(isRunning, forKey: .isRunning)
+    }
+    
+    init(id: UUID, name: String, iconName: String, url: URL, bundleID: String, isRunning: Bool) {
+        self.id = id
+        self.name = name
+        self.iconName = iconName
+        self.url = url
+        self.bundleID = bundleID
+        self.isRunning = isRunning
+    }
+    
+    // make this hashable
+    static func == (lhs: DockItem, rhs: DockItem) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id) // 只用 id
+    }
 }
 
 
@@ -63,8 +110,10 @@ func saveIconToFile(icon: NSImage, name: String) -> String {
 func createDockItem(from app: NSRunningApplication) -> DockItem? {
     guard let url = app.bundleURL else { return nil }
     let appName = app.localizedName ?? url.deletingPathExtension().lastPathComponent
-    let bundleIdentifier = app.bundleIdentifier
-
+    guard let bundleIdentifier = app.bundleIdentifier else {
+        print("Error: bundleIdentifier is nil for app \(appName)")
+        return nil
+    }
     // 获取图标并保存到本地
     let icon = NSWorkspace.shared.icon(forFile: url.path)
     icon.size = NSSize(width: 64, height: 64)
@@ -75,23 +124,7 @@ func createDockItem(from app: NSRunningApplication) -> DockItem? {
         name: appName,
         iconName: iconName,
         url: url,
-        isRunning: false,
-        type: .app(bundleIdentifier: bundleIdentifier)
-    )
-}
-
-func createDockItemFolder(name: String, url: URL, items: [DockItem]) -> DockItem? {
-    // Save folder icon
-    let icon = NSWorkspace.shared.icon(forFile: url.path)
-    icon.size = NSSize(width: 64, height: 64)
-    let iconName = saveIconToFile(icon: icon, name: name)
-
-    return DockItem(
-        id: UUID(), // Generate a unique ID
-        name: name,
-        iconName: iconName,
-        url: url,
-        isRunning: false,
-        type: .folder(items: items)
+        bundleID: bundleIdentifier,
+        isRunning: false
     )
 }

@@ -24,6 +24,8 @@ class DockDataManager {
         }
         
         fileURL = appDirectory.appendingPathComponent("dockItems.json")
+        print("File path: \(fileURL.path)")
+
     }
     
     func saveDockItems(_ items: [DockItem]) {

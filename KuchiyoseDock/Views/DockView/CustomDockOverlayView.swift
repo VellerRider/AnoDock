@@ -20,46 +20,25 @@ struct CustomDockOverlayView: View {
                 )
             
             VStack(spacing: 12) {
-                let apps = dockObserver.dockItems.filter { $0.isApp }
-                if !apps.isEmpty {
-                    HStack(spacing: 8) {
-                        ForEach(apps) { item in
-                            DockItemView(item: item, interactive: true)
+                HStack(spacing: 8) {
+                    ForEach(Array(dockObserver.dockAppOrderKeys.enumerated()), id: \.element) { (index, key) in
+                        if let app = dockObserver.dockApps[key] {
+                            DockItemView(item: app, interactive: true)
                         }
                     }
                 }
                 
-                let folders = dockObserver.dockItems.filter { $0.isFolder }
-                if !folders.isEmpty {
-                    HStack(spacing: 8) {
-                        ForEach(folders) { item in
-                            DockItemView(item: item, interactive: true)
-                        }
+                HStack(spacing: 8) {
+                    ForEach(dockObserver.recentApps) { app in
+                        DockItemView(item: app, interactive: true)
                     }
                 }
+                
             }
             .padding(8)
         }
-        .background(
-            GeometryReader { geometry in
-                Color.clear
-                    .onAppear {
-                        print("Overlay View Size: \(geometry.size)")
-                    }
-            }
-        )
+
         .fixedSize()
 
-    }
-}
-
-private extension DockItem {
-    var isApp: Bool {
-        if case .app = self.type { return true }
-        return false
-    }
-    var isFolder: Bool {
-        if case .folder = self.type { return true }
-        return false
     }
 }
