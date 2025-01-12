@@ -20,6 +20,8 @@
 		1AA1CABC2D1FCBBB00933295 /* DockWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA1CABB2D1FCBBB00933295 /* DockWindowManager.swift */; };
 		1AA1CABE2D1FCBF700933295 /* CustomDockOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA1CABD2D1FCBF700933295 /* CustomDockOverlayView.swift */; };
 		1ABBE4D02D33480600CCF124 /* DockFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABBE4CF2D33480600CCF124 /* DockFolder.swift */; };
+		1ABBE4D22D33824200CCF124 /* DockWindowState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABBE4D12D33824200CCF124 /* DockWindowState.swift */; };
+		1ABBE4D42D3383F400CCF124 /* DockNotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABBE4D32D3383F400CCF124 /* DockNotificationHandler.swift */; };
 		1AC70B212CEACAA3009BA776 /* DockItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B202CEACAA3009BA776 /* DockItem.swift */; };
 		1AC70B272CEAD627009BA776 /* KuchiyoseDockApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B262CEAD627009BA776 /* KuchiyoseDockApp.swift */; };
 		1AC70B2A2CEADB39009BA776 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B292CEADB39009BA776 /* OnboardingView.swift */; };
@@ -71,6 +73,8 @@
 		1AA9EEEE2CE4019F002D8348 /* KuchiyoseDockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KuchiyoseDockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AA9EEF82CE4019F002D8348 /* KuchiyoseDockUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KuchiyoseDockUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ABBE4CF2D33480600CCF124 /* DockFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockFolder.swift; sourceTree = "<group>"; };
+		1ABBE4D12D33824200CCF124 /* DockWindowState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockWindowState.swift; sourceTree = "<group>"; };
+		1ABBE4D32D3383F400CCF124 /* DockNotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockNotificationHandler.swift; sourceTree = "<group>"; };
 		1AC70B202CEACAA3009BA776 /* DockItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockItem.swift; sourceTree = "<group>"; };
 		1AC70B262CEAD627009BA776 /* KuchiyoseDockApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KuchiyoseDockApp.swift; sourceTree = "<group>"; };
 		1AC70B292CEADB39009BA776 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -188,6 +192,8 @@
 			isa = PBXGroup;
 			children = (
 				1AA1CABB2D1FCBBB00933295 /* DockWindowManager.swift */,
+				1ABBE4D12D33824200CCF124 /* DockWindowState.swift */,
+				1ABBE4D32D3383F400CCF124 /* DockNotificationHandler.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -425,6 +431,7 @@
 				1AC70B2F2CEAE7C2009BA776 /* GeneralSettings.swift in Sources */,
 				1AEC4EEC2CEA9E7500523CC1 /* ContentView.swift in Sources */,
 				1A548BCD2D17A29200DA8D4A /* SystemDockSettings.swift in Sources */,
+				1ABBE4D22D33824200CCF124 /* DockWindowState.swift in Sources */,
 				1AA1CABE2D1FCBF700933295 /* CustomDockOverlayView.swift in Sources */,
 				1AEC4EED2CEA9E7500523CC1 /* CustomDockView.swift in Sources */,
 				1AEC4EF02CEA9E7500523CC1 /* DockItemView.swift in Sources */,
@@ -437,6 +444,7 @@
 				1A78BBEA2D000E7A003A8162 /* OtherSettingsView.swift in Sources */,
 				1AEC4EF62CEA9E7500523CC1 /* VisualEffectView.swift in Sources */,
 				1AC70B2C2CEADDB9009BA776 /* HotKeySettings.swift in Sources */,
+				1ABBE4D42D3383F400CCF124 /* DockNotificationHandler.swift in Sources */,
 				1AC70B272CEAD627009BA776 /* KuchiyoseDockApp.swift in Sources */,
 				1A93ED2B2CED90530064545A /* DockItemSection.swift in Sources */,
 				1A93ED212CED74280064545A /* DockObserver.swift in Sources */,
@@ -612,6 +620,7 @@
 				INFOPLIST_FILE = KuchiyoseDock/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = KuchiyoseDock;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSAppleEventsUsageDescription = "This app need to know what apps in your dock to make a perfect replicate. Your privacy is in your hands.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -644,6 +653,7 @@
 				INFOPLIST_FILE = KuchiyoseDock/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = KuchiyoseDock;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSAppleEventsUsageDescription = "This app need to know what apps in your dock to make a perfect replicate. Your privacy is in your hands.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -26,7 +26,6 @@ class DockObserver: NSObject, ObservableObject {
     // array for recents for order
     @Published var recentApps: [DockItem] = []
     
-    
     private var maxRecentApps: Int { 5 }  // max limit out-of-dock recent apps
     
     private var pollTimer: Timer?
@@ -184,11 +183,11 @@ class DockObserver: NSObject, ObservableObject {
     func syncRecentApps() {
         // sort running apps by time launched
         let runningApps = NSWorkspace.shared.runningApplications.filter{ $0.activationPolicy == .regular }
-        for app in runningApps {
-            print("App Name: \(app.localizedName ?? "Unknown")")
-            print("Bundle Identifier: \(app.bundleIdentifier ?? "Unknown")")
-            print("---")
-        }
+//        for app in runningApps {
+//            print("App Name: \(app.localizedName ?? "Unknown")")
+//            print("Bundle Identifier: \(app.bundleIdentifier ?? "Unknown")")
+//            print("---")
+//        }
         let sortedApps = runningApps.compactMap { app -> (NSRunningApplication, Date)? in
             guard let launchDate = app.launchDate else { return nil }
             return (app, launchDate)

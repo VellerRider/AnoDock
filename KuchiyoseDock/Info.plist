@@ -2,11 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSFileUsageDescription</key>
-	<string>This app needs access to select and add applications to the custom dock.</string>
-	<key>LSUIElement</key>
-	<false/>
 	<key>NSAccessibilityUsageDescription</key>
 	<string>您的应用程序需要使用辅助功能 API 来获取 Dock 中的应用程序列表。</string>
+	<key>NSFileUsageDescription</key>
+	<string>This app needs access to select and add applications to the custom dock.</string>
 </dict>
 </plist>
