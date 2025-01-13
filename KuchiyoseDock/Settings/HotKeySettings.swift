@@ -8,10 +8,8 @@ import SwiftUI
 import HotKey  // Soffes' HotKey library
 
 class HotKeySettings: ObservableObject {
-    /// The user's chosen shortcut in SwiftUI's format (KeyEquivalent + EventModifiers).
     @Published var keyboardShortcut: KeyboardShortcut?
     
-    /// The active Soffes' HotKey used to intercept the system-wide key press.
     @Published var globalHotKey: HotKey? {
         didSet {
             print("globalHotKey updated to \(String(describing: globalHotKey?.keyCombo))")
@@ -21,7 +19,7 @@ class HotKeySettings: ObservableObject {
             // e.g., print("globalHotKey updated to \(String(describing: globalHotKey))")
         }
     }
-    
+    static let shared = HotKeySettings()
     private let userDefaultsKey = "HotKeyShortcut"
     
     init() {
@@ -115,7 +113,7 @@ class HotKeySettings: ObservableObject {
         let newHotKey = HotKey(key: mappedKey, modifiers: soffesMods)
         
         // Hook up the actual callback
-        newHotKey.keyDownHandler = { [weak self] in
+        newHotKey.keyDownHandler = {
             // This is where you "summon the dock"
             // Typically you'd post a notification or call a shared function
             // Example:

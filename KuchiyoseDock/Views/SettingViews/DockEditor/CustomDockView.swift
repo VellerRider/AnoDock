@@ -12,53 +12,53 @@ import UniformTypeIdentifiers
 
 struct CustomDockView: View {
     @EnvironmentObject var dockObserver: DockObserver
+    @EnvironmentObject var itemPopoverManager: ItemPopoverManager
+    @EnvironmentObject var dockEditorSettings: DockEditorSettings
     
-    /// 改为使用 dockAppOrderKeys (String 数组) 来保持顺序。
-    /// 通过索引 + key 查到具体的 dockApps[key]
     let columns = [
-        GridItem(.adaptive(minimum: 80), spacing: 16)
+        GridItem(.adaptive(minimum: 80), spacing: 6)
     ]
     
     var body: some View {
         VStack {
-            // 用 ScrollView + LazyVGrid 来展示
-            ScrollView {
-                LazyVGrid(columns: columns, spacing: 16) {
-                    // 根据 dockAppOrderKeys 保证顺序
-                    ForEach(Array(dockObserver.dockAppOrderKeys.enumerated()), id: \.element) { (index, key) in
-                        // 从字典里取出 DockItem
-                        if let item = dockObserver.dockApps[key] {
-                            DockItemView(item: item)
-                                .onTapGesture {
-                                    openDockItem(item)
-                                }
-                                // 使其可以被拖拽
-                                .onDrag {
-                                    // 拖拽时传递 "oldIndex" 过去，以便 onDrop 时获取
-                                    let provider = NSItemProvider(object: "\(index)" as NSString)
-                                    return provider
-                                }
-                                // 接收拖拽
-                                .onDrop(of: [.text], isTargeted: nil) { providers in
-                                    handleDropReorder(providers: providers, toIndex: index)
-                                }
-                        }
+            ZStack{
+                // 用 ScrollView + LazyVGrid 来展示
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 2) {
+                        // 根据 dockAppOrderKeys 保证顺序
+                        ReorderableForEach(
+                            items: dockObserver.dockAppOrderKeys.compactMap { dockObserver.dockApps[$0] },
+                            content: { item in
+                                EditorItemView(item: item)
+                            },
+                            moveAction: { from, to in
+                                dockObserver.moveItem(from: from.first!, to: to)
+                            },
+                            finishAction: {
+                                dockObserver.refreshDock()
+                            }
+                        )
+                        
                     }
+                    .padding()
                 }
-                .padding()
+                .blur(radius: dockEditorSettings.isEditing ? 0.3 : 0) // 添加模糊效果
+                .opacity(dockEditorSettings.isEditing ? 0.8 : 1)    // 改变透明度
             }
             
-            // 只有一个按钮：Add App (已去掉 Folder 相关逻辑)
             HStack {
                 Button(action: addNewApp) {
                     Image(systemName: "plus")
                         .font(.title)
                 }
+                Button(action: enterEditingMode) {
+                    Image(systemName: dockEditorSettings.isEditing ? "checkmark.circle" : "pencil")
+                        .font(.title)
+                }
             }
         }
 
-        // 如果需要从外部拖入 .app 文件，可以在整个 VStack/ScrollView 上扩展 .onDrop
-        // 如果你想支持把文件拖到空白处就添加，也可以：
+        // drop apps from outside
         .onDrop(of: ["public.file-url"], isTargeted: nil) { providers in
             handleDrop(providers: providers)
         }
@@ -67,28 +67,6 @@ struct CustomDockView: View {
 
 // MARK: - Functions
 extension CustomDockView {
-    
-    // 拖拽重排逻辑
-    private func handleDropReorder(providers: [NSItemProvider], toIndex: Int) -> Bool {
-        for provider in providers {
-            provider.loadItem(forTypeIdentifier: UTType.text.identifier, options: nil) { item, _ in
-                guard let str = item as? String,
-                      let oldIndex = Int(str),
-                      oldIndex != toIndex
-                else { return }
-                
-                DispatchQueue.main.async {
-                    withAnimation {
-                        // 在 dockAppOrderKeys 里重排
-                        let movingKey = dockObserver.dockAppOrderKeys.remove(at: oldIndex)
-                        dockObserver.dockAppOrderKeys.insert(movingKey, at: toIndex)
-                        dockObserver.saveDockItems()
-                    }
-                }
-            }
-        }
-        return true
-    }
     
     // 接收从 Finder 等处拖进 .app 文件的逻辑
     private func handleDrop(providers: [NSItemProvider]) -> Bool {
@@ -156,9 +134,43 @@ extension CustomDockView {
         )
     }
     
-    // 打开某个 DockItem（这里不再区分 folder/app）
-    private func openDockItem(_ item: DockItem) {
-        // 简单打开对应 URL（如果是 app，会直接启动；如果是别的文件夹，也会在 Finder 打开）
-        NSWorkspace.shared.open(item.url)
+    private func enterEditingMode() {
+        if !dockEditorSettings.isEditing {
+            dockEditorSettings.isEditing.toggle()
+        } else {
+            dockObserver.saveDockItems()
+            dockEditorSettings.isEditing.toggle()
+        }
+    }
+    
+}
+
+// 自定义 DropDelegate 处理拖放逻辑
+struct DockItemDropDelegate: DropDelegate {
+    let item: DockItem
+    let index: Int
+    @ObservedObject var dockObserver: DockObserver
+
+    func validateDrop(info: DropInfo) -> Bool {
+        info.hasItemsConforming(to: [UTType.text])
+    }
+
+    func performDrop(info: DropInfo) -> Bool {
+        guard info.hasItemsConforming(to: [UTType.text]) else { return false }
+        let items = info.itemProviders(for: [UTType.text])
+        for item in items {
+            item.loadItem(forTypeIdentifier: UTType.text.identifier, options: nil) { (data, error) in
+                guard let data = data as? Data,
+                      let key = String(data: data, encoding: .utf8),
+                      let fromIndex = dockObserver.dockAppOrderKeys.firstIndex(of: key)
+                else { return }
+                DispatchQueue.main.async {
+                    withAnimation {
+                        dockObserver.moveItem(from: fromIndex, to: index)
+                    }
+                }
+            }
+        }
+        return true
     }
 }

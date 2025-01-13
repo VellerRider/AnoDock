@@ -13,13 +13,18 @@ import SwiftUI
 
 @main
 struct KuchiyoseDockApp: App {
-    // 原有的 StateObjects
-    private var dockObserver = DockObserver()
-    private var hotKeySettings = HotKeySettings()
-    private var dockWindowState = DockWindowState()
-
-    // Dock overlay manager
-    private let dockWindowManager = DockWindowManager()
+    // managers and observers
+    private var dockObserver: DockObserver = .shared
+    private var dockWindowState: DockWindowState = .shared
+    private let dockWindowManager: DockWindowManager = .shared
+    private var itemPopoverManager: ItemPopoverManager = .shared
+        
+    // settings
+    private var dockEditorSettings: DockEditorSettings = .shared
+    private var generalSettings: GeneralSettings = .shared
+    private var appSettings: AppSettings = .shared
+    private var hotKeySettings: HotKeySettings = .shared
+    
     // delegate notification
     private lazy var notificationHandler = DockNotificationHandler(
         dockWindowManager: dockWindowManager,
@@ -58,10 +63,18 @@ struct KuchiyoseDockApp: App {
             } else {
                 SettingsView()
                     .environmentObject(dockObserver)
+                    .environmentObject(dockWindowState)
+                    .environmentObject(itemPopoverManager)
                     .environmentObject(hotKeySettings)
+                    .environmentObject(dockEditorSettings)
+                    .environmentObject(generalSettings)
+                    .environmentObject(appSettings)
+                    .environmentObject(dockEditorSettings)
+                
 
             }
         }
     }
 }
+
 

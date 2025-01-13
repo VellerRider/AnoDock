@@ -12,13 +12,13 @@ struct SettingsView: View {
     
     var body: some View {
         TabView {
-            GeneralSettingsView()
-                .tabItem {
-                    Label("General", systemImage: "gear")
-                }
             DockEditorView()
                 .tabItem {
                     Label("Dock Content", systemImage: "pin.circle")
+                }
+            GeneralSettingsView()
+                .tabItem {
+                    Label("General", systemImage: "gear")
                 }
             ShortcutsSettingsView()
                 .tabItem {
@@ -37,5 +37,15 @@ struct SettingsView: View {
 }
 
 #Preview {
+    let dockObserver = DockObserver()
+    let hotKeySettings = HotKeySettings()
+    let itemPopoverManager = ItemPopoverManager()
+    let dockWindowState = DockWindowState()
+    let dockEditorSettings = DockEditorSettings()
     SettingsView()
+        .environmentObject(dockObserver)
+        .environmentObject(hotKeySettings)
+        .environmentObject(itemPopoverManager)
+        .environmentObject(dockWindowState)
+        .environmentObject(dockEditorSettings)
 }

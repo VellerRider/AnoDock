@@ -9,7 +9,7 @@
 // observe dock's app, implement these functions
 // 1. Track dock configuration. Check what's added to dock, or removed from dock. Only main app and folder.
 // 2. Watch in-dock app when is opened or closed.
-// 3. TODO: help with recent apps. track latest closed app or files.
+// 3. dealing with special apps that does not send notification when terminated
 // TODO: implement folder logic later
 // TODO: implement system dock setting edit later
 
@@ -18,17 +18,23 @@ import Cocoa
 import Combine
 
 class DockObserver: NSObject, ObservableObject {
+    static let shared = DockObserver()
     // use dictionary to maintain apps with bundleID
     @Published var dockApps: [String: DockItem] = [:]
     // array to maintain order of apps
     @Published var dockAppOrderKeys: [String] = []
-
     // array for recents for order
     @Published var recentApps: [DockItem] = []
     private var runningRecents: Int = 0   // track how many running recent apps
     private var maxRecentApps: Int { 5 }  // max limit out-of-dock recent apps
     
     private var pollTimer: Timer?
+    
+    // snapshot for overall state change
+    private var lastDockStateHash: Int = 0
+    // store NSRunningApplications's bundleID
+    private var lastRunningBundleIDs: Set<String> = []
+
     
     override init() {
         super.init()
@@ -52,7 +58,7 @@ class DockObserver: NSObject, ObservableObject {
         
         // 启动一个每秒执行的 Timer，自动调用 updateRunningStates 和 updateRecentApplications
         pollTimer = Timer.scheduledTimer(
-            timeInterval: 1,
+            timeInterval: lastRunningBundleIDs.count > 7 ? 5 : 10,
             target: self,
             selector: #selector(pollUpdate),
             userInfo: nil,
@@ -82,6 +88,7 @@ class DockObserver: NSObject, ObservableObject {
     
     // MARK: - polling to avoid some problem
     @objc private func pollUpdate() {
+        lastDockStateHash = 0
         refreshDock()
     }
     
@@ -136,6 +143,20 @@ class DockObserver: NSObject, ObservableObject {
         }
     }
 
+    // MARK: - adjust order of two items
+    func moveItem(from: Int, to: Int) {
+        let bID = dockAppOrderKeys[from]
+        dockAppOrderKeys.remove(at: from)
+        dockAppOrderKeys.insert(bID, at: to > from ? to - 1 : to)
+    }
+    
+    // MARK: - remove in-dock item
+    func removeItem(_ bundleID: String) {
+        guard let index = dockAppOrderKeys.firstIndex(of: bundleID) else { return }
+        dockAppOrderKeys.remove(at: index)
+        dockApps.removeValue(forKey: bundleID)
+        refreshDock()
+    }
     
     // MARK: - 将 item 插入到 recentApplications，并处理容量限制
     private func insertIntoRecent(_ newDockItem: DockItem?) {
@@ -143,17 +164,6 @@ class DockObserver: NSObject, ObservableObject {
             print("Error: Attempted to insert nil into recentApps")
             return
         }
-        // ignore max here. Only apply max limit when active app <= max
-//        // reach max recent limit, pop last one
-//        if recentApps.count >= maxRecentApps {
-//            // 优先移除一个“未在运行的” DockItem
-//            if let index = recentApps.lastIndex(where: { !$0.isRunning }) {
-//                recentApps.remove(at: index)
-//            } else {
-//                // 如果都在运行，那就只能移除最旧的（数组第一个）
-//                recentApps.removeLast()
-//            }
-//        }
         // 把新 item 加到开头
         recentApps.insert(newDockItem, at: 0)
     }
@@ -184,11 +194,6 @@ class DockObserver: NSObject, ObservableObject {
     func syncRecentApps() {
         // sort running apps by time launched
         let runningApps = NSWorkspace.shared.runningApplications.filter{ $0.activationPolicy == .regular }
-//        for app in runningApps {
-//            print("App Name: \(app.localizedName ?? "Unknown")")
-//            print("Bundle Identifier: \(app.bundleIdentifier ?? "Unknown")")
-//            print("---")
-//        }
         let sortedApps = runningApps.compactMap { app -> (NSRunningApplication, Date)? in
             guard let launchDate = app.launchDate else { return nil }
             return (app, launchDate)
@@ -217,14 +222,42 @@ class DockObserver: NSObject, ObservableObject {
     // MARK: - refresh dock to handle special apps like facetime, clock, craft
     // regular cases should be handled by launch and terminate observer
     func refreshDock() {
+        // use snapshot hash to avoid excessive refresh
+        let currentDockStateHash = generateDockStateHash()
+        // 如果状态未变化，则不进行刷新
+        if currentDockStateHash == lastDockStateHash {
+            print("No common changes detected, skipping refreshDock.")
+            return
+        }
+        lastDockStateHash = currentDockStateHash
+
         // 一次获取所有正在运行的App的BundleID
-        let runningBundleIDs = Set(NSWorkspace.shared.runningApplications.filter{ $0.activationPolicy == .regular }.compactMap { $0.bundleIdentifier })
-        for bID in dockApps.keys {
-            dockApps[bID]?.isRunning = runningBundleIDs.contains(bID)
+        let currentRunningBundleIDs = Set(NSWorkspace.shared.runningApplications.compactMap { app in
+            app.activationPolicy == .regular ? app.bundleIdentifier : nil
+        })
+        
+        // 计算新增和移除的 bundleID
+        let addedBundleIDs = currentRunningBundleIDs.subtracting(lastRunningBundleIDs)
+        let removedBundleIDs = lastRunningBundleIDs.subtracting(currentRunningBundleIDs)
+        
+        lastRunningBundleIDs = currentRunningBundleIDs
+
+        // 只更新发生变化的 dockApps 和 recentApps
+        for bID in addedBundleIDs {
+            dockApps[bID]?.isRunning = true
+            if let index = recentApps.firstIndex(where: { $0.bundleID == bID }) {
+                recentApps[index].isRunning = true
+            }
         }
-        for app in recentApps {
-            app.isRunning = runningBundleIDs.contains(app.bundleID)
+        
+        for bID in removedBundleIDs {
+            dockApps[bID]?.isRunning = false
+            if let index = recentApps.firstIndex(where: { $0.bundleID == bID }) {
+                recentApps[index].isRunning = false
+            }
         }
+        
+
         // 稳定排序：将 isRunning = true 的排前面
         recentApps = recentApps.enumerated()
             .sorted { lhs, rhs in
@@ -246,5 +279,29 @@ class DockObserver: NSObject, ObservableObject {
         } else {
             recentApps = Array(recentApps.prefix(maxRecentApps))
         }
+    }
+    
+    // MARK: - keep track of overall state change
+    private func generateDockStateHash() -> Int {
+        var hasher = Hasher()
+        
+        // 对 dockApps 的 bundleID 和 isRunning 状态进行哈希
+        for (key, value) in dockApps.sorted(by: { $0.key < $1.key }) {
+            hasher.combine(key)
+            hasher.combine(value.isRunning)
+        }
+        
+        // 对 dockAppOrderKeys 进行哈希
+        for key in dockAppOrderKeys {
+            hasher.combine(key)
+        }
+        
+        // 对 recentApps 的 bundleID 和 isRunning 状态进行哈希
+        for app in recentApps {
+            hasher.combine(app.bundleID)
+            hasher.combine(app.isRunning)
+        }
+        
+        return hasher.finalize()
     }
 }

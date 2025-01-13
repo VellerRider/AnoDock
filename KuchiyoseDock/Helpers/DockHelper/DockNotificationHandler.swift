@@ -30,11 +30,11 @@ class DockNotificationHandler: NSObject {
     
     @objc private func toggleDockWindow() {
         if !dockWindowState.showDockWindow {
-            dockWindowManager.showDock(observer: dockObserver)
+            dockWindowManager.showDock()
         } else {
             dockWindowManager.hideDock()
+
         }
-        dockWindowState.showDockWindow.toggle()
     }
     
     deinit {

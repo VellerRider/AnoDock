@@ -17,6 +17,7 @@ struct DockEditorView : View {
             
             Form {
                 Text("Here are what's in your dock")
+                Text("You can drag apps from finder to add it here")
             }
             CustomDockView()
             
@@ -25,3 +26,4 @@ struct DockEditorView : View {
         }
     }
 }
+

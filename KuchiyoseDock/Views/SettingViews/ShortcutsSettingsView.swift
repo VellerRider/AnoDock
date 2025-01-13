@@ -9,7 +9,7 @@
 
 import SwiftUI
 
-extension EventModifiers: Hashable {
+extension EventModifiers: @retroactive Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(rawValue)
     }

@@ -11,7 +11,7 @@ import SwiftUI
 struct DockItemView: View {
     @ObservedObject var item: DockItem
     var interactive: Bool = true
-    @State private var isHovering = false // 悬停状态
+    @State var isHovering: Bool = false
 
     var body: some View {
             ZStack {
@@ -25,21 +25,7 @@ struct DockItemView: View {
                         .frame(width: 4, height: 4)
                         .offset(y: 34) // 调整位置，使其显示在图标下方
                 }
-                if isHovering {
-                    Text(item.name)
-                        .font(.system(size: 12)) // 更大的字体
-                        .padding(4)
-                        .background(Color.black.opacity(0.3)) // 背景黑色，带透明度
-                        .foregroundColor(.black.opacity(0.8))
-                        .cornerRadius(4)
-                        .offset(y: -50) // 显示在图标上方
-                        .transition(.opacity) // 淡入淡出效果
-                        .animation(.easeInOut(duration: 0.2), value: isHovering) // 动画效果
-
-                }
             }
-        
-            .padding(4)
             // 左键点击打开项目
             .onTapGesture { openItem(item) }
             // 右键菜单
@@ -49,9 +35,10 @@ struct DockItemView: View {
                 }
             })
             .onHover { hovering in
-                isHovering = hovering // 监听鼠标悬停事件
+                isHovering = hovering
             }
         }
+    
     
     // MARK: - Icon Logic. Just for apps
     @ViewBuilder
@@ -154,14 +141,9 @@ struct DockItemView: View {
     
     // MARK: - Launch/Activate
     private func launchOrActivateApplication(bundleIdentifier: String?, url: URL) {
-        guard let bundleIdentifier = bundleIdentifier else { return }
-        if let runningApp = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).first {
-            runningApp.activate(options: [.activateAllWindows])
-        } else {
             NSWorkspace.shared.openApplication(at: url, configuration: .init(), completionHandler: nil)
-        }
     }
-    
+    // MARK: - quit
     private func quitApplication(bundleIdentifier: String?) {
         guard let bundleIdentifier = bundleIdentifier,
               let runningApp = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).first
