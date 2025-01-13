@@ -12,7 +12,7 @@ struct EditorItemView: View {
     @EnvironmentObject var dockObserver: DockObserver
     @EnvironmentObject var dockEditorSettings: DockEditorSettings
     @ObservedObject var item: DockItem
-    @State var isHovering: Bool = false
+    @State var deleted: Bool = false
     var body: some View {
             ZStack {
                 // 1. 显示主图标
@@ -21,7 +21,7 @@ struct EditorItemView: View {
                 if dockEditorSettings.isEditing {
                     // 删除按钮
                     Button(action: {
-                        deleteItem()
+                        deleteSelf()
                     }) {
                         Image(systemName: "minus.circle.fill")
                     }
@@ -37,6 +37,9 @@ struct EditorItemView: View {
                         .offset(y: 34) // 调整位置，使其显示在图标下方
                 }
             }
+            .opacity(deleted ? 0.3 : 1) // 调整透明度
+            .blur(radius: deleted ? 5 : 0) // 模糊效果
+            .animation(.easeInOut, value: deleted)
             
             .help(item.name)
 
@@ -122,7 +125,8 @@ struct EditorItemView: View {
     }
     
     // MARK: - delete item
-    private func deleteItem() {
+    private func deleteSelf() {
         dockObserver.removeItem(item.bundleID)
+        deleted.toggle()
     }
 }

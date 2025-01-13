@@ -14,7 +14,8 @@ struct CustomDockView: View {
     @EnvironmentObject var dockObserver: DockObserver
     @EnvironmentObject var itemPopoverManager: ItemPopoverManager
     @EnvironmentObject var dockEditorSettings: DockEditorSettings
-    
+    // this is especially for reorder by dragging, to create a smooth animation
+    @State private var orderedDockItems: [DockItem] = []
     let columns = [
         GridItem(.adaptive(minimum: 80), spacing: 6)
     ]
@@ -27,20 +28,24 @@ struct CustomDockView: View {
                     LazyVGrid(columns: columns, spacing: 2) {
                         // 根据 dockAppOrderKeys 保证顺序
                         ReorderableForEach(
-                            items: dockObserver.dockAppOrderKeys.compactMap { dockObserver.dockApps[$0] },
+                            items: orderedDockItems,
                             content: { item in
                                 EditorItemView(item: item)
                             },
                             moveAction: { from, to in
-                                dockObserver.moveItem(from: from.first!, to: to)
+                                moveTempItems(from: from.first!, to: to)
                             },
                             finishAction: {
-                                dockObserver.refreshDock()
+                                saveTempItems()
                             }
                         )
                         
+                        
                     }
                     .padding()
+                    .onAppear {
+                        updateOrderedDockItems()
+                    }
                 }
                 .blur(radius: dockEditorSettings.isEditing ? 0.3 : 0) // 添加模糊效果
                 .opacity(dockEditorSettings.isEditing ? 0.8 : 1)    // 改变透明度
@@ -68,6 +73,33 @@ struct CustomDockView: View {
 // MARK: - Functions
 extension CustomDockView {
     
+    func moveTempItems(from: Int, to: Int) {
+        let bID = orderedDockItems[from]
+        orderedDockItems.remove(at: from)
+        orderedDockItems.insert(bID, at: to > from ? to - 1 : to)
+    }
+    
+    func saveTempItems() {
+        dockObserver.dockAppOrderKeys = orderedDockItems.map {$0.bundleID }
+        dockObserver.refreshDock()
+    }
+    
+    private func updateOrderedDockItems() {
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.7, blendDuration: 0)) {
+            orderedDockItems = dockObserver.dockAppOrderKeys.compactMap { dockObserver.dockApps[$0] }
+        }
+    }
+    
+    private func enterEditingMode() {
+        if !dockEditorSettings.isEditing {
+            dockEditorSettings.isEditing.toggle()
+        } else {
+            updateOrderedDockItems()
+            dockObserver.saveDockItems()
+            dockEditorSettings.isEditing.toggle()
+        }
+    }
+    
     // 接收从 Finder 等处拖进 .app 文件的逻辑
     private func handleDrop(providers: [NSItemProvider]) -> Bool {
         for provider in providers {
@@ -87,6 +119,7 @@ extension CustomDockView {
                             // 加到顺序数组末尾（或想加到别的地方可以自己改逻辑）
                             dockObserver.dockAppOrderKeys.append(newItem.bundleID)
                             dockObserver.saveDockItems()
+                            updateOrderedDockItems()
                         }
                     }
                 }
@@ -107,6 +140,7 @@ extension CustomDockView {
                 dockObserver.dockApps[newItem.bundleID] = newItem
                 dockObserver.dockAppOrderKeys.append(newItem.bundleID)
                 dockObserver.saveDockItems()
+                updateOrderedDockItems()
             }
         }
     }
@@ -134,14 +168,7 @@ extension CustomDockView {
         )
     }
     
-    private func enterEditingMode() {
-        if !dockEditorSettings.isEditing {
-            dockEditorSettings.isEditing.toggle()
-        } else {
-            dockObserver.saveDockItems()
-            dockEditorSettings.isEditing.toggle()
-        }
-    }
+
     
 }
 

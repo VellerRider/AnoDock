@@ -15,9 +15,6 @@ struct ReorderableForEach<Content: View, Item: Identifiable & Equatable>: View {
     let moveAction: (IndexSet, Int) -> Void
     let finishAction: () -> Void
     
-    // A little hack that is needed in order to make view back opaque
-    // if the drag and drop hasn't ever changed the position
-    // Without this hack the item remains semi-transparent
     @State private var hasChangedLocation: Bool = false
 
     init(
@@ -37,7 +34,7 @@ struct ReorderableForEach<Content: View, Item: Identifiable & Equatable>: View {
     @State private var draggingItem: Item?
     
     var body: some View {
-        ForEach(items) { item in
+        ForEach(items, id: \.id) { item in
             content(item)
                 .overlay(draggingItem == item && hasChangedLocation ? Color.white.opacity(0.8) : Color.clear)
                 .onDrag {
@@ -82,7 +79,7 @@ struct DragRelocateDelegate<Item: Equatable>: DropDelegate {
         
         hasChangedLocation = true
 
-        if listData[to] != current {
+        if from != to && listData[to] != current {
             moveAction(IndexSet(integer: from), to > from ? to + 1 : to)
         }
     }
@@ -91,9 +88,9 @@ struct DragRelocateDelegate<Item: Equatable>: DropDelegate {
     }
     
     func performDrop(info: DropInfo) -> Bool {
+        finishAction()
         hasChangedLocation = false
         current = nil
-        finishAction()
         return true
     }
 }
