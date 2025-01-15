@@ -52,13 +52,15 @@ struct SettingsView: View {
 }
 
 #Preview {
-    let dockObserver = DockObserver()
-    let hotKeySettings = HotKeySettings()
-    let itemPopoverManager = ItemPopoverManager()
-    let dockWindowState = DockWindowState()
-    let dockEditorSettings = DockEditorSettings()
+    let dockObserver = DockObserver.shared
+    let dragDropManager = DragDropManager.shared
+    let hotKeySettings = HotKeySettings.shared
+    let itemPopoverManager = ItemPopoverManager.shared
+    let dockWindowState = DockWindowState.shared
+    let dockEditorSettings = DockEditorSettings.shared
     SettingsView()
         .environmentObject(dockObserver)
+        .environmentObject(dragDropManager)
         .environmentObject(hotKeySettings)
         .environmentObject(itemPopoverManager)
         .environmentObject(dockWindowState)

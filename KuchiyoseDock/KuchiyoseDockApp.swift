@@ -15,6 +15,7 @@ import SwiftUI
 struct KuchiyoseDockApp: App {
     // managers and observers
     private var dockObserver: DockObserver = .shared
+    private var dragDropManager: DragDropManager = .shared
     private var dockWindowState: DockWindowState = .shared
     private let dockWindowManager: DockWindowManager = .shared
     private var itemPopoverManager: ItemPopoverManager = .shared
@@ -63,6 +64,7 @@ struct KuchiyoseDockApp: App {
             } else {
                 SettingsView()
                     .environmentObject(dockObserver)
+                    .environmentObject(dragDropManager)
                     .environmentObject(dockWindowState)
                     .environmentObject(itemPopoverManager)
                     .environmentObject(hotKeySettings)

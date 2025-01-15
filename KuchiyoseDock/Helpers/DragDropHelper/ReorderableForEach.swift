@@ -50,7 +50,7 @@ struct ReorderableForEach<Content: View, Item: Identifiable & Equatable>: View {
                         current: $draggingItem,
                         hasChangedLocation: $hasChangedLocation,
                         moveAction: { from, to in
-                            withAnimation {
+                            withAnimation(.spring(response: 0.5, dampingFraction: 0.7, blendDuration: 0)) {
                                 moveAction(from, to)
                             }
                         },

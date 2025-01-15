@@ -15,6 +15,7 @@ import AppKit
 class DockWindowManager {
     static let shared = DockWindowManager()
     private var observer: DockObserver = .shared
+    private var dragDropManager: DragDropManager = .shared
     private var dockWindowState: DockWindowState = .shared
     
     private var hostingController: NSHostingController<AnyView>?
@@ -45,7 +46,10 @@ class DockWindowManager {
     
     // MARK: - load HostingController
     func loadHostingController() {
-        let overlayView = DockOverlayView().environmentObject(observer)
+        // inject environement obj for live update
+        let overlayView = DockOverlayView()
+            .environmentObject(observer)
+            .environmentObject(dragDropManager)
         hostingController = NSHostingController(rootView: AnyView(overlayView))
     }
     // MARK: - update window position
