@@ -7,11 +7,16 @@ import SwiftUI
 struct DockOverlayView: View {
     @EnvironmentObject var dockObserver: DockObserver
     @EnvironmentObject var dragDropManager: DragDropManager
+    
     private var itemPopoverManager: ItemPopoverManager = .shared
     private var dockWindowState: DockWindowState = .shared
     private var dockWindowManager: DockWindowManager = .shared
+    
+    var inEditorTab: Bool
 
-
+    init (inEditorTab: Bool) {
+        self.inEditorTab = inEditorTab
+    }
     
     var body: some View {
             ZStack {
@@ -23,11 +28,11 @@ struct DockOverlayView: View {
                     )
                 
                 VStack(spacing: 12) {
-                    HStack(spacing: 8) {
+                    HStack {
                         ReorderableForEach(
                             items: dragDropManager.orderedDockItems,
                             content: { item in
-                                DockItemView(item: item)
+                                DockItemView(item: item, inEditor: inEditorTab)
                             },
                             moveAction: { from, to in
                                 dragDropManager.moveOrderedItems(from: from.first!, to: to)
@@ -37,13 +42,11 @@ struct DockOverlayView: View {
                             }
                         )
                     }
-                    .onDrop(of: ["public.file-url"], isTargeted: nil) { providers in
-                        dragDropManager.dropAddApp(providers: providers)
-                    }
+
                     
                     HStack(spacing: 8) {
                         ForEach(dockObserver.recentApps) { app in
-                            DockItemView(item: app)
+                            DockItemView(item: app, inEditor: inEditorTab)
                         }
                     }
                     
@@ -56,6 +59,10 @@ struct DockOverlayView: View {
                 if !entered {
                     dockWindowManager.hideDock()
                 }
+            }
+            // drop apps from outside
+            .onDrop(of: ["public.file-url"], isTargeted: nil) { providers in
+                dragDropManager.dropAddApp(providers: providers, targetIndex: nil)// add to last
             }
             .onAppear {
                 dragDropManager.updateOrderedDockItems()

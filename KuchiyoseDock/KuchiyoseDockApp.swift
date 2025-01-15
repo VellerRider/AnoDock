@@ -41,6 +41,9 @@ struct KuchiyoseDockApp: App {
         _ = notificationHandler
         dockObserver.loadDockItems()
         dockObserver.syncRecentApps()
+        if AXIsProcessTrusted() {
+            dockWindowManager.showDock()// show dock at launch
+        }
 
     }
     

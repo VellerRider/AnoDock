@@ -36,10 +36,11 @@ struct ReorderableForEach<Content: View, Item: Identifiable & Equatable>: View {
     var body: some View {
         ForEach(items, id: \.id) { item in
             content(item)
-                .overlay(draggingItem == item && hasChangedLocation ? Color.white.opacity(0.8) : Color.clear)
+                .padding(.horizontal, 2)
+                .padding(.vertical, 1)
+                .opacity(draggingItem == item ? 0 : 1) // 如果正在拖动当前项，则隐藏
                 .onDrag {
                     draggingItem = item
-
                     return NSItemProvider(object: "\(item.id)" as NSString)
                 }
                 .onDrop(
@@ -50,12 +51,14 @@ struct ReorderableForEach<Content: View, Item: Identifiable & Equatable>: View {
                         current: $draggingItem,
                         hasChangedLocation: $hasChangedLocation,
                         moveAction: { from, to in
-                            withAnimation(.spring(response: 0.5, dampingFraction: 0.7, blendDuration: 0)) {
+                            withAnimation(.dockUpdateAnimation) {
                                 moveAction(from, to)
                             }
                         },
                         finishAction: {
-                            finishAction()
+                            withAnimation(.dockUpdateAnimation) {
+                                finishAction()
+                            }
                         }
                     )
                 )
@@ -88,9 +91,8 @@ struct DragRelocateDelegate<Item: Equatable>: DropDelegate {
     }
     
     func performDrop(info: DropInfo) -> Bool {
-        finishAction()
-        hasChangedLocation = false
         current = nil
+        finishAction()
         return true
     }
 }

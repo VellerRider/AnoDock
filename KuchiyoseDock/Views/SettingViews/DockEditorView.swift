@@ -19,9 +19,11 @@ struct DockEditorView : View {
     @State var tempDockZoom: Double = 0
     
     var body : some View {
-        HStack {
+        VStack {
+            CustomDockView()
+                .padding(.bottom, 40)
+            
             VStack(spacing: 20) {
-                
                 VStack {
                     Text("Zoom Dock")
                     Slider(
@@ -78,10 +80,9 @@ struct DockEditorView : View {
                 
 
             }
-            CustomDockView()
         }
         .onAppear() {
-            retrieveSettingZoom()
+            retrieveSetting()
         }
     }
     
@@ -94,7 +95,7 @@ struct DockEditorView : View {
         }
     }
     
-    func retrieveSettingZoom() {
+    func retrieveSetting() {
         tempDockZoom = dockEditorSettings.dockZoom
     }
     

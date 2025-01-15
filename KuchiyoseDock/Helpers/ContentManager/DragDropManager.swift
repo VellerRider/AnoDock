@@ -39,9 +39,40 @@ class DragDropManager: ObservableObject {
     }
     
 
+    // MARK: - add item to specified place, last by default
+    private func addItemToPos(_ newItem: DockItem, _ index: Int?) {
+        if let index = dockObserver.recentApps.firstIndex(where: { $0.bundleID == newItem.bundleID }) {
+            dockObserver.removeRecent(index)
+        }
+        dockObserver.addItemToPos(newItem, index)// if not index, then add to last
+        dockObserver.saveDockItems()
+        dockObserver.refreshDock()
+        updateOrderedDockItems()
+    }
+    // MARK: - removed an ordered item
+    func removeOrderedItem(_ bundleID: String) {
+        orderedDockItems.removeAll(where: { $0.bundleID == bundleID })
+    }
     
+    
+    
+    
+    // MARK: - functions used in dock editor
+    // add app by button selecting, to last place
+    func manualAddApp() {
+        let panel = NSOpenPanel()
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowedContentTypes = [.application]
+        if panel.runModal() == .OK, let url = panel.url {
+            if let newItem = createNewAppItem(from: url) {
+                addItemToPos(newItem, nil)
+            }
+        }
+    }
     // MARK: - add app by drag from finder and drop in current container
-    func dropAddApp(providers: [NSItemProvider]) -> Bool {
+    // if not dropped between apps, add to last
+    func dropAddApp(providers: [NSItemProvider], targetIndex: Int?) -> Bool {
         for provider in providers {
             if provider.hasItemConformingToTypeIdentifier("public.file-url") {
                 provider.loadItem(forTypeIdentifier: "public.file-url", options: nil) { (item, _) in
@@ -54,10 +85,9 @@ class DragDropManager: ObservableObject {
                         return
                     }
                     
-                    // 根据 .app 文件构造 DockItem
                     if let newItem = self.createNewAppItem(from: url) {
-                        DispatchQueue.main.async {// 重复逻辑日后封装
-                            self.addOrUpdateDockItem(newItem)
+                        DispatchQueue.main.async {
+                            self.addItemToPos(newItem, targetIndex ?? self.orderedDockItems.count)
                         }
                     }
                 }
@@ -65,7 +95,20 @@ class DragDropManager: ObservableObject {
         }
         return true
     }
-
+    
+    // MARK: - toggle editing mode
+    func toggleEditingMode() {
+        if !dockEditorSettings.isEditing {
+            dockEditorSettings.isEditing.toggle()
+        } else {
+            updateOrderedDockItems()
+            dockObserver.saveDockItems()
+            dockObserver.refreshDock()
+            dockEditorSettings.isEditing.toggle()
+        }
+    }
+    
+    
     
     // MARK: - actual logic to create new DockItem model
     private func createNewAppItem(from url: URL) -> DockItem? {
@@ -89,53 +132,6 @@ class DragDropManager: ObservableObject {
             isRunning: false
         )
     }
-    // MARK: - actual add app logic
-    private func addOrUpdateDockItem(_ newItem: DockItem) {
-        if let index = dockObserver.recentApps.firstIndex(where: { $0.bundleID == newItem.bundleID }) {
-            dockObserver.removeRecent(index)
-        }
-        dockObserver.addItem(newItem)
-        dockObserver.saveDockItems()
-        dockObserver.refreshDock()
-        updateOrderedDockItems()
-    }
-    
-    
-    
-    
-    // MARK: functions used in dock editor
-    // add app by button selecting
-    func manualAddApp() {
-        let panel = NSOpenPanel()
-        panel.canChooseFiles = true
-        panel.canChooseDirectories = false
-        panel.allowedContentTypes = [.application]
-        if panel.runModal() == .OK, let url = panel.url {
-            if let newItem = createNewAppItem(from: url) {
-                // 新增到字典 + 顺序数组
-                if let index = dockObserver.recentApps.firstIndex(where: { $0.bundleID == newItem.bundleID }) {
-                    dockObserver.removeRecent(index)
-                }
-                dockObserver.addItem(newItem)
-                dockObserver.saveDockItems()
-                dockObserver.refreshDock()
-                updateOrderedDockItems()
-            }
-        }
-    }
-    // toggle editing mode
-    func toggleEditingMode() {
-        if !dockEditorSettings.isEditing {
-            dockEditorSettings.isEditing.toggle()
-        } else {
-            updateOrderedDockItems()
-            dockObserver.saveDockItems()
-            dockObserver.refreshDock()
-            dockEditorSettings.isEditing.toggle()
-        }
-    }
 }
 
-extension Animation {
-    static let dockUpdateAnimation = Animation.spring(response: 0.5, dampingFraction: 0.7, blendDuration: 0)
-}
+

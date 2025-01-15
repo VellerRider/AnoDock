@@ -25,6 +25,11 @@ class DockObserver: NSObject, ObservableObject {
     @Published var dockAppOrderKeys: [String] = []
     // array for recents for order
     @Published var recentApps: [DockItem] = []
+    
+    // everytime showing dock, update this to track drop-out deletion
+    @Published var dockUIFrame: NSRect = .zero
+    
+    
     private var runningRecents: Int = 0   // track how many running recent apps
     private var maxRecentApps: Int { 5 }  // max limit out-of-dock recent apps
     
@@ -34,6 +39,7 @@ class DockObserver: NSObject, ObservableObject {
     private var lastDockStateHash: Int = 0
     // store NSRunningApplications's bundleID
     private var lastRunningBundleIDs: Set<String> = []
+    
 
     
     override init() {
@@ -152,7 +158,12 @@ class DockObserver: NSObject, ObservableObject {
     
     // MARK: - remove in-dock item
     func removeItem(_ bundleID: String) {
-        guard let index = dockAppOrderKeys.firstIndex(of: bundleID) else { return }
+        guard let index = dockAppOrderKeys.firstIndex(of: bundleID) else {
+            if let index = recentApps.firstIndex(where: { $0.bundleID == bundleID }) {
+                removeRecent(index)
+            }
+            return
+        }
         dockAppOrderKeys.remove(at: index)
         dockApps.removeValue(forKey: bundleID)
     }
@@ -164,15 +175,24 @@ class DockObserver: NSObject, ObservableObject {
         lastRunningBundleIDs.remove(rmBundleID)
     }
     
-    // MARK: - add item to dock
-    func addItem(_ newItem: DockItem?) {
+    // MARK: - add item to dock's last place
+//    func addItem(_ newItem: DockItem?) {
+//        guard let newItem = newItem else {
+//            print("Error: Attempted to add nil to dockApps")
+//            return
+//        }
+//        dockApps[newItem.bundleID] = newItem
+//        dockAppOrderKeys.append(newItem.bundleID)
+//    }
+    
+    // MARK: - add itme to dock's specific position, last by default
+    func addItemToPos(_ newItem: DockItem?, _ index: Int?) {
         guard let newItem = newItem else {
             print("Error: Attempted to add nil to dockApps")
             return
         }
         dockApps[newItem.bundleID] = newItem
-        dockAppOrderKeys.append(newItem.bundleID)
-        
+        dockAppOrderKeys.insert(newItem.bundleID, at: index ?? dockAppOrderKeys.count)
     }
     
     // MARK: - 将 item 插入到 recentApplications，并处理容量限制
@@ -181,7 +201,6 @@ class DockObserver: NSObject, ObservableObject {
             print("Error: Attempted to insert nil into recentApps")
             return
         }
-        // 把新 item 加到开头
         recentApps.insert(newDockItem, at: 0)
     }
     
@@ -205,6 +224,10 @@ class DockObserver: NSObject, ObservableObject {
         DockDataManager.shared.saveDockItems(appsToSave)
     }
     
+    // MARK: - save current dockUI's position and size
+    func setDockFrame(_ frame: NSRect) {
+        self.dockUIFrame = frame
+    }
     
     // MARK: - Initialization to align custom dock to system dock
     // after loading custom dock, need to mirror app states.

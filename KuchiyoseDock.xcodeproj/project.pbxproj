@@ -17,6 +17,7 @@
 		1AA1CABC2D1FCBBB00933295 /* DockWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA1CABB2D1FCBBB00933295 /* DockWindowManager.swift */; };
 		1AA1CABE2D1FCBF700933295 /* DockOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA1CABD2D1FCBF700933295 /* DockOverlayView.swift */; };
 		1ABA36B62D3835FC00BF0FF1 /* DragDropManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA36B52D3835FC00BF0FF1 /* DragDropManager.swift */; };
+		1ABA36BA2D38460A00BF0FF1 /* DockAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA36B92D38460A00BF0FF1 /* DockAnimation.swift */; };
 		1ABBE4D02D33480600CCF124 /* DockFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABBE4CF2D33480600CCF124 /* DockFolder.swift */; };
 		1ABBE4D22D33824200CCF124 /* DockWindowState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABBE4D12D33824200CCF124 /* DockWindowState.swift */; };
 		1ABBE4D42D3383F400CCF124 /* DockNotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABBE4D32D3383F400CCF124 /* DockNotificationHandler.swift */; };
@@ -72,6 +73,7 @@
 		1AA9EEEE2CE4019F002D8348 /* KuchiyoseDockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KuchiyoseDockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AA9EEF82CE4019F002D8348 /* KuchiyoseDockUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KuchiyoseDockUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ABA36B52D3835FC00BF0FF1 /* DragDropManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragDropManager.swift; sourceTree = "<group>"; };
+		1ABA36B92D38460A00BF0FF1 /* DockAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockAnimation.swift; sourceTree = "<group>"; };
 		1ABBE4CF2D33480600CCF124 /* DockFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockFolder.swift; sourceTree = "<group>"; };
 		1ABBE4D12D33824200CCF124 /* DockWindowState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockWindowState.swift; sourceTree = "<group>"; };
 		1ABBE4D32D3383F400CCF124 /* DockNotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockNotificationHandler.swift; sourceTree = "<group>"; };
@@ -214,8 +216,9 @@
 		1AC70B282CEADB30009BA776 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				1AFAC5AE2D34D24E00C28902 /* DragDropHelper */,
+				1AFAC5AE2D34D24E00C28902 /* ContentManager */,
 				1AFAC5A12D34A03E00C28902 /* DockHelper */,
+				1AFAC5A62D34BCE600C28902 /* Animation */,
 				1AFAC5A22D34A04500C28902 /* PopoverHelper */,
 			);
 			path = Helpers;
@@ -258,7 +261,6 @@
 				1AEC4EE22CEA9E7500523CC1 /* KuchiyoseDock.entitlements */,
 				1AEC4ED72CEA9E7500523CC1 /* Preview Content */,
 				1AC70B1F2CEACA75009BA776 /* Model */,
-				1AFAC5A62D34BCE600C28902 /* Animation */,
 				1AC70B322CEAE7D3009BA776 /* Settings */,
 				1A93ED242CED8E590064545A /* Util */,
 				1AC70B282CEADB30009BA776 /* Helpers */,
@@ -321,17 +323,18 @@
 			isa = PBXGroup;
 			children = (
 				1AFAC5A72D34BE0800C28902 /* Genie.swift */,
+				1ABA36B92D38460A00BF0FF1 /* DockAnimation.swift */,
 			);
 			path = Animation;
 			sourceTree = "<group>";
 		};
-		1AFAC5AE2D34D24E00C28902 /* DragDropHelper */ = {
+		1AFAC5AE2D34D24E00C28902 /* ContentManager */ = {
 			isa = PBXGroup;
 			children = (
 				1AFAC5AF2D34D26200C28902 /* ReorderableForEach.swift */,
 				1ABA36B52D3835FC00BF0FF1 /* DragDropManager.swift */,
 			);
-			path = DragDropHelper;
+			path = ContentManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -485,6 +488,7 @@
 			files = (
 				1ABBE4D02D33480600CCF124 /* DockFolder.swift in Sources */,
 				1AA1CABC2D1FCBBB00933295 /* DockWindowManager.swift in Sources */,
+				1ABA36BA2D38460A00BF0FF1 /* DockAnimation.swift in Sources */,
 				1AC70B2F2CEAE7C2009BA776 /* GeneralSettings.swift in Sources */,
 				1AEC4EEC2CEA9E7500523CC1 /* ContentView.swift in Sources */,
 				1ABBE4D22D33824200CCF124 /* DockWindowState.swift in Sources */,

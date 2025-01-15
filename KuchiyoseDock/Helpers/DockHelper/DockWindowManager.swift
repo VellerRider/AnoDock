@@ -14,7 +14,7 @@ import AppKit
 
 class DockWindowManager {
     static let shared = DockWindowManager()
-    private var observer: DockObserver = .shared
+    private var dockObserver: DockObserver = .shared
     private var dragDropManager: DragDropManager = .shared
     private var dockWindowState: DockWindowState = .shared
     
@@ -34,7 +34,7 @@ class DockWindowManager {
             print("Failed to create window")
             return
         }
-        observer.refreshDock()
+        dockObserver.refreshDock()
         NSAnimationContext.runAnimationGroup { context in
             context.duration = 0.1
             window.animator().alphaValue = 1
@@ -47,8 +47,8 @@ class DockWindowManager {
     // MARK: - load HostingController
     func loadHostingController() {
         // inject environement obj for live update
-        let overlayView = DockOverlayView()
-            .environmentObject(observer)
+        let overlayView = DockOverlayView(inEditorTab: false)
+            .environmentObject(dockObserver)
             .environmentObject(dragDropManager)
         hostingController = NSHostingController(rootView: AnyView(overlayView))
     }
@@ -138,6 +138,9 @@ class DockWindowManager {
         // 5. 创建窗口
         let newFrame = NSRect(x: globalOriginX, y: globalOriginY,
                               width: finalWidth, height: finalHeight)
+        // save for later drop-out ops
+        dockObserver.setDockFrame(newFrame)
+        
         guard window != nil else {
             let newWindow = NSWindow(
                 contentRect: newFrame,

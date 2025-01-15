@@ -15,51 +15,19 @@ struct CustomDockView: View {
     @EnvironmentObject var itemPopoverManager: ItemPopoverManager
     @EnvironmentObject var dockEditorSettings: DockEditorSettings
     @EnvironmentObject var dragDropManager: DragDropManager
-    // this is especially for reorder by dragging, to create a smooth animation
-    let columns = [
-        GridItem(.adaptive(minimum: 64), spacing: 4)
-    ]
+    
     
     var body: some View {
         VStack {
-            ZStack{
-                // 用 ScrollView + LazyVGrid 来展示
-                ScrollView {
-                    LazyVGrid(columns: columns, spacing: 4) {
-                        // 根据 dockAppOrderKeys 保证顺序
-                        ReorderableForEach(
-                            items: dragDropManager.orderedDockItems,
-                            content: { item in
-                                EditorItemView(item: item)
-                                    .onLongPressGesture {
-                                        dragDropManager.toggleEditingMode()
-                                    }
-                            },
-                            moveAction: { from, to in
-                                dragDropManager.moveOrderedItems(from: from.first!, to: to)
-                            },
-                            finishAction: {
-                                dragDropManager.saveOrderedItems()
-                            }
-                        )
-                        
-                        
-                    }
-                    .padding()
-                    .onAppear {
-                        dragDropManager.updateOrderedDockItems()
-                    }
-                }
-                .blur(radius: dockEditorSettings.isEditing ? 0.3 : 0) // 添加模糊效果
-                .opacity(dockEditorSettings.isEditing ? 0.8 : 1)    // 改变透明度
-            }
-            .onTapGesture {
-                if dockEditorSettings.isEditing {
-                    dragDropManager.toggleEditingMode()
-                }
-            }
-            
             HStack {
+                VStack(spacing: 8) { // spacing 控制两行文字的间距
+                    Text("Here are what's in your dock.")
+                        .font(.headline) // 可选：设置字体样式
+                    Text("Try drag and drop to reorder.")
+                        .font(.subheadline) // 可选：设置不同样式
+                        .foregroundColor(.gray) // 可选：调整颜色
+                }
+                Spacer()
                 Button(action: dragDropManager.manualAddApp) {
                     Image(systemName: "plus")
                         .font(.title)
@@ -68,12 +36,26 @@ struct CustomDockView: View {
                     Image(systemName: dockEditorSettings.isEditing ? "checkmark.circle" : "pencil")
                         .font(.title)
                 }
+                
             }
+            .frame(maxWidth: dockObserver.dockUIFrame.width, maxHeight: dockObserver.dockUIFrame.height)
+            
+            ZStack{
+                DockOverlayView(inEditorTab: true)
+            }
+            .onTapGesture {
+                if dockEditorSettings.isEditing {
+                    dragDropManager.toggleEditingMode()
+                }
+            }
+            
+            
+
         }
 
         // drop apps from outside
         .onDrop(of: ["public.file-url"], isTargeted: nil) { providers in
-            dragDropManager.dropAddApp(providers: providers)
+            dragDropManager.dropAddApp(providers: providers, targetIndex: nil)// add to last
         }
     }
 }
