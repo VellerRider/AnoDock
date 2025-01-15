@@ -17,7 +17,7 @@ struct CustomDockView: View {
     // this is especially for reorder by dragging, to create a smooth animation
     @State private var orderedDockItems: [DockItem] = []
     let columns = [
-        GridItem(.adaptive(minimum: 80), spacing: 6)
+        GridItem(.adaptive(minimum: 64), spacing: 4)
     ]
     
     var body: some View {
@@ -25,12 +25,15 @@ struct CustomDockView: View {
             ZStack{
                 // 用 ScrollView + LazyVGrid 来展示
                 ScrollView {
-                    LazyVGrid(columns: columns, spacing: 2) {
+                    LazyVGrid(columns: columns, spacing: 4) {
                         // 根据 dockAppOrderKeys 保证顺序
                         ReorderableForEach(
                             items: orderedDockItems,
                             content: { item in
                                 EditorItemView(item: item)
+                                    .onLongPressGesture {
+                                        toggleEditingMode()
+                                    }
                             },
                             moveAction: { from, to in
                                 moveTempItems(from: from.first!, to: to)
@@ -50,13 +53,18 @@ struct CustomDockView: View {
                 .blur(radius: dockEditorSettings.isEditing ? 0.3 : 0) // 添加模糊效果
                 .opacity(dockEditorSettings.isEditing ? 0.8 : 1)    // 改变透明度
             }
+            .onTapGesture {
+                if dockEditorSettings.isEditing {
+                    toggleEditingMode()
+                }
+            }
             
             HStack {
                 Button(action: addNewApp) {
                     Image(systemName: "plus")
                         .font(.title)
                 }
-                Button(action: enterEditingMode) {
+                Button(action: toggleEditingMode) {
                     Image(systemName: dockEditorSettings.isEditing ? "checkmark.circle" : "pencil")
                         .font(.title)
                 }
@@ -73,15 +81,18 @@ struct CustomDockView: View {
 // MARK: - Functions
 extension CustomDockView {
     
+    // helper for dragging 
     func moveTempItems(from: Int, to: Int) {
         let bID = orderedDockItems[from]
         orderedDockItems.remove(at: from)
         orderedDockItems.insert(bID, at: to > from ? to - 1 : to)
     }
     
+    // 排序，只影响顺序。
     func saveTempItems() {
         dockObserver.dockAppOrderKeys = orderedDockItems.map {$0.bundleID }
         dockObserver.refreshDock()
+        updateOrderedDockItems()
     }
     
     private func updateOrderedDockItems() {
@@ -90,12 +101,13 @@ extension CustomDockView {
         }
     }
     
-    private func enterEditingMode() {
+    private func toggleEditingMode() {
         if !dockEditorSettings.isEditing {
             dockEditorSettings.isEditing.toggle()
         } else {
             updateOrderedDockItems()
             dockObserver.saveDockItems()
+            dockObserver.refreshDock()
             dockEditorSettings.isEditing.toggle()
         }
     }
@@ -113,12 +125,13 @@ extension CustomDockView {
                     
                     // 根据 .app 文件构造 DockItem
                     if let newItem = createNewAppItem(from: url) {
-                        DispatchQueue.main.async {
-                            // 加入字典
-                            dockObserver.dockApps[newItem.bundleID] = newItem
-                            // 加到顺序数组末尾（或想加到别的地方可以自己改逻辑）
-                            dockObserver.dockAppOrderKeys.append(newItem.bundleID)
+                        DispatchQueue.main.async {// 重复逻辑日后封装
+                            if let index = dockObserver.recentApps.firstIndex(where: { $0.bundleID == newItem.bundleID }) {
+                                dockObserver.removeRecent(index)
+                            }
+                            dockObserver.addItem(newItem)
                             dockObserver.saveDockItems()
+                            dockObserver.refreshDock()
                             updateOrderedDockItems()
                         }
                     }
@@ -137,9 +150,12 @@ extension CustomDockView {
         if panel.runModal() == .OK, let url = panel.url {
             if let newItem = createNewAppItem(from: url) {
                 // 新增到字典 + 顺序数组
-                dockObserver.dockApps[newItem.bundleID] = newItem
-                dockObserver.dockAppOrderKeys.append(newItem.bundleID)
+                if let index = dockObserver.recentApps.firstIndex(where: { $0.bundleID == newItem.bundleID }) {
+                    dockObserver.removeRecent(index)
+                }
+                dockObserver.addItem(newItem)
                 dockObserver.saveDockItems()
+                dockObserver.refreshDock()
                 updateOrderedDockItems()
             }
         }
@@ -170,34 +186,4 @@ extension CustomDockView {
     
 
     
-}
-
-// 自定义 DropDelegate 处理拖放逻辑
-struct DockItemDropDelegate: DropDelegate {
-    let item: DockItem
-    let index: Int
-    @ObservedObject var dockObserver: DockObserver
-
-    func validateDrop(info: DropInfo) -> Bool {
-        info.hasItemsConforming(to: [UTType.text])
-    }
-
-    func performDrop(info: DropInfo) -> Bool {
-        guard info.hasItemsConforming(to: [UTType.text]) else { return false }
-        let items = info.itemProviders(for: [UTType.text])
-        for item in items {
-            item.loadItem(forTypeIdentifier: UTType.text.identifier, options: nil) { (data, error) in
-                guard let data = data as? Data,
-                      let key = String(data: data, encoding: .utf8),
-                      let fromIndex = dockObserver.dockAppOrderKeys.firstIndex(of: key)
-                else { return }
-                DispatchQueue.main.async {
-                    withAnimation {
-                        dockObserver.moveItem(from: fromIndex, to: index)
-                    }
-                }
-            }
-        }
-        return true
-    }
 }

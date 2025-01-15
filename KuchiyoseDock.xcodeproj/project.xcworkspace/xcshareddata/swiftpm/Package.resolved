@@ -1,5 +1,5 @@
 {
-  "originHash" : "01f286328852d165d87f8fbee99b01f9c2c936f57ac234f76396f74f9d2496dd",
+  "originHash" : "db72eadf46e8ff519d2c5f8aea7c592581b5d1a010a6d1fa09d3923424af33ec",
   "pins" : [
     {
       "identity" : "hotkey",
@@ -8,6 +8,33 @@
       "state" : {
         "branch" : "main",
         "revision" : "a3cf605d7a96f6ff50e04fcb6dea6e2613cfcbe4"
+      }
+    },
+    {
+      "identity" : "msdisplaylink",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Lakr233/MSDisplayLink.git",
+      "state" : {
+        "revision" : "c2fcd28cb99300d83acc30860ce252ef97c20b61",
+        "version" : "1.1.1"
+      }
+    },
+    {
+      "identity" : "springinterpolation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Lakr233/SpringInterpolation.git",
+      "state" : {
+        "revision" : "f9d1ee3d2466bdb00fd0ade7f256ed20229c8413",
+        "version" : "1.3.0"
+      }
+    },
+    {
+      "identity" : "windowanimation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Lakr233/WindowAnimation",
+      "state" : {
+        "revision" : "f2a7da8751fb083e32e13f0aace82f61bfdfa201",
+        "version" : "1.0.5"
       }
     }
   ],

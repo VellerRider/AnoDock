@@ -155,7 +155,24 @@ class DockObserver: NSObject, ObservableObject {
         guard let index = dockAppOrderKeys.firstIndex(of: bundleID) else { return }
         dockAppOrderKeys.remove(at: index)
         dockApps.removeValue(forKey: bundleID)
-        refreshDock()
+    }
+    
+    // MARK: - remove in-recent item
+    func removeRecent(_ index: Int) {
+        let rmBundleID = recentApps[index].bundleID
+        recentApps.remove(at: index)
+        lastRunningBundleIDs.remove(rmBundleID)
+    }
+    
+    // MARK: - add item to dock
+    func addItem(_ newItem: DockItem?) {
+        guard let newItem = newItem else {
+            print("Error: Attempted to add nil to dockApps")
+            return
+        }
+        dockApps[newItem.bundleID] = newItem
+        dockAppOrderKeys.append(newItem.bundleID)
+        
     }
     
     // MARK: - 将 item 插入到 recentApplications，并处理容量限制

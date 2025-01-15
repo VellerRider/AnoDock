@@ -58,19 +58,39 @@ struct ShortcutsSettingsView: View {
     ]
 
     var body: some View {
-        VStack {
-            Text("Current Shortcut: \(describeModifiers(hotKeySettings.keyboardShortcut?.modifiers ?? [])) \(describeKeyEquivalent(hotKeySettings.keyboardShortcut?.key ?? .init(" ")))")
-                .padding(.bottom, 100)
+        VStack(spacing: 30) {
+
             // Modifiers
-            Picker("Choose Modifiers", selection: $selectedModifiers) {
-                ForEach(allowedModifiers, id: \.self) { modSet in
-                    Text(describeModifiers(modSet)).tag(modSet)
+            VStack(alignment: .center) {
+                HStack(spacing: 10) {
+                    Text("Current Shortcut:")
+                        .frame(maxWidth: 150, alignment: .trailing)
+                    Text("\(describeModifiers(hotKeySettings.keyboardShortcut?.modifiers ?? [])) \(describeKeyEquivalent(hotKeySettings.keyboardShortcut?.key ?? .init(" ")))")
+                        .font(.headline)
+                        .frame(maxWidth: 150)
+
                 }
-            }
-            // Key
-            Picker("Choose Key", selection: $selectedKey) {
-                ForEach(allowedKeys, id: \.self) { keyEq in
-                    Text(describeKeyEquivalent(keyEq)).tag(keyEq)
+                .padding(10)
+                HStack {
+                    Text("Choose Modifiers:")
+                        .frame(maxWidth: 150, alignment: .trailing)
+                    Picker("", selection: $selectedModifiers) {
+                        ForEach(allowedModifiers, id: \.self) { modSet in
+                            Text(describeModifiers(modSet)).tag(modSet)
+                        }
+                    }
+                    .frame(maxWidth: 150)
+                }
+                // Key
+                HStack {
+                    Text("Choose Key:")
+                        .frame(maxWidth: 150, alignment: .trailing)
+                    Picker("", selection: $selectedKey) {
+                        ForEach(allowedKeys, id: \.self) { keyEq in
+                            Text(describeKeyEquivalent(keyEq)).tag(keyEq)
+                        }
+                    }
+                    .frame(maxWidth: 150)
                 }
             }
             
@@ -79,6 +99,14 @@ struct ShortcutsSettingsView: View {
                 hotKeySettings.applyNewShortcut(shortcut)
             }
         }
+        .frame(maxWidth: 275)
+        .padding(30)
+//        .background(
+//            RoundedRectangle(cornerRadius: 16)
+//                .fill(Color.accentColor.opacity(0.05)) // 圆角背景
+//                .shadow(color: .black.opacity(0.2), radius: 16, x: 5, y: 5) // 阴影效果
+//
+//        )
         .onAppear {
             // 1) Grab the user's current saved shortcut
             if let currentShortcut = hotKeySettings.keyboardShortcut {

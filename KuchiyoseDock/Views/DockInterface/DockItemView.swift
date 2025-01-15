@@ -10,29 +10,23 @@ import SwiftUI
 
 struct DockItemView: View {
     @ObservedObject var item: DockItem
-    var interactive: Bool = true
     @State var isHovering: Bool = false
 
     var body: some View {
             ZStack {
-                // 1. 显示主图标
                 loadIcon()
 
-                // 2. 显示指示灯（类似 macOS Dock 的小灰点）
                 if item.isRunning {
                     Circle()
-                        .fill(Color.gray) // 灰色小点
+                        .fill(Color.gray)
                         .frame(width: 4, height: 4)
-                        .offset(y: 34) // 调整位置，使其显示在图标下方
+                        .offset(y: 34)
                 }
             }
-            // 左键点击打开项目
             .onTapGesture { openItem(item) }
-            // 右键菜单
+            
             .contextMenu(menuItems: {
-                if interactive {
-                    contextMenuItems(item: item)
-                }
+                contextMenuItems(item: item)
             })
             .onHover { hovering in
                 isHovering = hovering

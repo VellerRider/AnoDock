@@ -27,10 +27,8 @@ class DockWindowManager {
         if hostingController == nil {
             loadHostingController()
         }
-        if window == nil {
-            updateWindowPosition()
-        }
-        // 确保 window 已经初始化
+        
+        updateWindowPosition()
         guard let window = window else {
             print("Failed to create window")
             return

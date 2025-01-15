@@ -8,6 +8,7 @@
 // 2. dock style
 // 3. animation
 // 4. other stuff
+// 5. put shortcuts here too
 //  Created by John Yang on 11/17/24.
 //
 

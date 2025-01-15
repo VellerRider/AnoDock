@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A156CCC2D37679C0052372C /* WindowAnimation in Frameworks */ = {isa = PBXBuildFile; productRef = 1A156CCB2D37679C0052372C /* WindowAnimation */; };
 		1A66D77E2CEEF3F500BDE735 /* DockEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A66D77D2CEEF3F500BDE735 /* DockEditorView.swift */; };
 		1A78BBEA2D000E7A003A8162 /* OtherSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A78BBE92D000E7A003A8162 /* OtherSettingsView.swift */; };
 		1A8DB8402D13E15A00A2338B /* DockDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8DB83F2D13E15A00A2338B /* DockDataManager.swift */; };
@@ -33,7 +34,6 @@
 		1AEC4EF52CEA9E7500523CC1 /* ShortcutsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EE52CEA9E7500523CC1 /* ShortcutsSettingsView.swift */; };
 		1AEC4EF62CEA9E7500523CC1 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EE62CEA9E7500523CC1 /* VisualEffectView.swift */; };
 		1AFAC59B2D347A2500C28902 /* EditorItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFAC59A2D347A2500C28902 /* EditorItemView.swift */; };
-		1AFAC59D2D34973900C28902 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFAC59C2D34973900C28902 /* PopoverView.swift */; };
 		1AFAC59F2D349CAC00C28902 /* ItemPopoverManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFAC59E2D349CAC00C28902 /* ItemPopoverManager.swift */; };
 		1AFAC5A52D34A0DC00C28902 /* ItemPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFAC5A42D34A0DC00C28902 /* ItemPopoverView.swift */; };
 		1AFAC5A82D34BE0800C28902 /* Genie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFAC5A72D34BE0800C28902 /* Genie.swift */; };
@@ -89,7 +89,6 @@
 		1AEC4EE52CEA9E7500523CC1 /* ShortcutsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsSettingsView.swift; sourceTree = "<group>"; };
 		1AEC4EE62CEA9E7500523CC1 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		1AFAC59A2D347A2500C28902 /* EditorItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorItemView.swift; sourceTree = "<group>"; };
-		1AFAC59C2D34973900C28902 /* PopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
 		1AFAC59E2D349CAC00C28902 /* ItemPopoverManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemPopoverManager.swift; sourceTree = "<group>"; };
 		1AFAC5A42D34A0DC00C28902 /* ItemPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemPopoverView.swift; sourceTree = "<group>"; };
 		1AFAC5A72D34BE0800C28902 /* Genie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genie.swift; sourceTree = "<group>"; };
@@ -140,6 +139,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A8DB8432D13FB8300A2338B /* HotKey in Frameworks */,
+				1A156CCC2D37679C0052372C /* WindowAnimation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,7 +163,6 @@
 		1A78BBE42D000BD6003A8162 /* DockInterface */ = {
 			isa = PBXGroup;
 			children = (
-				1AFAC59C2D34973900C28902 /* PopoverView.swift */,
 				1AEC4EDF2CEA9E7500523CC1 /* DockItemView.swift */,
 				1AEC4EE62CEA9E7500523CC1 /* VisualEffectView.swift */,
 				1AA1CABD2D1FCBF700933295 /* DockOverlayView.swift */,
@@ -213,6 +212,7 @@
 		1AC70B282CEADB30009BA776 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				1AFAC5AE2D34D24E00C28902 /* DragDropHelper */,
 				1AFAC5A12D34A03E00C28902 /* DockHelper */,
 				1AFAC5A22D34A04500C28902 /* PopoverHelper */,
 			);
@@ -293,7 +293,6 @@
 			children = (
 				1AEC4EDC2CEA9E7500523CC1 /* CustomDockView.swift */,
 				1AFAC59A2D347A2500C28902 /* EditorItemView.swift */,
-				1AFAC5AE2D34D24E00C28902 /* DragDrop */,
 			);
 			path = DockEditor;
 			sourceTree = "<group>";
@@ -324,12 +323,12 @@
 			path = Animation;
 			sourceTree = "<group>";
 		};
-		1AFAC5AE2D34D24E00C28902 /* DragDrop */ = {
+		1AFAC5AE2D34D24E00C28902 /* DragDropHelper */ = {
 			isa = PBXGroup;
 			children = (
 				1AFAC5AF2D34D26200C28902 /* DraggingManager.swift */,
 			);
-			path = DragDrop;
+			path = DragDropHelper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -350,6 +349,7 @@
 			name = KuchiyoseDock;
 			packageProductDependencies = (
 				1A8DB8422D13FB8300A2338B /* HotKey */,
+				1A156CCB2D37679C0052372C /* WindowAnimation */,
 			);
 			productName = KuchiyoseDock;
 			productReference = 1AA9EEDD2CE4019E002D8348 /* KuchiyoseDock.app */;
@@ -435,6 +435,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				1A8DB8412D13FB8300A2338B /* XCRemoteSwiftPackageReference "HotKey" */,
+				1A156CCA2D37679C0052372C /* XCRemoteSwiftPackageReference "WindowAnimation" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1AA9EEDE2CE4019E002D8348 /* Products */;
@@ -494,7 +495,6 @@
 				1A8DB8402D13E15A00A2338B /* DockDataManager.swift in Sources */,
 				1AFAC5B02D34D26200C28902 /* DraggingManager.swift in Sources */,
 				1AEC4EF22CEA9E7500523CC1 /* GeneralSettingsView.swift in Sources */,
-				1AFAC59D2D34973900C28902 /* PopoverView.swift in Sources */,
 				1AFAC59B2D347A2500C28902 /* EditorItemView.swift in Sources */,
 				1AEC4EF42CEA9E7500523CC1 /* SettingsView.swift in Sources */,
 				1AEC4EF52CEA9E7500523CC1 /* ShortcutsSettingsView.swift in Sources */,
@@ -831,6 +831,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		1A156CCA2D37679C0052372C /* XCRemoteSwiftPackageReference "WindowAnimation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Lakr233/WindowAnimation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.5;
+			};
+		};
 		1A8DB8412D13FB8300A2338B /* XCRemoteSwiftPackageReference "HotKey" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/soffes/HotKey";
@@ -842,6 +850,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1A156CCB2D37679C0052372C /* WindowAnimation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1A156CCA2D37679C0052372C /* XCRemoteSwiftPackageReference "WindowAnimation" */;
+			productName = WindowAnimation;
+		};
 		1A8DB8422D13FB8300A2338B /* HotKey */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1A8DB8412D13FB8300A2338B /* XCRemoteSwiftPackageReference "HotKey" */;
