@@ -65,7 +65,7 @@ struct DockItemView: View {
     // MARK: - Icon Logic
     @ViewBuilder
     private func loadIcon() -> some View {
-        if let nsImage = loadIconFromFile(iconName: item.iconName) {
+        if let nsImage = dockObserver.getIcon(item) {
             Image(nsImage: nsImage)
                 .resizable()
                 .frame(width: 64, height: 64)
@@ -98,7 +98,7 @@ struct DockItemView: View {
                     ForEach(slice.indices, id: \.self) { i in
                         let row = i / 3
                         let col = i % 3
-                        if let subIcon = loadIconFromFile(iconName: slice[i].iconName) {
+                        if let subIcon = dockObserver.getIcon(slice[i]) {
                             Image(nsImage: subIcon)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
@@ -151,16 +151,6 @@ struct DockItemView: View {
             dockObserver.removeItem(item.bundleID)
             dragDropManager.removeOrderedItem(item.bundleID)
         }
-    }
-    
-    // MARK: - Load Icon from Disk
-    private func loadIconFromFile(iconName: String?) -> NSImage? {
-        guard let iconName = iconName else { return nil }
-        let fm = FileManager.default
-        let supportDir = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-        let iconsDir = supportDir.appendingPathComponent("KuchiyoseDock/Icons")
-        let iconURL = iconsDir.appendingPathComponent(iconName)
-        return NSImage(contentsOf: iconURL)
     }
     
     // MARK: - Launch/Activate

@@ -28,6 +28,8 @@ class DockObserver: NSObject, ObservableObject {
     
     // everytime showing dock, update this to track drop-out deletion
     @Published var dockUIFrame: NSRect = .zero
+    // item.BundleID : icon
+    var appIcons: [String: NSImage] = [:]
     
     
     private var runningRecents: Int = 0   // track how many running recent apps
@@ -61,6 +63,8 @@ class DockObserver: NSObject, ObservableObject {
         
         // Initial load of Dock items
         loadDockItems()
+        retrieveIcons()
+        syncRecentApps()
         
         // 启动一个每秒执行的 Timer，自动调用 updateRunningStates 和 updateRecentApplications
         pollTimer = Timer.scheduledTimer(
@@ -120,7 +124,10 @@ class DockObserver: NSObject, ObservableObject {
                 }
             // not in anywhere, try add it
             } else {
-                self.insertIntoRecent(createDockItem(from: runningApp))
+                guard let url = runningApp.bundleURL else { return }
+                guard let item = self.createItemFromURL(url: url) else { return }
+                self.insertIntoRecent(item)
+                self.loadIconFromWorkspace(item)
             }
             // always refresh, there is not too much cost
             self.refreshDock()
@@ -147,6 +154,26 @@ class DockObserver: NSObject, ObservableObject {
             // always refresh, there is not too much cost
             self.refreshDock()
         }
+    }
+    
+    // MARK: - actual logic to create new DockItem model
+func createItemFromURL(url: URL) -> DockItem? {
+        guard url.pathExtension == "app" else { return nil }
+        // find icon to save
+        let icon = NSWorkspace.shared.icon(forFile: url.path)
+        icon.size = NSSize(width: 64, height: 64)
+        // save some info
+        let name = url.deletingPathExtension().lastPathComponent
+        let bundleID = Bundle(path: url.path)?.bundleIdentifier ?? ""
+        let item = DockItem(
+            id: UUID(),
+            name: name,
+            url: url,
+            bundleID: bundleID,
+            isRunning: false
+        )
+        loadIconFromWorkspace(item)
+        return item
     }
 
     // MARK: - adjust order of two items
@@ -175,15 +202,6 @@ class DockObserver: NSObject, ObservableObject {
         lastRunningBundleIDs.remove(rmBundleID)
     }
     
-    // MARK: - add item to dock's last place
-//    func addItem(_ newItem: DockItem?) {
-//        guard let newItem = newItem else {
-//            print("Error: Attempted to add nil to dockApps")
-//            return
-//        }
-//        dockApps[newItem.bundleID] = newItem
-//        dockAppOrderKeys.append(newItem.bundleID)
-//    }
     
     // MARK: - add itme to dock's specific position, last by default
     func addItemToPos(_ newItem: DockItem?, _ index: Int?) {
@@ -228,34 +246,21 @@ class DockObserver: NSObject, ObservableObject {
     func setDockFrame(_ frame: NSRect) {
         self.dockUIFrame = frame
     }
+
+    // MARK: - Load Icon from app
+    private func loadIconFromWorkspace(_ item: DockItem) {
+        let icon = NSWorkspace.shared.icon(forFile: item.url.path)
+        icon.size = NSSize(width: 64, height: 64)
+        appIcons[item.bundleID] = icon
+    }
     
-    // MARK: - Initialization to align custom dock to system dock
-    // after loading custom dock, need to mirror app states.
-    func syncRecentApps() {
-        // sort running apps by time launched
-        let runningApps = NSWorkspace.shared.runningApplications.filter{ $0.activationPolicy == .regular }
-        let sortedApps = runningApps.compactMap { app -> (NSRunningApplication, Date)? in
-            guard let launchDate = app.launchDate else { return nil }
-            return (app, launchDate)
-        }.sorted { $0.1 > $1.1 }
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            for (app, _) in sortedApps {
-                guard let bID = app.bundleIdentifier else { continue }
-                
-                if self.dockApps[bID] != nil { continue }
-                
-                if !self.recentApps.contains(where: { $0.bundleID == bID }) {
-                    guard let newRecent = createDockItem(from: app) else {
-                        print("Failed to create DockItem instance for \(String(describing: app.localizedName)) with bundleID\(bID)")
-                        continue
-                    }
-                    self.recentApps.append(newRecent)
-                }
-                if self.recentApps.count == self.maxRecentApps {
-                    break;
-                }
-            }
+    // MARK: - get existing icon using bundleID
+    func getIcon(_ item: DockItem) -> NSImage? {
+        if let icon = appIcons[item.bundleID] {
+            return icon
+        } else {
+            loadIconFromWorkspace(item)
+            return appIcons[item.bundleID]
         }
     }
     
@@ -321,6 +326,8 @@ class DockObserver: NSObject, ObservableObject {
         }
     }
     
+    
+    
     // MARK: - keep track of overall state change
     private func generateDockStateHash() -> Int {
         var hasher = Hasher()
@@ -343,5 +350,48 @@ class DockObserver: NSObject, ObservableObject {
         }
         
         return hasher.finalize()
+    }
+    
+    
+    // MARK: - Initialization to align custom dock to system dock
+    // after loading custom dock, need to mirror app states.
+    func syncRecentApps() {
+        // sort running apps by time launched
+        let runningApps = NSWorkspace.shared.runningApplications.filter{ $0.activationPolicy == .regular }
+        let sortedApps = runningApps.compactMap { app -> (NSRunningApplication, Date)? in
+            guard let launchDate = app.launchDate else { return nil }
+            return (app, launchDate)
+        }.sorted { $0.1 > $1.1 }
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            for (app, _) in sortedApps {
+                guard let bID = app.bundleIdentifier else { continue }
+                
+                if self.dockApps[bID] != nil { continue }
+                
+                if !self.recentApps.contains(where: { $0.bundleID == bID }) {
+                    guard let url = app.bundleURL else { return }
+                    guard let newRecent = createItemFromURL(url: url) else {
+                        print("Failed to create DockItem instance for \(String(describing: app.localizedName)) with bundleID\(bID)")
+                        continue
+                    }
+                    newRecent.isRunning = true
+                    self.recentApps.append(newRecent)
+                }
+                if self.recentApps.count == self.maxRecentApps {
+                    break;
+                }
+            }
+        }
+    }
+    
+    // MARK: - load icons when starting app
+    func retrieveIcons() {
+        for item in dockApps.values {
+            loadIconFromWorkspace(item)
+        }
+        for item in recentApps {
+            loadIconFromWorkspace(item)
+        }
     }
 }

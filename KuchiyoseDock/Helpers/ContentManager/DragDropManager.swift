@@ -65,7 +65,7 @@ class DragDropManager: ObservableObject {
         panel.canChooseDirectories = false
         panel.allowedContentTypes = [.application]
         if panel.runModal() == .OK, let url = panel.url {
-            if let newItem = createNewAppItem(from: url) {
+            if let newItem = dockObserver.createItemFromURL(url: url) {
                 addItemToPos(newItem, nil)
             }
         }
@@ -85,7 +85,7 @@ class DragDropManager: ObservableObject {
                         return
                     }
                     
-                    if let newItem = self.createNewAppItem(from: url) {
+                    if let newItem = self.dockObserver.createItemFromURL(url: url) {
                         DispatchQueue.main.async {
                             self.addItemToPos(newItem, targetIndex ?? self.orderedDockItems.count)
                         }
@@ -108,30 +108,6 @@ class DragDropManager: ObservableObject {
         }
     }
     
-    
-    
-    // MARK: - actual logic to create new DockItem model
-    private func createNewAppItem(from url: URL) -> DockItem? {
-        guard url.pathExtension == "app" else { return nil }
-        
-        // 生成图标并保存
-        let icon = NSWorkspace.shared.icon(forFile: url.path)
-        icon.size = NSSize(width: 64, height: 64)
-        let iconName = saveIconToFile(icon: icon, name: url.lastPathComponent)
-        
-        // 抽取一些信息
-        let name = url.deletingPathExtension().lastPathComponent
-        let bundleID = Bundle(path: url.path)?.bundleIdentifier ?? ""
-        
-        return DockItem(
-            id: UUID(),
-            name: name,
-            iconName: iconName,
-            url: url,
-            bundleID: bundleID,
-            isRunning: false
-        )
-    }
 }
 
 

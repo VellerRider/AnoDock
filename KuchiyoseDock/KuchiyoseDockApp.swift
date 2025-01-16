@@ -39,8 +39,6 @@ struct KuchiyoseDockApp: App {
         
         // **在这里**触发 lazy 初始化
         _ = notificationHandler
-        dockObserver.loadDockItems()
-        dockObserver.syncRecentApps()
         if AXIsProcessTrusted() {
             dockWindowManager.showDock()// show dock at launch
         }

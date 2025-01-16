@@ -44,10 +44,19 @@ struct DockOverlayView: View {
                     }
 
                     
-                    HStack(spacing: 8) {
-                        ForEach(dockObserver.recentApps) { app in
-                            DockItemView(item: app, inEditor: inEditorTab)
-                        }
+                    HStack {
+                        ReorderableForEach(
+                            items: dockObserver.recentApps,
+                            content: { item in
+                                DockItemView(item: item, inEditor: inEditorTab)
+                            },
+                            moveAction: { from, to in
+                                dragDropManager.moveOrderedItems(from: from.first!, to: to)
+                            },
+                            finishAction: {
+                                dragDropManager.saveOrderedItems()
+                            }
+                        )
                     }
                     
                 }

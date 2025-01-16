@@ -27,7 +27,6 @@ struct CustomDockView: View {
                         .font(.subheadline) // 可选：设置不同样式
                         .foregroundColor(.gray) // 可选：调整颜色
                 }
-                Spacer()
                 Button(action: dragDropManager.manualAddApp) {
                     Image(systemName: "plus")
                         .font(.title)
