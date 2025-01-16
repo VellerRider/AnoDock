@@ -12,23 +12,23 @@
 import SwiftUI
 import AppKit
 
-class DockWindowManager {
+class DockWindowManager: ObservableObject {
     static let shared = DockWindowManager()
     private var dockObserver: DockObserver = .shared
     private var dragDropManager: DragDropManager = .shared
     private var dockWindowState: DockWindowState = .shared
-    
     private var hostingController: NSHostingController<AnyView>?
     private var window: NSWindow?
+    // publish position and size of dock
+    @Published var dockUIFrame: CGRect = .zero
     
-
+    
     
     // MARK: - show dock
     func showDock() {
         if hostingController == nil {
             loadHostingController()
         }
-        
         updateWindowPosition()
         guard let window = window else {
             print("Failed to create window")
@@ -139,7 +139,7 @@ class DockWindowManager {
         let newFrame = NSRect(x: globalOriginX, y: globalOriginY,
                               width: finalWidth, height: finalHeight)
         // save for later drop-out ops
-        dockObserver.setDockFrame(newFrame)
+        dockUIFrame = newFrame
         
         guard window != nil else {
             let newWindow = NSWindow(
@@ -176,6 +176,7 @@ class DockWindowManager {
         dockWindowState.mouseIn = false
         dockWindowState.showDockWindow = false
     }
+
     
 
     

@@ -19,6 +19,7 @@ struct GeneralSettingsView: View {
             
             
         }
+        .frame(width: 500, height: 600)
     }
 }
 

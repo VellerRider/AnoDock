@@ -26,8 +26,6 @@ class DockObserver: NSObject, ObservableObject {
     // array for recents for order
     @Published var recentApps: [DockItem] = []
     
-    // everytime showing dock, update this to track drop-out deletion
-    @Published var dockUIFrame: NSRect = .zero
     // item.BundleID : icon
     var appIcons: [String: NSImage] = [:]
     
@@ -240,11 +238,6 @@ func createItemFromURL(url: URL) -> DockItem? {
             return dockApps[key]
         }
         DockDataManager.shared.saveDockItems(appsToSave)
-    }
-    
-    // MARK: - save current dockUI's position and size
-    func setDockFrame(_ frame: NSRect) {
-        self.dockUIFrame = frame
     }
 
     // MARK: - Load Icon from app

@@ -14,12 +14,36 @@ import SwiftUI
 struct DockEditorView : View {
     @EnvironmentObject var dockEditorSettings: DockEditorSettings
     @EnvironmentObject var dockObserver: DockObserver
-    
+    @EnvironmentObject var dockWindowManager: DockWindowManager
+    @EnvironmentObject var dragDropManager: DragDropManager
     @State var zoomChanging: Bool = false
     @State var tempDockZoom: Double = 0
     
     var body : some View {
         VStack {
+            VStack {
+                VStack(spacing: 8) { // spacing 控制两行文字的间距
+                    Text("Here are what's in your dock.")
+                        .font(.headline) // 可选：设置字体样式
+                    Text("Try drag and drop to reorder.")
+                        .font(.subheadline) // 可选：设置不同样式
+                }
+                .padding(.bottom, 20)
+                HStack {
+                    Button(action: dragDropManager.manualAddApp) {
+                        Image(systemName: "plus")
+                            .font(.title)
+                    }
+                    Button(action: dragDropManager.toggleEditingMode) {
+                        Image(systemName: dockEditorSettings.isEditing ? "checkmark.circle" : "pencil")
+                            .font(.title)
+                    }
+                }
+            }
+            .frame(minWidth: dockWindowManager.dockUIFrame.width)
+            .padding(.bottom, 20)
+
+                
             CustomDockView()
                 .padding(.bottom, 40)
             
@@ -81,6 +105,12 @@ struct DockEditorView : View {
 
             }
         }
+        .onTapGesture {
+            if dockEditorSettings.isEditing {
+                dragDropManager.toggleEditingMode()
+            }
+        }
+        .frame(minHeight: 600)
         .onAppear() {
             retrieveSetting()
         }

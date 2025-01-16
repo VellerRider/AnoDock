@@ -99,14 +99,8 @@ struct ShortcutsSettingsView: View {
                 hotKeySettings.applyNewShortcut(shortcut)
             }
         }
-        .frame(maxWidth: 275)
+        .frame(width: 300, height: 300)
         .padding(30)
-//        .background(
-//            RoundedRectangle(cornerRadius: 16)
-//                .fill(Color.accentColor.opacity(0.05)) // 圆角背景
-//                .shadow(color: .black.opacity(0.2), radius: 16, x: 5, y: 5) // 阴影效果
-//
-//        )
         .onAppear {
             // 1) Grab the user's current saved shortcut
             if let currentShortcut = hotKeySettings.keyboardShortcut {

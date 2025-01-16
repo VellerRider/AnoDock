@@ -40,7 +40,7 @@ struct KuchiyoseDockApp: App {
         // **在这里**触发 lazy 初始化
         _ = notificationHandler
         if AXIsProcessTrusted() {
-            dockWindowManager.showDock()// show dock at launch
+            dockWindowManager.showDock()// show dock at launch to initiate dockUIFrame
         }
 
     }
@@ -65,6 +65,7 @@ struct KuchiyoseDockApp: App {
             } else {
                 SettingsView()
                     .environmentObject(dockObserver)
+                    .environmentObject(dockWindowManager)
                     .environmentObject(dragDropManager)
                     .environmentObject(dockWindowState)
                     .environmentObject(itemPopoverManager)
@@ -73,6 +74,7 @@ struct KuchiyoseDockApp: App {
                     .environmentObject(generalSettings)
                     .environmentObject(appSettings)
                     .environmentObject(dockEditorSettings)
+
                 
 
             }

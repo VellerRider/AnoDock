@@ -16,36 +16,34 @@ struct DockItemView: View {
     @State var isHovering: Bool = false
     @State var deleted: Bool = false
     
-    var inEditor: Bool // 用于决定是否处于编辑模式
+    var inEditor: Bool // in editor or not
     
     var body: some View {
         ZStack {
                 loadIcon()
                 
             if inEditor && dockEditorSettings.isEditing {
-                    // 删除按钮
-                    Button(action: {
-                        deleteSelf()
-                    }) {
-                        Image(systemName: "minus.circle.fill")
-                            .foregroundColor(.red)
-                    }
+                Image(systemName: "xmark.circle.fill")
+                    .resizable()
+                    .frame(width: 16, height: 16)
+                    .foregroundColor(.red)
                     .position(x: 5, y: 5)
+                    .onTapGesture {
+                        deleteSelf()
+                    }
                     .transition(.opacity)
-                }
-                
-                if item.isRunning {
-                    Circle()
-                        .fill(Color.gray)
-                        .frame(width: 4, height: 4)
-                        .offset(y: 34)
-                }
             }
+                
+            if item.isRunning {
+                Circle()
+                    .fill(Color.gray)
+                    .frame(width: 4, height: 4)
+                    .offset(y: 34)
+            }
+        }
         .animation(.easeInOut, value: deleted)
         .onTapGesture {
-            if !inEditor {
-                openItem(item)
-            }
+            openItem(item)
         }
         .onLongPressGesture(perform: {
             if inEditor {
@@ -53,9 +51,7 @@ struct DockItemView: View {
             }
         })
         .contextMenu {
-            if !inEditor {
-                contextMenuItems(item: item)
-            }
+            contextMenuItems(item: item)
         }
         .onHover { hovering in
             isHovering = hovering

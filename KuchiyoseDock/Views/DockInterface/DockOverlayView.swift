@@ -28,6 +28,7 @@ struct DockOverlayView: View {
                     )
                 
                 VStack(spacing: 12) {
+                    // in dock apps
                     HStack {
                         ReorderableForEach(
                             items: dragDropManager.orderedDockItems,
@@ -43,12 +44,12 @@ struct DockOverlayView: View {
                         )
                     }
 
-                    
+                    // recent apps
                     HStack {
                         ReorderableForEach(
                             items: dockObserver.recentApps,
                             content: { item in
-                                DockItemView(item: item, inEditor: inEditorTab)
+                                DockItemView(item: item, inEditor: false)
                             },
                             moveAction: { from, to in
                                 dragDropManager.moveOrderedItems(from: from.first!, to: to)
@@ -64,9 +65,11 @@ struct DockOverlayView: View {
             }
             .fixedSize()
             .onHover { entered in
-                dockWindowState.mouseIn = entered
-                if !entered {
-                    dockWindowManager.hideDock()
+                if !inEditorTab {
+                    dockWindowState.mouseIn = entered
+                    if !entered {
+                        dockWindowManager.hideDock()
+                    }
                 }
             }
             // drop apps from outside

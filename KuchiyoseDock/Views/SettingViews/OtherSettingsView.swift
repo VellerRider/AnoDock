@@ -17,22 +17,24 @@ struct OtherSettingsView : View {
     @EnvironmentObject var appsetting: AppSettings
 
     var body: some View {
-        
-        HStack {
+        VStack {
             
-            Form {
-                Text("Other Setting")
-            }
-            
-            Button(action: {
-                NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.Desktop-Settings.extension")!)
-            }) {
-                Text("Go to Dock Settings for more editing")
-                    .padding()
+            HStack {
+                
+                Form {
+                    Text("Other Setting")
+                }
+                
+                Button(action: {
+                    NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.Desktop-Settings.extension")!)
+                }) {
+                    Text("Go to Dock Settings for more editing")
+                        .padding()
+                }
             }
             Text("We can't apply changes here because that will require more authorization.")
                 .font(.system(size: 10))
-                .frame(maxWidth: 200)
         }
+        .frame(width: 500, height: 300)
     }
 }

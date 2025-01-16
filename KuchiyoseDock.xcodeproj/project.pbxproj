@@ -283,9 +283,9 @@
 			isa = PBXGroup;
 			children = (
 				1AEC4EE42CEA9E7500523CC1 /* SettingsView.swift */,
+				1A66D77D2CEEF3F500BDE735 /* DockEditorView.swift */,
 				1AEC4EE12CEA9E7500523CC1 /* GeneralSettingsView.swift */,
 				1AEC4EE52CEA9E7500523CC1 /* ShortcutsSettingsView.swift */,
-				1A66D77D2CEEF3F500BDE735 /* DockEditorView.swift */,
 				1A78BBE92D000E7A003A8162 /* OtherSettingsView.swift */,
 				1AEC4EF92CEA9EBC00523CC1 /* DockEditor */,
 			);
