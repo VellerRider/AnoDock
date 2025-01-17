@@ -18,6 +18,7 @@
 		1AA1CABE2D1FCBF700933295 /* DockOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA1CABD2D1FCBF700933295 /* DockOverlayView.swift */; };
 		1ABA36B62D3835FC00BF0FF1 /* DragDropManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA36B52D3835FC00BF0FF1 /* DragDropManager.swift */; };
 		1ABA36BA2D38460A00BF0FF1 /* DockAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA36B92D38460A00BF0FF1 /* DockAnimation.swift */; };
+		1ABA36E02D38EACA00BF0FF1 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA36DF2D38EACA00BF0FF1 /* Test.swift */; };
 		1ABBE4D02D33480600CCF124 /* DockFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABBE4CF2D33480600CCF124 /* DockFolder.swift */; };
 		1ABBE4D22D33824200CCF124 /* DockWindowState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABBE4D12D33824200CCF124 /* DockWindowState.swift */; };
 		1ABBE4D42D3383F400CCF124 /* DockNotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABBE4D32D3383F400CCF124 /* DockNotificationHandler.swift */; };
@@ -74,6 +75,7 @@
 		1AA9EEF82CE4019F002D8348 /* KuchiyoseDockUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KuchiyoseDockUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ABA36B52D3835FC00BF0FF1 /* DragDropManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragDropManager.swift; sourceTree = "<group>"; };
 		1ABA36B92D38460A00BF0FF1 /* DockAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockAnimation.swift; sourceTree = "<group>"; };
+		1ABA36DF2D38EACA00BF0FF1 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		1ABBE4CF2D33480600CCF124 /* DockFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockFolder.swift; sourceTree = "<group>"; };
 		1ABBE4D12D33824200CCF124 /* DockWindowState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockWindowState.swift; sourceTree = "<group>"; };
 		1ABBE4D32D3383F400CCF124 /* DockNotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockNotificationHandler.swift; sourceTree = "<group>"; };
@@ -275,6 +277,7 @@
 				1AC70B2D2CEAE5B1009BA776 /* PermissionViews */,
 				1AEC4EF82CEA9EB100523CC1 /* SettingViews */,
 				1A78BBE42D000BD6003A8162 /* DockInterface */,
+				1ABA36DF2D38EACA00BF0FF1 /* Test.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -504,6 +507,7 @@
 				1AEC4EF22CEA9E7500523CC1 /* GeneralSettingsView.swift in Sources */,
 				1AFAC59B2D347A2500C28902 /* EditorItemView.swift in Sources */,
 				1AEC4EF42CEA9E7500523CC1 /* SettingsView.swift in Sources */,
+				1ABA36E02D38EACA00BF0FF1 /* Test.swift in Sources */,
 				1AEC4EF52CEA9E7500523CC1 /* ShortcutsSettingsView.swift in Sources */,
 				1A78BBEA2D000E7A003A8162 /* OtherSettingsView.swift in Sources */,
 				1AEC4EF62CEA9E7500523CC1 /* VisualEffectView.swift in Sources */,

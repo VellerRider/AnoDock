@@ -145,7 +145,7 @@ struct DockItemView: View {
     private func deleteSelf() {
         withAnimation(.dockUpdateAnimation) {
             dockObserver.removeItem(item.bundleID)
-            dragDropManager.removeOrderedItem(item.bundleID)
+            dragDropManager.removeSingleItem(item.bundleID)
         }
     }
     

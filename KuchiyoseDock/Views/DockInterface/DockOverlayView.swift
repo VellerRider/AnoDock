@@ -8,7 +8,6 @@ struct DockOverlayView: View {
     @EnvironmentObject var dockObserver: DockObserver
     @EnvironmentObject var dragDropManager: DragDropManager
     
-    private var itemPopoverManager: ItemPopoverManager = .shared
     private var dockWindowState: DockWindowState = .shared
     private var dockWindowManager: DockWindowManager = .shared
     
@@ -19,67 +18,50 @@ struct DockOverlayView: View {
     }
     
     var body: some View {
-            ZStack {
-                VisualEffectView(material: .menu, blendingMode: .behindWindow)
-                    .cornerRadius(36)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 36)
-                            .stroke(Color.white.opacity(0.3), lineWidth: 1) // 半透明白色边框
+        ZStack {
+            // 背景模糊等
+            VisualEffectView(material: .menu, blendingMode: .behindWindow)
+                .cornerRadius(36)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 36)
+                        .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                )
+            
+            VStack(spacing: 12) {
+                // 1) Dock Items 区域
+                HStack {
+                    ReorderableForEach(
+                        items: dragDropManager.orderedItems,
+                        content: { item in
+                            DockItemView(item: item, inEditor: inEditorTab)
+                        },
+                        moveAction: { from, to in
+                            withAnimation(.dockUpdateAnimation) {
+                                dragDropManager.moveOrderedItems(from: from.first!, to: to)
+                            }
+                        },
+                        finishAction: {
+                            withAnimation(.dockUpdateAnimation) {
+                                dragDropManager.saveOrderedItems()
+                            }
+                        }
                     )
-                
-                VStack(spacing: 12) {
-                    // in dock apps
-                    HStack {
-                        ReorderableForEach(
-                            items: dragDropManager.orderedDockItems,
-                            content: { item in
-                                DockItemView(item: item, inEditor: inEditorTab)
-                            },
-                            moveAction: { from, to in
-                                dragDropManager.moveOrderedItems(from: from.first!, to: to)
-                            },
-                            finishAction: {
-                                dragDropManager.saveOrderedItems()
-                            }
-                        )
-                    }
-
-                    // recent apps
-                    HStack {
-                        ReorderableForEach(
-                            items: dockObserver.recentApps,
-                            content: { item in
-                                DockItemView(item: item, inEditor: false)
-                            },
-                            moveAction: { from, to in
-                                dragDropManager.moveOrderedItems(from: from.first!, to: to)
-                            },
-                            finishAction: {
-                                dragDropManager.saveOrderedItems()
-                            }
-                        )
-                    }
-                    
-                }
-                .padding(8)
-            }
-            .fixedSize()
-            .onHover { entered in
-                if !inEditorTab {
-                    dockWindowState.mouseIn = entered
-                    if !entered {
-                        dockWindowManager.hideDock()
-                    }
                 }
             }
-            // drop apps from outside
-            .onDrop(of: ["public.file-url"], isTargeted: nil) { providers in
-                dragDropManager.dropAddApp(providers: providers, targetIndex: nil)// add to last
+            .padding(8)
+        }
+        .fixedSize()
+        .onHover { entered in
+            if !inEditorTab {
+                dockWindowState.mouseIn = entered
+                if !entered {
+                    dockWindowManager.hideDock()
+                }
             }
-            .onAppear {
-                dragDropManager.updateOrderedDockItems()
-            }
-
+        }
+        .onAppear {
+            // 同步最新 DockItem 列表到 dragDropManager
+            dragDropManager.updateOrderedItems()
+        }
     }
 }
-

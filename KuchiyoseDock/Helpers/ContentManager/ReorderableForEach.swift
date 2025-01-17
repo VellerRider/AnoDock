@@ -1,5 +1,5 @@
 //
-//  DraggingManager.swift
+//  ReordereableForEach.swift
 //  KuchiyoseDock
 //
 //  Created by John Yang on 1/12/25.
@@ -51,14 +51,10 @@ struct ReorderableForEach<Content: View, Item: Identifiable & Equatable>: View {
                         current: $draggingItem,
                         hasChangedLocation: $hasChangedLocation,
                         moveAction: { from, to in
-                            withAnimation(.dockUpdateAnimation) {
                                 moveAction(from, to)
-                            }
                         },
                         finishAction: {
-                            withAnimation(.dockUpdateAnimation) {
                                 finishAction()
-                            }
                         }
                     )
                 )
