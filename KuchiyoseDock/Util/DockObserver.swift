@@ -36,9 +36,6 @@ class DockObserver: NSObject, ObservableObject {
     
     private var pollTimer: Timer?
     
-    // snapshot for overall state change
-    private var lastDockStateHash: Int = 0
-
     // MARK: - Init / Deinit
     override init() {
         super.init()
@@ -64,7 +61,7 @@ class DockObserver: NSObject, ObservableObject {
         
         // Polling timer
         pollTimer = Timer.scheduledTimer(
-            timeInterval: recentApps.count > 7 ? 5 : 10,
+            timeInterval: recentApps.count > 7 ? 2 : 4,
             target: self,
             selector: #selector(pollUpdate),
             userInfo: nil,
@@ -94,7 +91,6 @@ class DockObserver: NSObject, ObservableObject {
     
     // MARK: - Timer Polling
     @objc private func pollUpdate() {
-        lastDockStateHash = 0
         refreshDock()
     }
     
@@ -197,15 +193,9 @@ class DockObserver: NSObject, ObservableObject {
     
     // MARK: - Remove an item from dock
     func removeItem(_ bundleID: String) {
-        // 在 dockItems 中找到后移除
-        if let dockIndex = dockItems.firstIndex(where: { $0.bundleID == bundleID }) {
-            dockItems.remove(at: dockIndex)
-        } else {
-            // 如果不在 dockItems，尝试从 recents 移除
-            if let index = recentApps.firstIndex(where: { $0.bundleID == bundleID }) {
-                removeRecent(index)
-            }
-        }
+    
+        dockItems.removeAll(where: { $0.bundleID == bundleID })
+        recentApps.removeAll(where: { $0.bundleID == bundleID })
     }
     
     
@@ -274,12 +264,6 @@ class DockObserver: NSObject, ObservableObject {
     
     // MARK: - refreshDock
     func refreshDock() {
-        let currentDockStateHash = generateDockStateHash()
-        if currentDockStateHash == lastDockStateHash {
-            print("No common changes detected, skipping refreshDock.")
-            return
-        }
-        lastDockStateHash = currentDockStateHash
         
         let runningApps = NSWorkspace.shared.runningApplications
             .filter { $0.activationPolicy == .regular }
@@ -296,6 +280,8 @@ class DockObserver: NSObject, ObservableObject {
             if running {
                 item.isRunning = true
                 currentRunningDic.removeValue(forKey: item.bundleID)
+            } else {
+                item.isRunning = false
             }
         }
         for item in recentApps {
@@ -303,6 +289,8 @@ class DockObserver: NSObject, ObservableObject {
             if running {
                 item.isRunning = true
                 currentRunningDic.removeValue(forKey: item.bundleID)
+            } else {
+                item.isRunning = false
             }
         }
         // add every one in the rest of currentRunningApp to recent.
@@ -345,26 +333,7 @@ class DockObserver: NSObject, ObservableObject {
 
     }
     
-    
-    // MARK: - generateDockStateHash
-    private func generateDockStateHash() -> Int {
-        var hasher = Hasher()
-        
-        // 对 dockItems 中的 (bundleID, isRunning) 哈希
-        for item in dockItems {
-            hasher.combine(item.bundleID)
-            hasher.combine(item.isRunning)
-        }
-        
-        // 对 recentApps
-        for app in recentApps {
-            hasher.combine(app.bundleID)
-            hasher.combine(app.isRunning)
-        }
-        
-        return hasher.finalize()
-    }
-    
+
     
     
     // MARK: - retrieveIcons

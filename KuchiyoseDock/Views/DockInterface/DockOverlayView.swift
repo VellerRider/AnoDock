@@ -26,6 +26,9 @@ struct DockOverlayView: View {
                     RoundedRectangle(cornerRadius: 36)
                         .stroke(Color.white.opacity(0.3), lineWidth: 1)
                 )
+                .onDrop(of: ["public.file-url"], isTargeted: nil) { providers in
+                    dragDropManager.dropAddApp(providers: providers, targetIndex: nil)// add to last
+                }
             
             VStack(spacing: 12) {
                 // 1) Dock Items 区域

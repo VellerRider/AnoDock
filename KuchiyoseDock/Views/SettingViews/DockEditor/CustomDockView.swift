@@ -24,8 +24,6 @@ struct CustomDockView: View {
             DockOverlayView(inEditorTab: true)
         }
         // drop apps from outside
-        .onDrop(of: ["public.file-url"], isTargeted: nil) { providers in
-            dragDropManager.dropAddApp(providers: providers, targetIndex: nil)// add to last
-        }
+
     }
 }

@@ -70,12 +70,15 @@ class DragDropManager: ObservableObject {
             self.orderedRecents = dockObserver.recentApps
             self.orderedItems = orderedDockItems + orderedRecents
         }
+        print("\(orderedRecents.count(where: { $0.isRunning }))")
     }
     
     // self delete
     func removeSingleItem(_ bundleID: String) {
         withAnimation(.dockUpdateAnimation) {
+            self.orderedItems.removeAll(where: { $0.bundleID == bundleID })
             self.orderedDockItems.removeAll(where: { $0.bundleID == bundleID })
+            dockObserver.refreshDock()
             saveOrderedItems()
         }
     }
@@ -94,7 +97,6 @@ class DragDropManager: ObservableObject {
                 dockObserver.addItemToPos(newItem, nil)
                 dockObserver.saveDockItems()
                 dockObserver.refreshDock()
-//                updateOrderedItems()
             }
         }
     }
@@ -102,26 +104,6 @@ class DragDropManager: ObservableObject {
     
     // MARK: - 跨列表拖拽 (从 Finder 或 Recents 拖到 Dock)
     func dropAddApp(providers: [NSItemProvider], targetIndex: Int?) -> Bool {
-        
-//        // 1) 如果是当前正在拖的 DockItem（例如从 Recents 拖出），则直接使用 draggingDockItem
-//        if let draggingItem = self.draggingDockItem {
-//            DispatchQueue.main.async {
-//                // 从 recents 移除
-//                if let idx = self.dockObserver.recentApps.firstIndex(where: { $0.id == draggingItem.id }) {
-//                    self.dockObserver.removeRecent(idx)
-//                }
-//                // 加到 dock
-//                self.dockObserver.addItemToPos(draggingItem, targetIndex)
-//                self.dockObserver.saveDockItems()
-//                self.dockObserver.refreshDock()
-//                self.updateOrderedItems()
-//                // 清空 draggingDockItem
-//                self.draggingDockItem = nil
-//            }
-//            return true
-//        }
-        
-        // 2) 如果是从 Finder 等外部拖入 .app
         for provider in providers {
             // 这里用 "public.file-url" 来判断是否是文件拖拽
             if provider.hasItemConformingToTypeIdentifier("public.file-url") {
