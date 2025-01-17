@@ -38,9 +38,9 @@ struct DockOverlayView: View {
                         content: { item in
                             DockItemView(item: item, inEditor: inEditorTab)
                         },
-                        moveAction: { from, to in
+                        moveAction: { from, to, item in
                             withAnimation(.dockUpdateAnimation) {
-                                dragDropManager.moveOrderedItems(from: from.first!, to: to)
+                                dragDropManager.moveOrderedItems(from: from.first!, to: to, Item: item ?? nil)
                             }
                         },
                         finishAction: {

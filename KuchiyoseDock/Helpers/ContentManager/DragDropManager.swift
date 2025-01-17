@@ -19,7 +19,7 @@ class DragDropManager: ObservableObject {
     var orderedDockItems: [DockItem] = []
     var orderedRecents: [DockItem] = []
     @Published var orderedItems: [DockItem] = []
-    
+    @Published var isDragging: Bool = false
     
     private var dockObserver: DockObserver = .shared
     private var dockEditorSettings: DockEditorSettings = .shared
@@ -27,7 +27,22 @@ class DragDropManager: ObservableObject {
     // MARK: - Dock Reordering
     // 排序和动画的过程是同时进行的。
     
-    func moveOrderedItems(from: Int, to: Int) {
+    func moveOrderedItems(from: Int, to: Int, Item: DockItem?) {
+        
+        // 1) 如果是外部 Finder 拖来的 .app => fromIndex = -1
+        if from == -1 {
+            guard let newItem = Item else { return }
+            // 把新 item 插入到 orderedItems
+            orderedItems.insert(newItem, at: min(to, orderedItems.count))
+            
+            // 同时插入到 orderedDockItems 或 orderedRecents
+            if to < orderedDockItems.count {
+                // 插入到 dock
+                orderedDockItems.insert(newItem, at: to)
+            }
+            return
+        }
+        
         // in same area rearrange
         if from < orderedDockItems.count && to <= orderedDockItems.count ||
             from >= orderedDockItems.count && to >= orderedDockItems.count {
@@ -57,6 +72,7 @@ class DragDropManager: ObservableObject {
         dockObserver.dockItems = orderedDockItems
         dockObserver.recentApps = orderedRecents
         dockObserver.saveDockItems()
+        isDragging = false
         dockObserver.refreshDock()
         // 这里不要call back updateOrderedItems了。
         // 放到refresh里面了。updateOrderedItems()
@@ -70,7 +86,6 @@ class DragDropManager: ObservableObject {
             self.orderedRecents = dockObserver.recentApps
             self.orderedItems = orderedDockItems + orderedRecents
         }
-        print("\(orderedRecents.count(where: { $0.isRunning }))")
     }
     
     // self delete
