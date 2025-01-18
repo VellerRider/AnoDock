@@ -7,22 +7,28 @@
 import SwiftUI
 import Foundation
 import UniformTypeIdentifiers
+import FluidGradient
 
 struct DeleteMaskView: View {
     @EnvironmentObject var dragDropManager: DragDropManager
     
     var body: some View {
         // 1) Entire window area
+
         Rectangle()
+            .fill(dragDropManager.draggedEnteredDeleteZone ? .red : Color.clear)
+            
+            .cornerRadius(32)
+            
+        
+        
+            
             // 2) Fill color depends on whether the drag is inside
-            .fill(dragDropManager.draggedEnteredDeleteZone
-                  ? Color.red.opacity(0.2)
-                  : Color.clear)
             
             // 3) Use a custom drop delegate
             .onDrop(
                 of: [UTType.dockItem],
-                delegate: DeleteZoneDropDelegate(dragDropManager: dragDropManager)
+                delegate: DeleteZoneDropDelegate()
             )
             
             // Only allow pointer events if we are dragging from ReorderableForEach
@@ -34,13 +40,7 @@ struct DeleteMaskView: View {
 struct DeleteZoneDropDelegate: DropDelegate {
     @ObservedObject var dragDropManager: DragDropManager = .shared
     @ObservedObject var dockObserver: DockObserver = .shared
-    func dropEntered(info: DropInfo) {
-        dragDropManager.draggedEnteredDeleteZone = true
-    }
     
-    func dropExited(info: DropInfo) {
-        dragDropManager.draggedEnteredDeleteZone = false
-    }
     
     func dropUpdated(info: DropInfo) -> DropProposal? {
         // "move" means we accept the drop for reordering or similar.
@@ -48,12 +48,23 @@ struct DeleteZoneDropDelegate: DropDelegate {
         .init(operation: .move)
     }
     
-    func performDrop(info: DropInfo) -> Bool {
-        dragDropManager.draggedEnteredDeleteZone = false
-        guard let newItem = dragDropManager.draggingItem else { return false }
+    func dropEntered(info: DropInfo) {
+        
+        guard let item = dragDropManager.draggingItem else { return }
         withAnimation(.dockUpdateAnimation) {
-            dockObserver.removeItem(newItem.bundleID)
-            dragDropManager.removeSingleItem(newItem.bundleID)
+            dragDropManager.orderedItems.removeAll(where: { $0.bundleID == item.bundleID })
+            dragDropManager.orderedRecents.removeAll(where: { $0.bundleID == item.bundleID })
+            dragDropManager.orderedDockItems.removeAll(where: { $0.bundleID == item.bundleID })
+            dockObserver.dockItems = dragDropManager.orderedDockItems
+            dockObserver.recentApps = dragDropManager.orderedRecents
+            dragDropManager.draggedOutItem = item
+            dragDropManager.draggingItem = nil
+        }
+    }
+    
+    func performDrop(info: DropInfo) -> Bool {
+        withAnimation(.easeOut) {
+            dragDropManager.saveOrderedItems()
         }
         return true
     }

@@ -1,6 +1,15 @@
 {
-  "originHash" : "db72eadf46e8ff519d2c5f8aea7c592581b5d1a010a6d1fa09d3923424af33ec",
+  "originHash" : "d92c34e30d8f8c378f877f798cd3c28474a7c38b8b3f073077cee2836caac20c",
   "pins" : [
+    {
+      "identity" : "fluidgradient?tab=readme-ov-file",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Cindori/FluidGradient?tab=readme-ov-file",
+      "state" : {
+        "revision" : "9ddda4cf23671ef0228e88681ec6210cb3e0d7f7",
+        "version" : "1.0.0"
+      }
+    },
     {
       "identity" : "hotkey",
       "kind" : "remoteSourceControl",

@@ -45,11 +45,10 @@ struct ReorderableForEach<Content: View>: View {
             }
             
             content(item)
-                .padding(.horizontal, 2)
-                .padding(.vertical, 1)
                 // 如果当前在拖拽这个 item，就让它透明
                 .opacity(dragDropManager.draggingItem == item ? 0 : 1)
                 .onDrag {
+                    dragDropManager.isDragging = true
                     dragDropManager.draggingItem = item
                     return NSItemProvider(item: "\(item.bundleID)" as NSString, typeIdentifier: UTType.dockItem.identifier)
                 }
@@ -58,7 +57,6 @@ struct ReorderableForEach<Content: View>: View {
                     delegate: DragRelocateDelegate(
                         item: item,
                         listData: items,
-//                        current: dragDropManager.draggingItem,
                         hasChangedLocation: $hasChangedLocation,
                         moveAction: { from, to, newDockItem in
                             moveAction(from, to, newDockItem)
@@ -85,27 +83,41 @@ struct DragRelocateDelegate: DropDelegate {
     var finishAction: () -> Void
     
     func dropEntered(info: DropInfo) {
-        // 如果 current == nil，说明可能是外部拖拽
-        // 外部 Finder 拖入
-        if dragDropManager.draggingItem == nil,
-           let itemProvider = info.itemProviders(for: [UTType.fileURL]).first,
-           let to = listData.firstIndex(of: item) {
-            itemProvider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { (urlData, error) in
-                guard let data = urlData as? Data,
-                      let url = URL(dataRepresentation: data, relativeTo: nil),
-                      let newDockItem = DockObserver.shared.createItemFromURL(url: url)
-                else { return }
-                
-                DispatchQueue.main.async {
-                    // 1) 插入( from = -1 表示外部新增 )
-                    moveAction(IndexSet(integer: -1), to, newDockItem)
+        let to = listData.firstIndex(of: item)
+        dragDropManager.draggedEnteredDeleteZone = false
+        if dragDropManager.draggingItem == nil {
+            
+            // 从删除区拉回来的
+            if let backItem = dragDropManager.draggedOutItem {
+                   print("back from delete zone")
+                   DispatchQueue.main.async {
+                       dragDropManager.draggedOutItem = nil
+                        
+                       moveAction(IndexSet(integer: -1), to!, backItem)
+                       dragDropManager.draggingItem = backItem
+                       print("existingitem is retrieved")
+                   }
+           } else if let itemProvider = info.itemProviders(for: [UTType.fileURL]).first {
+                // 外部拖入
+                print("new one here: \(itemProvider.description)")
+                itemProvider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { (urlData, error) in
+                    guard let data = urlData as? Data,
+                          let url = URL(dataRepresentation: data, relativeTo: nil),
+                          let newDockItem = DockObserver.shared.createItemFromURL(url: url)
+                    else { return }
                     
-                    // 2) 让它成为 current，后面再随着鼠标移动“内部拖拽”
-                    dragDropManager.draggingItem = newDockItem
-//                    print("current: \(String(describing: self.current?.name))")
+                    DispatchQueue.main.async {
+                        // 1) 插入( from = -1 表示外部新增 )
+                        moveAction(IndexSet(integer: -1), to!, newDockItem)
+                        
+                        // 2) 让它成为 current，后面再随着鼠标移动“内部拖拽”
+                        dragDropManager.draggingItem = newDockItem
+                        print("from outside")
+                    }
                 }
             }
         }
+        print("Proceed normal")
         // 内部重排
         guard let currentDockItem = dragDropManager.draggingItem else { return }
         // 在 Swift 中可以这样：
@@ -123,6 +135,7 @@ struct DragRelocateDelegate: DropDelegate {
         
         .init(operation: .move)
     }
+    
     
     func performDrop(info: DropInfo) -> Bool {
         // 拖拽完成后，清空 current

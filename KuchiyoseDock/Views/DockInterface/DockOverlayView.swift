@@ -3,6 +3,7 @@
  The Actual dock interface.
  */
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct DockOverlayView: View {
     @EnvironmentObject var dockObserver: DockObserver
@@ -23,51 +24,60 @@ struct DockOverlayView: View {
 
             ZStack {
                 VisualEffectView(material: .menu, blendingMode: .behindWindow)
-                    .cornerRadius(36)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 36)
-                            .stroke(Color.white.opacity(0.3), lineWidth: 1)
-                    )
-                    .onDrop(of: ["public.file-url"], isTargeted: nil) { providers in
-                        dragDropManager.dropAddApp(providers: providers, targetIndex: nil)// add to last
-                    }
+                    .cornerRadius(24)
                 
-                VStack(spacing: 12) {
-                    // 1) Dock Items 区域
-                    HStack {
-                        ReorderableForEach(
-                            items: dragDropManager.orderedItems,
-                            content: { item in
-                                DockItemView(item: item, inEditor: inEditorTab)
-                            },
-                            moveAction: { from, to, item in
-                                withAnimation(.dockUpdateAnimation) {
-                                    dragDropManager.moveOrderedItems(from: from.first!, to: to, Item: item ?? nil)
-                                }
-                            },
-                            finishAction: {
-                                withAnimation(.dockUpdateAnimation) {
-                                    dragDropManager.saveOrderedItems()
-                                }
+                // 1) Dock Items 区域
+                HStack {
+                    ReorderableForEach(
+                        items: dragDropManager.orderedItems,
+                        content: { item in
+                            DockItemView(item: item, inEditor: inEditorTab)
+                        },
+                        moveAction: { from, to, item in
+                            withAnimation(.dockUpdateAnimation) {
+                                dragDropManager.moveOrderedItems(from: from.first!, to: to, Item: item ?? nil)
                             }
-                        )
-                    }
+                        },
+                        finishAction: {
+                            withAnimation(.dockUpdateAnimation) {
+                                dragDropManager.saveOrderedItems()
+                            }
+                        }
+                    )
                 }
+                
                 .padding(8)
             }
-            .fixedSize()
-            .onHover { entered in
-                if !inEditorTab {
-                    dockWindowState.mouseIn = entered
-                    if !entered {
-                        dockWindowManager.hideDock()
-                    }
-                }
-            }
-            .onAppear {
-                // 同步最新 DockItem 列表到 dragDropManager
-                dragDropManager.updateOrderedItems()
-            }
         }
+        .fixedSize()
+//        .onHover { entered in
+//            if !inEditorTab {
+//                dockWindowState.mouseIn = entered
+//                if !entered {
+//                    dockWindowManager.hideDock()
+//                }
+//            }
+//        }
+        .onAppear {
+            // 同步最新 DockItem 列表到 dragDropManager
+            dragDropManager.updateOrderedItems()
+        }
+        .onDrop(of: [UTType.dockItem], delegate: dropLeaveDockDelegate())
+    }
+}
+struct dropLeaveDockDelegate: DropDelegate {
+    @ObservedObject var dragDropManager: DragDropManager = .shared
+    
+    func performDrop(info: DropInfo) -> Bool {
+        return false
+    }
+    
+    func dropEntered(info: DropInfo) {
+        dragDropManager.draggedEnteredDeleteZone = false
+    }
+    
+    
+    func dropExited(info: DropInfo) {
+        dragDropManager.draggedEnteredDeleteZone = true
     }
 }

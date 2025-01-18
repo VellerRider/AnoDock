@@ -11,6 +11,7 @@
 
 import SwiftUI
 import AppKit
+import UniformTypeIdentifiers
 
 class DockWindowManager: ObservableObject {
     static let shared = DockWindowManager()
@@ -18,6 +19,7 @@ class DockWindowManager: ObservableObject {
     private var dragDropManager: DragDropManager = .shared
     private var dockWindowState: DockWindowState = .shared
     private var hostingController: NSHostingController<AnyView>?
+    
     private var window: NSWindow?
     private var deleteMask: NSWindow?
     // publish position and size of dock
@@ -53,6 +55,7 @@ class DockWindowManager: ObservableObject {
         let overlayView = DockOverlayView(inEditorTab: false)
             .environmentObject(dockObserver)
             .environmentObject(dragDropManager)
+
         hostingController = NSHostingController(rootView: AnyView(overlayView))
     }
     // MARK: - update window position
@@ -142,12 +145,10 @@ class DockWindowManager: ObservableObject {
         let newFrame = NSRect(x: globalOriginX, y: globalOriginY,
                               width: finalWidth, height: finalHeight)
         // 计算 deleteMaskFrame 的新尺寸
-//        print("Pos of dock: x: \(newFrame.midX) y: \(newFrame.midY) width: \(newFrame.width) height: \(newFrame.height)")
         let deleteMaskWidth = newFrame.width * 1.5
-        let deleteMaskHeight = newFrame.height * 2
+        let deleteMaskHeight = newFrame.height * 3
         let deleteMaskX = newFrame.midX - deleteMaskWidth / 2
         let deleteMaskY = newFrame.midY - deleteMaskHeight / 2
-//        print("Pos of del: x: \(deleteMaskX) y: \(deleteMaskY) width: \(deleteMaskWidth) height: \(deleteMaskHeight)")
         let deleteMaskFrame = NSRect(
             x: deleteMaskX,
             y: deleteMaskY,
@@ -164,7 +165,7 @@ class DockWindowManager: ObservableObject {
                 backing: .buffered,
                 defer: false
             )
-            newWindow.isOpaque = false
+//            newWindow.isOpaque = false
             newWindow.backgroundColor = .clear
             newWindow.hasShadow = true
             newWindow.level = .floating
@@ -179,6 +180,7 @@ class DockWindowManager: ObservableObject {
                 backing: .buffered,
                 defer: false
             )
+            deleteZone.backgroundColor = .clear
             let deleteView = DeleteMaskView()
                 .environmentObject(dragDropManager)
             deleteZone.contentViewController = NSHostingController(rootView: deleteView)

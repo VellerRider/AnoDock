@@ -7,6 +7,7 @@
 
 // View for single item in the dock UI
 import SwiftUI
+import Pow
 
 struct DockItemView: View {
     @EnvironmentObject var dockObserver: DockObserver
@@ -20,18 +21,21 @@ struct DockItemView: View {
     
     var body: some View {
         ZStack {
+            ZStack {
                 loadIcon()
                 
-            if inEditor && dockEditorSettings.isEditing {
-                Image(systemName: "xmark.circle.fill")
-                    .resizable()
-                    .frame(width: 16, height: 16)
-                    .foregroundColor(.red)
-                    .position(x: 5, y: 5)
-                    .onTapGesture {
-                        deleteSelf()
-                    }
-                    .transition(.opacity)
+                
+                if inEditor && dockEditorSettings.isEditing {
+                    Image(systemName: "xmark.circle.fill")
+                        .resizable()
+                        .frame(width: 16, height: 16)
+                        .foregroundColor(.red)
+                        .position(x: 5, y: 5)
+                        .onTapGesture {
+                            deleteSelf()
+                        }
+                        .transition(.opacity)
+                }
             }
                 
             if item.isRunning {

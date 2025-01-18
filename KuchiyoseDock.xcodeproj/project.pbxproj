@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A030A832D3B7BAA00986751 /* FluidGradient in Frameworks */ = {isa = PBXBuildFile; productRef = 1A030A822D3B7BAA00986751 /* FluidGradient */; };
 		1A156CCC2D37679C0052372C /* WindowAnimation in Frameworks */ = {isa = PBXBuildFile; productRef = 1A156CCB2D37679C0052372C /* WindowAnimation */; };
 		1A6565232D3B3AD50063CE7B /* DeleteMaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6565222D3B3AD50063CE7B /* DeleteMaskView.swift */; };
 		1A66D77E2CEEF3F500BDE735 /* DockEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A66D77D2CEEF3F500BDE735 /* DockEditorView.swift */; };
@@ -147,6 +148,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A8DB8432D13FB8300A2338B /* HotKey in Frameworks */,
+				1A030A832D3B7BAA00986751 /* FluidGradient in Frameworks */,
 				1A156CCC2D37679C0052372C /* WindowAnimation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -362,6 +364,7 @@
 			packageProductDependencies = (
 				1A8DB8422D13FB8300A2338B /* HotKey */,
 				1A156CCB2D37679C0052372C /* WindowAnimation */,
+				1A030A822D3B7BAA00986751 /* FluidGradient */,
 			);
 			productName = KuchiyoseDock;
 			productReference = 1AA9EEDD2CE4019E002D8348 /* KuchiyoseDock.app */;
@@ -448,6 +451,7 @@
 			packageReferences = (
 				1A8DB8412D13FB8300A2338B /* XCRemoteSwiftPackageReference "HotKey" */,
 				1A156CCA2D37679C0052372C /* XCRemoteSwiftPackageReference "WindowAnimation" */,
+				1A030A812D3B7BAA00986751 /* XCRemoteSwiftPackageReference "FluidGradient" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1AA9EEDE2CE4019E002D8348 /* Products */;
@@ -847,6 +851,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		1A030A812D3B7BAA00986751 /* XCRemoteSwiftPackageReference "FluidGradient" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Cindori/FluidGradient?tab=readme-ov-file";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		1A156CCA2D37679C0052372C /* XCRemoteSwiftPackageReference "WindowAnimation" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Lakr233/WindowAnimation";
@@ -866,6 +878,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1A030A822D3B7BAA00986751 /* FluidGradient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1A030A812D3B7BAA00986751 /* XCRemoteSwiftPackageReference "FluidGradient" */;
+			productName = FluidGradient;
+		};
 		1A156CCB2D37679C0052372C /* WindowAnimation */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1A156CCA2D37679C0052372C /* XCRemoteSwiftPackageReference "WindowAnimation" */;

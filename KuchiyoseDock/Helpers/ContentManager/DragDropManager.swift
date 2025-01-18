@@ -20,7 +20,10 @@ class DragDropManager: ObservableObject {
     var orderedRecents: [DockItem] = []
     @Published var orderedItems: [DockItem] = []
     
+    @Published var isDragging: Bool = false // for polling
     @Published var draggingItem: DockItem? = nil
+    // for save temp item
+    @Published var draggedOutItem: DockItem? = nil
     @Published var draggedEnteredDeleteZone: Bool = false
     
     private var dockObserver: DockObserver = .shared
@@ -46,8 +49,8 @@ class DragDropManager: ObservableObject {
         }
         
         // in same area rearrange
-        if from < orderedDockItems.count && to <= orderedDockItems.count ||
-            from >= orderedDockItems.count && to >= orderedDockItems.count {
+        if (from < orderedDockItems.count && to <= orderedDockItems.count) ||
+            (from >= orderedDockItems.count && to > orderedDockItems.count) {
             let draggedItem = orderedItems.remove(at: from)
             orderedItems.insert(draggedItem, at: to > from ? to - 1 : to)
             if from < orderedDockItems.count {
@@ -59,24 +62,30 @@ class DragDropManager: ObservableObject {
                 orderedRecents.remove(at: realFrom)
                 orderedRecents.insert(draggedItem, at: realTo > realFrom ? realTo - 1  : realTo)
             }
-        } else if from >= orderedDockItems.count {
+        } else if from >= orderedDockItems.count && to <= orderedDockItems.count{
             // 先调整combined数组，再动分开的
             let draggedItem = orderedItems.remove(at: from)
             orderedRecents.remove(at: from - orderedDockItems.count) // use real index
             orderedDockItems.insert(draggedItem, at: to)
             orderedItems.insert(draggedItem, at: to > from ? to - 1 : to)
+        } else if from < orderedDockItems.count && to >= orderedDockItems.count{
+            let draggedItem = orderedItems.remove(at: from)
+            orderedDockItems.remove(at: from)
+            orderedItems.insert(draggedItem, at: to - 1)
+            let realTo = to - orderedDockItems.count
+            orderedRecents.insert(draggedItem, at: realTo - 1)
         }
         // else: in dock to recent, not implemented yet
     }
-    // ondrop, save temp items to observer and persist
+    // 将 这里 同步回 dockObserver
     func saveOrderedItems() {
-        // 将 orderedDockItems 同步回 dockObserver
         dockObserver.dockItems = orderedDockItems
         dockObserver.recentApps = orderedRecents
         dockObserver.saveDockItems()
+        isDragging = false
         draggingItem = nil
         draggedEnteredDeleteZone = false
-
+        draggedOutItem = nil
         dockObserver.refreshDock()
         // 这里不要call back updateOrderedItems了。
         // 放到refresh里面了。updateOrderedItems()
@@ -96,9 +105,10 @@ class DragDropManager: ObservableObject {
     func removeSingleItem(_ bundleID: String) {
         withAnimation(.dockUpdateAnimation) {
             self.orderedItems.removeAll(where: { $0.bundleID == bundleID })
+            self.orderedRecents.removeAll(where: { $0.bundleID == bundleID })
             self.orderedDockItems.removeAll(where: { $0.bundleID == bundleID })
-            dockObserver.refreshDock()
             saveOrderedItems()
+            dockObserver.refreshDock()
         }
     }
     

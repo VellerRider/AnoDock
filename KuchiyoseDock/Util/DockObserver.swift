@@ -91,8 +91,9 @@ class DockObserver: NSObject, ObservableObject {
     
     // MARK: - Timer Polling
     @objc private func pollUpdate() {
-        if DragDropManager.shared.draggingItem != nil {
+        if DragDropManager.shared.isDragging {
             print("Skipping pollUpdate because dragging is in progress.")
+            DragDropManager.shared.isDragging = false
             return
         }
         refreshDock()
@@ -197,9 +198,9 @@ class DockObserver: NSObject, ObservableObject {
     
     // MARK: - Remove an item from dock
     func removeItem(_ bundleID: String) {
-    
         dockItems.removeAll(where: { $0.bundleID == bundleID })
         recentApps.removeAll(where: { $0.bundleID == bundleID })
+        refreshDock()
     }
     
     
