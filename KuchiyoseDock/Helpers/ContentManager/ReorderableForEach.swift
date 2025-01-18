@@ -10,18 +10,16 @@ import UniformTypeIdentifiers
 
 
 struct ReorderableForEach<Content: View>: View {
-    // 直接使用 [DockItem]
+    @ObservedObject var dragDropManager: DragDropManager = .shared
     let items: [DockItem]
-    
     // moveAction: (IndexSet, Int, DockItem?)
     let moveAction: (IndexSet, Int, DockItem?) -> Void
     let finishAction: () -> Void
-    
     let content: (DockItem) -> Content
-    
     // 拖拽过程中
     @State private var hasChangedLocation: Bool = false
-    @State private var draggingItem: DockItem?  // 只用 DockItem
+//    @State private var draggingItem: DockItem?  // 只用 DockItem
+    
 
     init(
         items: [DockItem],
@@ -39,7 +37,7 @@ struct ReorderableForEach<Content: View>: View {
         ForEach(Array(items.enumerated()), id: \.1.id) { (index, item) in
             
             // 在 “DockItems” 与 “Recents” 的分界处插入一条线
-            if index == DragDropManager.shared.orderedDockItems.count {
+            if index == dragDropManager.orderedDockItems.count {
                 Rectangle()
                     .fill(Color.black.opacity(0.6))
                     .frame(width: 1, height: 48)
@@ -50,17 +48,17 @@ struct ReorderableForEach<Content: View>: View {
                 .padding(.horizontal, 2)
                 .padding(.vertical, 1)
                 // 如果当前在拖拽这个 item，就让它透明
-                .opacity(draggingItem == item ? 0 : 1)
+                .opacity(dragDropManager.draggingItem == item ? 0 : 1)
                 .onDrag {
-                    draggingItem = item
-                    return NSItemProvider(object: "\(item.id)" as NSString)
+                    dragDropManager.draggingItem = item
+                    return NSItemProvider(item: "\(item.bundleID)" as NSString, typeIdentifier: UTType.dockItem.identifier)
                 }
                 .onDrop(
-                    of: [UTType.text, UTType.fileURL],
+                    of: [UTType.text, UTType.fileURL, UTType.dockItem],
                     delegate: DragRelocateDelegate(
                         item: item,
                         listData: items,
-                        current: $draggingItem,
+//                        current: dragDropManager.draggingItem,
                         hasChangedLocation: $hasChangedLocation,
                         moveAction: { from, to, newDockItem in
                             moveAction(from, to, newDockItem)
@@ -75,10 +73,11 @@ struct ReorderableForEach<Content: View>: View {
 }
 
 struct DragRelocateDelegate: DropDelegate {
+    @ObservedObject var dragDropManager: DragDropManager = .shared
     let item: DockItem
     let listData: [DockItem]
     
-    @Binding var current: DockItem?
+//    @Binding var current: DockItem?
     @Binding var hasChangedLocation: Bool
     
     // 第三个参数 DockItem? 用来表示“外部插入的新DockItem”
@@ -88,10 +87,9 @@ struct DragRelocateDelegate: DropDelegate {
     func dropEntered(info: DropInfo) {
         // 如果 current == nil，说明可能是外部拖拽
         // 外部 Finder 拖入
-        if current == nil,
+        if dragDropManager.draggingItem == nil,
            let itemProvider = info.itemProviders(for: [UTType.fileURL]).first,
-           let to = listData.firstIndex(of: item)
-        {
+           let to = listData.firstIndex(of: item) {
             itemProvider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { (urlData, error) in
                 guard let data = urlData as? Data,
                       let url = URL(dataRepresentation: data, relativeTo: nil),
@@ -103,32 +101,31 @@ struct DragRelocateDelegate: DropDelegate {
                     moveAction(IndexSet(integer: -1), to, newDockItem)
                     
                     // 2) 让它成为 current，后面再随着鼠标移动“内部拖拽”
-                    self.current = newDockItem
+                    dragDropManager.draggingItem = newDockItem
+//                    print("current: \(String(describing: self.current?.name))")
                 }
             }
         }
-            // 内部重排
-            guard let currentDockItem = current else { return }
-            DragDropManager.shared.isDragging = true
-            // 在 Swift 中可以这样：
-            guard let from = listData.firstIndex(of: currentDockItem),
-                  let to = listData.firstIndex(of: item) else { return }
-            
-            hasChangedLocation = true
-            
-            if from != to && listData[to] != currentDockItem {
-                moveAction(IndexSet(integer: from), to > from ? to + 1 : to, nil)
-            }
+        // 内部重排
+        guard let currentDockItem = dragDropManager.draggingItem else { return }
+        // 在 Swift 中可以这样：
+        guard let from = listData.firstIndex(of: currentDockItem),
+              let to = listData.firstIndex(of: item) else { return }
+        
+        hasChangedLocation = true
+        
+        if from != to && listData[to] != currentDockItem {
+            moveAction(IndexSet(integer: from), to > from ? to + 1 : to, nil)
         }
-    
+    }
     
     func dropUpdated(info: DropInfo) -> DropProposal? {
+        
         .init(operation: .move)
     }
     
     func performDrop(info: DropInfo) -> Bool {
         // 拖拽完成后，清空 current
-        current = nil
         finishAction()
         return true
     }

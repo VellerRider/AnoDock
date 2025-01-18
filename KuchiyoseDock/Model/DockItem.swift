@@ -12,6 +12,7 @@
 
 import Foundation
 import AppKit
+import UniformTypeIdentifiers
 
 
 
@@ -103,3 +104,6 @@ class DockItem: Identifiable, Codable, Hashable, ObservableObject {
 //}
 
 
+extension UTType {
+    static let dockItem = UTType(exportedAs: "com.anodo.dockitem")
+}

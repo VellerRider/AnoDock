@@ -19,8 +19,11 @@ class DockWindowManager: ObservableObject {
     private var dockWindowState: DockWindowState = .shared
     private var hostingController: NSHostingController<AnyView>?
     private var window: NSWindow?
+    private var deleteMask: NSWindow?
     // publish position and size of dock
     @Published var dockUIFrame: CGRect = .zero
+    // for deleting mask
+    
     
     
     
@@ -138,10 +141,23 @@ class DockWindowManager: ObservableObject {
         // 5. 创建窗口
         let newFrame = NSRect(x: globalOriginX, y: globalOriginY,
                               width: finalWidth, height: finalHeight)
-        // save for later drop-out ops
+        // 计算 deleteMaskFrame 的新尺寸
+//        print("Pos of dock: x: \(newFrame.midX) y: \(newFrame.midY) width: \(newFrame.width) height: \(newFrame.height)")
+        let deleteMaskWidth = newFrame.width * 1.5
+        let deleteMaskHeight = newFrame.height * 2
+        let deleteMaskX = newFrame.midX - deleteMaskWidth / 2
+        let deleteMaskY = newFrame.midY - deleteMaskHeight / 2
+//        print("Pos of del: x: \(deleteMaskX) y: \(deleteMaskY) width: \(deleteMaskWidth) height: \(deleteMaskHeight)")
+        let deleteMaskFrame = NSRect(
+            x: deleteMaskX,
+            y: deleteMaskY,
+            width: deleteMaskWidth,
+            height: deleteMaskHeight
+        )
+        // save for dynamic settings width
         dockUIFrame = newFrame
-        
-        guard window != nil else {
+        // guarantee window & deletemask exist
+        if window == nil {
             let newWindow = NSWindow(
                 contentRect: newFrame,
                 styleMask: [.borderless],
@@ -154,17 +170,35 @@ class DockWindowManager: ObservableObject {
             newWindow.level = .floating
             newWindow.contentViewController = hostingController
             newWindow.alphaValue = 0
-            newWindow.orderFront(nil)
             self.window = newWindow
-            return
         }
-        window?.setFrame(newFrame, display: false)
+        if deleteMask == nil {
+            let deleteZone = NSWindow(
+                contentRect: deleteMaskFrame,
+                styleMask: [.borderless],
+                backing: .buffered,
+                defer: false
+            )
+            let deleteView = DeleteMaskView()
+                .environmentObject(dragDropManager)
+            deleteZone.contentViewController = NSHostingController(rootView: deleteView)
+            self.deleteMask = deleteZone
+        }
+        
+        window?.setFrame(newFrame, display: false)// render later
+        deleteMask?.setFrame(deleteMaskFrame, display: false)
+        window?.addChildWindow(deleteMask!, ordered: .below)
+        
     }
     
     // MARK: - hide dock
     func hideDock() {
         guard let window = window else {
             print("No window assigned")
+            return
+        }
+        guard deleteMask != nil else {
+            print("No delete mask assigned")
             return
         }
         NSAnimationContext.runAnimationGroup { context in

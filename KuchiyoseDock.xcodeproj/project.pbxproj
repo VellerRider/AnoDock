@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A156CCC2D37679C0052372C /* WindowAnimation in Frameworks */ = {isa = PBXBuildFile; productRef = 1A156CCB2D37679C0052372C /* WindowAnimation */; };
+		1A6565232D3B3AD50063CE7B /* DeleteMaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6565222D3B3AD50063CE7B /* DeleteMaskView.swift */; };
 		1A66D77E2CEEF3F500BDE735 /* DockEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A66D77D2CEEF3F500BDE735 /* DockEditorView.swift */; };
 		1A78BBEA2D000E7A003A8162 /* OtherSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A78BBE92D000E7A003A8162 /* OtherSettingsView.swift */; };
 		1A8DB8402D13E15A00A2338B /* DockDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8DB83F2D13E15A00A2338B /* DockDataManager.swift */; };
@@ -62,6 +63,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A6565222D3B3AD50063CE7B /* DeleteMaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteMaskView.swift; sourceTree = "<group>"; };
 		1A66D77D2CEEF3F500BDE735 /* DockEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockEditorView.swift; sourceTree = "<group>"; };
 		1A78BBE92D000E7A003A8162 /* OtherSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherSettingsView.swift; sourceTree = "<group>"; };
 		1A8DB83F2D13E15A00A2338B /* DockDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockDataManager.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				1AEC4EE62CEA9E7500523CC1 /* VisualEffectView.swift */,
 				1AA1CABD2D1FCBF700933295 /* DockOverlayView.swift */,
 				1AFAC5A42D34A0DC00C28902 /* ItemPopoverView.swift */,
+				1A6565222D3B3AD50063CE7B /* DeleteMaskView.swift */,
 			);
 			path = DockInterface;
 			sourceTree = "<group>";
@@ -505,6 +508,7 @@
 				1A8DB8402D13E15A00A2338B /* DockDataManager.swift in Sources */,
 				1AFAC5B02D34D26200C28902 /* ReorderableForEach.swift in Sources */,
 				1AEC4EF22CEA9E7500523CC1 /* GeneralSettingsView.swift in Sources */,
+				1A6565232D3B3AD50063CE7B /* DeleteMaskView.swift in Sources */,
 				1AFAC59B2D347A2500C28902 /* EditorItemView.swift in Sources */,
 				1AEC4EF42CEA9E7500523CC1 /* SettingsView.swift in Sources */,
 				1ABA36E02D38EACA00BF0FF1 /* Test.swift in Sources */,

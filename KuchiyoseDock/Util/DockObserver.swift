@@ -61,7 +61,7 @@ class DockObserver: NSObject, ObservableObject {
         
         // Polling timer
         pollTimer = Timer.scheduledTimer(
-            timeInterval: recentApps.count > 7 ? 3 : 5,
+            timeInterval: recentApps.count > 7 ? 10 : 20,
             target: self,
             selector: #selector(pollUpdate),
             userInfo: nil,
@@ -91,7 +91,7 @@ class DockObserver: NSObject, ObservableObject {
     
     // MARK: - Timer Polling
     @objc private func pollUpdate() {
-        if DragDropManager.shared.isDragging {
+        if DragDropManager.shared.draggingItem != nil {
             print("Skipping pollUpdate because dragging is in progress.")
             return
         }

@@ -19,7 +19,9 @@ class DragDropManager: ObservableObject {
     var orderedDockItems: [DockItem] = []
     var orderedRecents: [DockItem] = []
     @Published var orderedItems: [DockItem] = []
-    @Published var isDragging: Bool = false
+    
+    @Published var draggingItem: DockItem? = nil
+    @Published var draggedEnteredDeleteZone: Bool = false
     
     private var dockObserver: DockObserver = .shared
     private var dockEditorSettings: DockEditorSettings = .shared
@@ -72,7 +74,9 @@ class DragDropManager: ObservableObject {
         dockObserver.dockItems = orderedDockItems
         dockObserver.recentApps = orderedRecents
         dockObserver.saveDockItems()
-        isDragging = false
+        draggingItem = nil
+        draggedEnteredDeleteZone = false
+
         dockObserver.refreshDock()
         // 这里不要call back updateOrderedItems了。
         // 放到refresh里面了。updateOrderedItems()
