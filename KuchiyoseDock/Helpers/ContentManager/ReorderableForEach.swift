@@ -89,17 +89,17 @@ struct DragRelocateDelegate: DropDelegate {
             
             // 从删除区拉回来的
             if let backItem = dragDropManager.draggedOutItem {
-                   print("back from delete zone")
+//                   print("back from delete zone")
                    DispatchQueue.main.async {
                        dragDropManager.draggedOutItem = nil
                         
                        moveAction(IndexSet(integer: -1), to!, backItem)
                        dragDropManager.draggingItem = backItem
-                       print("existingitem is retrieved")
+//                       print("existingitem is retrieved")
                    }
            } else if let itemProvider = info.itemProviders(for: [UTType.fileURL]).first {
                 // 外部拖入
-                print("new one here: \(itemProvider.description)")
+//                print("new one here: \(itemProvider.description)")
                 itemProvider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { (urlData, error) in
                     guard let data = urlData as? Data,
                           let url = URL(dataRepresentation: data, relativeTo: nil),
@@ -112,12 +112,12 @@ struct DragRelocateDelegate: DropDelegate {
                         
                         // 2) 让它成为 current，后面再随着鼠标移动“内部拖拽”
                         dragDropManager.draggingItem = newDockItem
-                        print("from outside")
+//                        print("from outside")
                     }
                 }
             }
         }
-        print("Proceed normal")
+//        print("Proceed normal")
         // 内部重排
         guard let currentDockItem = dragDropManager.draggingItem else { return }
         // 在 Swift 中可以这样：

@@ -33,6 +33,7 @@ class DragDropManager: ObservableObject {
     // 排序和动画的过程是同时进行的。
     
     func moveOrderedItems(from: Int, to: Int, Item: DockItem?) {
+        print("from: \(from), to: \(to)")
         
         // 1) 如果是外部 Finder 拖来的 .app => fromIndex = -1
         if from == -1 {
@@ -44,6 +45,8 @@ class DragDropManager: ObservableObject {
             if to < orderedDockItems.count {
                 // 插入到 dock
                 orderedDockItems.insert(newItem, at: to)
+            } else {
+                orderedRecents.insert(newItem, at: to - orderedDockItems.count)
             }
             return
         }
@@ -75,7 +78,6 @@ class DragDropManager: ObservableObject {
             let realTo = to - orderedDockItems.count
             orderedRecents.insert(draggedItem, at: realTo - 1)
         }
-        // else: in dock to recent, not implemented yet
     }
     // 将 这里 同步回 dockObserver
     func saveOrderedItems() {
