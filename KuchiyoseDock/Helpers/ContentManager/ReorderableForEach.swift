@@ -44,7 +44,7 @@ struct ReorderableForEach<Content: View>: View {
             }
             
             content(item)
-                .opacity(dragDropManager.draggingItem == item ? 0.3 : 1)
+                .opacity(dragDropManager.draggingItem == item ? 0 : 1)
                 .onDrag {
                     dragDropManager.draggingItem = item
                     dragDropManager.draggedInDockItem = true

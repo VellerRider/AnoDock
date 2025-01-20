@@ -11,7 +11,6 @@ struct DockOverlayView: View {
     
     @ObservedObject var dockWindowState: DockWindowState = .shared
     @ObservedObject var dockWindowManager: DockWindowManager = .shared
-    
     @ObservedObject var dockEditorSettings: DockEditorSettings = .shared
     
     @State var inEditorTab: Bool
@@ -58,14 +57,16 @@ struct DockOverlayView: View {
             }
             .border(Color.white.opacity(0.2), width: 0.75)
             .cornerRadius(24)
-            .padding(8)
+            .padding(36)
+            .shadow(color: dragDropManager.draggedOutItem != nil ? Color.accentColor : Color.clear,
+                    radius: dragDropManager.draggedOutItem != nil ? 12 : 0)
         }
         .fixedSize()
         .onHover { entered in
             if !inEditorTab {
                 dockWindowState.mouseIn = entered
                 if dockEditorSettings.cursorClose {
-                    if !entered {
+                    if !entered && !dragDropManager.isDragging {
                         dockWindowManager.hideDock()
                     }
                 }
@@ -75,7 +76,10 @@ struct DockOverlayView: View {
         .onAppear {
             // 同步最新 DockItem 列表到 dragDropManager
             dragDropManager.updateOrderedItems()
+            
         }
+
+
     
     }
 }

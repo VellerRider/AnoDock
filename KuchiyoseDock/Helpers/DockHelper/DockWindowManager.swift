@@ -56,6 +56,7 @@ class DockWindowManager: ObservableObject {
             .environmentObject(dockObserver)
             .environmentObject(dragDropManager)
 
+
         hostingController = NSHostingController(rootView: AnyView(overlayView))
     }
     // MARK: - update window position

@@ -16,16 +16,18 @@ struct DeleteMaskView: View {
         // 1) Entire window area
         
         ZStack {
+            
+            
             Rectangle()
-                .fill(dragDropManager.draggingItem != nil ? Color.white.opacity(0.1) : Color.clear)
+                .fill(dragDropManager.isDragging ? Color.white.opacity(0.1) : Color.clear)
+                
+            
         }
-        .cornerRadius(32)
         .onDrop(
             of: [UTType.dockItem, UTType.fileURL],
             delegate: DeleteZoneDropDelegate()
         )
-        // Only allow pointer events if we are dragging from ReorderableForEach
-        .allowsHitTesting(dragDropManager.draggingItem != nil)
+
 
     }
 }
@@ -44,12 +46,13 @@ struct DeleteZoneDropDelegate: DropDelegate {
     func dropEntered(info: DropInfo) {
         guard let item = dragDropManager.draggingItem else { return }
         DispatchQueue.main.async {
-            
+            print("Item entered delete zone")
             withAnimation(.dockUpdateAnimation) {
                 dragDropManager.orderedItems.removeAll(where: { $0.bundleID == item.bundleID })
                 dragDropManager.orderedRecents.removeAll(where: { $0.bundleID == item.bundleID })
                 dragDropManager.orderedDockItems.removeAll(where: { $0.bundleID == item.bundleID })
                 dragDropManager.draggedOutItem = item
+                print("Dragged out is this? \(dragDropManager.draggedOutItem == item)")
                 dragDropManager.draggingItem = nil
             }
         }
