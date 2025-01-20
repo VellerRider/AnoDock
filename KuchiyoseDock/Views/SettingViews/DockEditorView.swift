@@ -44,26 +44,8 @@ struct DockEditorView : View {
             .padding(.bottom, 20)
 
                 
-            CustomDockView()
+            DockOverlayView(inEditorTab: true, dockMaterial: .sidebar, dockBlendingMode: .behindWindow)
                 .padding(.bottom, 40)
-            HStack {
-                Text("Dock Apps")
-                    .font(.title)
-                ForEach(dockObserver.dockItems, id: \.id) { item in
-                    DockItemView(item: item, inEditor: false)
-                }
-            }
-            
-
-            // Recent Apps Section
-            HStack {
-                Text("Recent Apps")
-                    .font(.title)
-                ForEach(dockObserver.recentApps, id: \.id) { item in
-                    DockItemView(item: item, inEditor: false)
-                }
-            }
-            
             
             
             VStack(spacing: 20) {

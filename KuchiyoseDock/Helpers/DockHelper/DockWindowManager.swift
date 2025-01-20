@@ -52,7 +52,7 @@ class DockWindowManager: ObservableObject {
     // MARK: - load HostingController
     func loadHostingController() {
         // inject environement obj for live update
-        let overlayView = DockOverlayView(inEditorTab: false)
+        let overlayView = DockOverlayView(inEditorTab: false, dockMaterial: .fullScreenUI, dockBlendingMode: .behindWindow)
             .environmentObject(dockObserver)
             .environmentObject(dragDropManager)
 
@@ -165,7 +165,7 @@ class DockWindowManager: ObservableObject {
                 backing: .buffered,
                 defer: false
             )
-//            newWindow.isOpaque = false
+            newWindow.isOpaque = false
             newWindow.backgroundColor = .clear
             newWindow.hasShadow = true
             newWindow.level = .floating

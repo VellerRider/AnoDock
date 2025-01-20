@@ -45,11 +45,10 @@ struct ReorderableForEach<Content: View>: View {
             }
             
             content(item)
-                // 如果当前在拖拽这个 item，就让它透明
                 .opacity(dragDropManager.draggingItem == item ? 0 : 1)
                 .onDrag {
-                    dragDropManager.isDragging = true
                     dragDropManager.draggingItem = item
+                    dragDropManager.draggedInDockItem = true
                     return NSItemProvider(item: "\(item.bundleID)" as NSString, typeIdentifier: UTType.dockItem.identifier)
                 }
                 .onDrop(
@@ -72,6 +71,7 @@ struct ReorderableForEach<Content: View>: View {
 
 struct DragRelocateDelegate: DropDelegate {
     @ObservedObject var dragDropManager: DragDropManager = .shared
+    @ObservedObject var dockObserver: DockObserver = .shared
     let item: DockItem
     let listData: [DockItem]
     
@@ -83,36 +83,38 @@ struct DragRelocateDelegate: DropDelegate {
     var finishAction: () -> Void
     
     func dropEntered(info: DropInfo) {
+        dragDropManager.isDragging = true
         let to = listData.firstIndex(of: item)
         dragDropManager.draggedEnteredDeleteZone = false
         if dragDropManager.draggingItem == nil {
+            print("dragging item is nil")
             
             // 从删除区拉回来的
             if let backItem = dragDropManager.draggedOutItem {
-//                   print("back from delete zone")
                    DispatchQueue.main.async {
                        dragDropManager.draggedOutItem = nil
                         
                        moveAction(IndexSet(integer: -1), to!, backItem)
                        dragDropManager.draggingItem = backItem
-//                       print("existingitem is retrieved")
                    }
            } else if let itemProvider = info.itemProviders(for: [UTType.fileURL]).first {
                 // 外部拖入
-//                print("new one here: \(itemProvider.description)")
+               
                 itemProvider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { (urlData, error) in
                     guard let data = urlData as? Data,
                           let url = URL(dataRepresentation: data, relativeTo: nil),
                           let newDockItem = DockObserver.shared.createItemFromURL(url: url)
                     else { return }
-                    
+                    if dragDropManager.orderedItems.contains(where: { $0.bundleID == newDockItem.bundleID }) {
+                        print("can't add same item twice")
+                        return
+                    }
                     DispatchQueue.main.async {
                         // 1) 插入( from = -1 表示外部新增 )
                         moveAction(IndexSet(integer: -1), to!, newDockItem)
-                        
+                        print("Setting to dragging item")
                         // 2) 让它成为 current，后面再随着鼠标移动“内部拖拽”
                         dragDropManager.draggingItem = newDockItem
-//                        print("from outside")
                     }
                 }
             }
@@ -130,9 +132,9 @@ struct DragRelocateDelegate: DropDelegate {
             moveAction(IndexSet(integer: from), to > from ? to + 1 : to, nil)
         }
     }
-    
+
+
     func dropUpdated(info: DropInfo) -> DropProposal? {
-        
         .init(operation: .move)
     }
     

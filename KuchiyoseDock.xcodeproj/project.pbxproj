@@ -32,13 +32,11 @@
 		1AEC4EE82CEA9E7500523CC1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AEC4ED62CEA9E7500523CC1 /* Preview Assets.xcassets */; };
 		1AEC4EE92CEA9E7500523CC1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AEC4EDA2CEA9E7500523CC1 /* Assets.xcassets */; };
 		1AEC4EEC2CEA9E7500523CC1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EDB2CEA9E7500523CC1 /* ContentView.swift */; };
-		1AEC4EED2CEA9E7500523CC1 /* CustomDockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EDC2CEA9E7500523CC1 /* CustomDockView.swift */; };
 		1AEC4EF02CEA9E7500523CC1 /* DockItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EDF2CEA9E7500523CC1 /* DockItemView.swift */; };
 		1AEC4EF22CEA9E7500523CC1 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EE12CEA9E7500523CC1 /* GeneralSettingsView.swift */; };
 		1AEC4EF42CEA9E7500523CC1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EE42CEA9E7500523CC1 /* SettingsView.swift */; };
 		1AEC4EF52CEA9E7500523CC1 /* ShortcutsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EE52CEA9E7500523CC1 /* ShortcutsSettingsView.swift */; };
 		1AEC4EF62CEA9E7500523CC1 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EE62CEA9E7500523CC1 /* VisualEffectView.swift */; };
-		1AFAC59B2D347A2500C28902 /* EditorItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFAC59A2D347A2500C28902 /* EditorItemView.swift */; };
 		1AFAC59F2D349CAC00C28902 /* ItemPopoverManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFAC59E2D349CAC00C28902 /* ItemPopoverManager.swift */; };
 		1AFAC5A52D34A0DC00C28902 /* ItemPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFAC5A42D34A0DC00C28902 /* ItemPopoverView.swift */; };
 		1AFAC5A82D34BE0800C28902 /* Genie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFAC5A72D34BE0800C28902 /* Genie.swift */; };
@@ -90,14 +88,12 @@
 		1AEC4ED62CEA9E7500523CC1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1AEC4EDA2CEA9E7500523CC1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1AEC4EDB2CEA9E7500523CC1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		1AEC4EDC2CEA9E7500523CC1 /* CustomDockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDockView.swift; sourceTree = "<group>"; };
 		1AEC4EDF2CEA9E7500523CC1 /* DockItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockItemView.swift; sourceTree = "<group>"; };
 		1AEC4EE12CEA9E7500523CC1 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		1AEC4EE22CEA9E7500523CC1 /* KuchiyoseDock.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KuchiyoseDock.entitlements; sourceTree = "<group>"; };
 		1AEC4EE42CEA9E7500523CC1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		1AEC4EE52CEA9E7500523CC1 /* ShortcutsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsSettingsView.swift; sourceTree = "<group>"; };
 		1AEC4EE62CEA9E7500523CC1 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
-		1AFAC59A2D347A2500C28902 /* EditorItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorItemView.swift; sourceTree = "<group>"; };
 		1AFAC59E2D349CAC00C28902 /* ItemPopoverManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemPopoverManager.swift; sourceTree = "<group>"; };
 		1AFAC5A42D34A0DC00C28902 /* ItemPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemPopoverView.swift; sourceTree = "<group>"; };
 		1AFAC5A72D34BE0800C28902 /* Genie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genie.swift; sourceTree = "<group>"; };
@@ -295,18 +291,8 @@
 				1AEC4EE12CEA9E7500523CC1 /* GeneralSettingsView.swift */,
 				1AEC4EE52CEA9E7500523CC1 /* ShortcutsSettingsView.swift */,
 				1A78BBE92D000E7A003A8162 /* OtherSettingsView.swift */,
-				1AEC4EF92CEA9EBC00523CC1 /* DockEditor */,
 			);
 			path = SettingViews;
-			sourceTree = "<group>";
-		};
-		1AEC4EF92CEA9EBC00523CC1 /* DockEditor */ = {
-			isa = PBXGroup;
-			children = (
-				1AEC4EDC2CEA9E7500523CC1 /* CustomDockView.swift */,
-				1AFAC59A2D347A2500C28902 /* EditorItemView.swift */,
-			);
-			path = DockEditor;
 			sourceTree = "<group>";
 		};
 		1AFAC5A12D34A03E00C28902 /* DockHelper */ = {
@@ -503,7 +489,6 @@
 				1AEC4EEC2CEA9E7500523CC1 /* ContentView.swift in Sources */,
 				1ABBE4D22D33824200CCF124 /* DockWindowState.swift in Sources */,
 				1AA1CABE2D1FCBF700933295 /* DockOverlayView.swift in Sources */,
-				1AEC4EED2CEA9E7500523CC1 /* CustomDockView.swift in Sources */,
 				1AFAC5B22D3502FE00C28902 /* DockEditorSettings.swift in Sources */,
 				1AFAC59F2D349CAC00C28902 /* ItemPopoverManager.swift in Sources */,
 				1AEC4EF02CEA9E7500523CC1 /* DockItemView.swift in Sources */,
@@ -513,7 +498,6 @@
 				1AFAC5B02D34D26200C28902 /* ReorderableForEach.swift in Sources */,
 				1AEC4EF22CEA9E7500523CC1 /* GeneralSettingsView.swift in Sources */,
 				1A6565232D3B3AD50063CE7B /* DeleteMaskView.swift in Sources */,
-				1AFAC59B2D347A2500C28902 /* EditorItemView.swift in Sources */,
 				1AEC4EF42CEA9E7500523CC1 /* SettingsView.swift in Sources */,
 				1ABA36E02D38EACA00BF0FF1 /* Test.swift in Sources */,
 				1AEC4EF52CEA9E7500523CC1 /* ShortcutsSettingsView.swift in Sources */,

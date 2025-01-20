@@ -26,6 +26,8 @@ class DragDropManager: ObservableObject {
     @Published var draggedOutItem: DockItem? = nil
     @Published var draggedEnteredDeleteZone: Bool = false
     
+    @Published var draggedInDockItem: Bool = false
+    
     private var dockObserver: DockObserver = .shared
     private var dockEditorSettings: DockEditorSettings = .shared
     
@@ -33,7 +35,7 @@ class DragDropManager: ObservableObject {
     // 排序和动画的过程是同时进行的。
     
     func moveOrderedItems(from: Int, to: Int, Item: DockItem?) {
-        print("from: \(from), to: \(to)")
+//        print("from: \(from), to: \(to)")
         
         // 1) 如果是外部 Finder 拖来的 .app => fromIndex = -1
         if from == -1 {
@@ -51,10 +53,10 @@ class DragDropManager: ObservableObject {
             return
         }
         
+        let draggedItem = orderedItems.remove(at: from)
         // in same area rearrange
         if (from < orderedDockItems.count && to <= orderedDockItems.count) ||
             (from >= orderedDockItems.count && to > orderedDockItems.count) {
-            let draggedItem = orderedItems.remove(at: from)
             orderedItems.insert(draggedItem, at: to > from ? to - 1 : to)
             if from < orderedDockItems.count {
                 orderedDockItems.remove(at: from)
@@ -67,18 +69,17 @@ class DragDropManager: ObservableObject {
             }
         } else if from >= orderedDockItems.count && to <= orderedDockItems.count{
             // 先调整combined数组，再动分开的
-            let draggedItem = orderedItems.remove(at: from)
             orderedRecents.remove(at: from - orderedDockItems.count) // use real index
             orderedDockItems.insert(draggedItem, at: to)
             orderedItems.insert(draggedItem, at: to > from ? to - 1 : to)
         } else if from < orderedDockItems.count && to >= orderedDockItems.count{
-            let draggedItem = orderedItems.remove(at: from)
             orderedDockItems.remove(at: from)
             orderedItems.insert(draggedItem, at: to - 1)
             let realTo = to - orderedDockItems.count
             orderedRecents.insert(draggedItem, at: realTo - 1)
         }
     }
+    
     // 将 这里 同步回 dockObserver
     func saveOrderedItems() {
         dockObserver.dockItems = orderedDockItems
@@ -88,6 +89,7 @@ class DragDropManager: ObservableObject {
         draggingItem = nil
         draggedEnteredDeleteZone = false
         draggedOutItem = nil
+        draggedInDockItem = false
         dockObserver.refreshDock()
         // 这里不要call back updateOrderedItems了。
         // 放到refresh里面了。updateOrderedItems()
@@ -115,6 +117,8 @@ class DragDropManager: ObservableObject {
     }
     
     
+    
+    
     // MARK: - 添加新 App 到 Dock
     // 例如通过 NSOpenPanel 选取 .app
     func manualAddApp() {
@@ -127,7 +131,7 @@ class DragDropManager: ObservableObject {
             if let newItem = dockObserver.createItemFromURL(url: url) {
                 dockObserver.addItemToPos(newItem, nil)
                 dockObserver.saveDockItems()
-                dockObserver.refreshDock()
+                updateOrderedItems()
             }
         }
     }
@@ -170,9 +174,8 @@ class DragDropManager: ObservableObject {
         dockEditorSettings.isEditing.toggle()
         if !dockEditorSettings.isEditing {
             // 收尾动作
-            updateOrderedItems()
+            saveOrderedItems()
             dockObserver.saveDockItems()
-            dockObserver.refreshDock()
         }
     }
 }

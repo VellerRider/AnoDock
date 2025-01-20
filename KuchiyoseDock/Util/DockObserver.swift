@@ -184,6 +184,11 @@ class DockObserver: NSObject, ObservableObject {
         return item
     }
     
+    // MARK: - check if this draggedItem exist in observer
+    // if not, then it's from outside and not saved yet
+    func hasItem(_ bundleID: String) -> Bool {
+        return (dockItems.contains(where: { $0.bundleID == bundleID }) || recentApps.contains(where: { $0.bundleID == bundleID }))
+    }
     
     // MARK: - Move items in the dock
     /// 用于拖拽重排 DockItem 的顺序

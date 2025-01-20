@@ -52,12 +52,13 @@ struct KuchiyoseDockApp: App {
             SettingsLink {
                 Text("Settings")
             }
+            
             Divider()
             Button("Quit") {
                 NSApplication.shared.terminate(nil)
             }
         }
-        .menuBarExtraStyle(.window) // 或 .automatic
+        .menuBarExtraStyle(.automatic)
 
         Settings {
             if !AXIsProcessTrusted() {

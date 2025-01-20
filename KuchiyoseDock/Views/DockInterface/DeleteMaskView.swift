@@ -27,7 +27,7 @@ struct DeleteMaskView: View {
             
             // 3) Use a custom drop delegate
             .onDrop(
-                of: [UTType.dockItem],
+                of: [UTType.dockItem, UTType.fileURL],
                 delegate: DeleteZoneDropDelegate()
             )
             
@@ -43,8 +43,6 @@ struct DeleteZoneDropDelegate: DropDelegate {
     
     
     func dropUpdated(info: DropInfo) -> DropProposal? {
-        // "move" means we accept the drop for reordering or similar.
-        // Here it's effectively "move" from the dock to 'delete zone'.
         .init(operation: .move)
     }
     
@@ -55,8 +53,6 @@ struct DeleteZoneDropDelegate: DropDelegate {
             dragDropManager.orderedItems.removeAll(where: { $0.bundleID == item.bundleID })
             dragDropManager.orderedRecents.removeAll(where: { $0.bundleID == item.bundleID })
             dragDropManager.orderedDockItems.removeAll(where: { $0.bundleID == item.bundleID })
-            dockObserver.dockItems = dragDropManager.orderedDockItems
-            dockObserver.recentApps = dragDropManager.orderedRecents
             dragDropManager.draggedOutItem = item
             dragDropManager.draggingItem = nil
         }

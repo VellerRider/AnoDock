@@ -40,7 +40,7 @@ struct DockItemView: View {
                 
             if item.isRunning {
                 Circle()
-                    .fill(Color.gray)
+                    .fill(Color.black.opacity(0.75))
                     .frame(width: 4, height: 4)
                     .offset(y: 34)
             }
@@ -60,6 +60,8 @@ struct DockItemView: View {
         .onHover { hovering in
             isHovering = hovering
         }
+        
+        
     }
     
     // MARK: - Icon Logic
