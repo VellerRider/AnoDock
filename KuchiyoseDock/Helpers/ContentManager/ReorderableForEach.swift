@@ -46,6 +46,7 @@ struct ReorderableForEach<Content: View>: View {
             content(item)
                 .opacity(dragDropManager.draggingItem == item ? 0 : 1)
                 .onDrag {
+                    dragDropManager.isDragging = true
                     dragDropManager.draggingItem = item
                     dragDropManager.draggedInDockItem = true
                     return NSItemProvider(item: "\(item.bundleID)" as NSString, typeIdentifier: UTType.dockItem.identifier)
