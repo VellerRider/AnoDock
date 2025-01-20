@@ -24,7 +24,6 @@ class DragDropManager: ObservableObject {
     @Published var draggingItem: DockItem? = nil
     // for save temp item
     @Published var draggedOutItem: DockItem? = nil
-    @Published var draggedEnteredDeleteZone: Bool = false
     
     @Published var draggedInDockItem: Bool = false
     
@@ -87,7 +86,6 @@ class DragDropManager: ObservableObject {
         dockObserver.saveDockItems()
         isDragging = false
         draggingItem = nil
-        draggedEnteredDeleteZone = false
         draggedOutItem = nil
         draggedInDockItem = false
         dockObserver.refreshDock()

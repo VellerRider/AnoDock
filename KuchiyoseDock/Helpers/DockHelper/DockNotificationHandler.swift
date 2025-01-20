@@ -26,19 +26,22 @@ class DockNotificationHandler: NSObject {
             name: Notification.Name("SummonDock"),
             object: nil
         )
+        
     }
     
     @objc private func toggleDockWindow() {
         if !dockWindowState.showDockWindow {
             dockWindowManager.showDock()
+            dockWindowState.showDockWindow = true
         } else {
             dockWindowManager.hideDock()
-
+            dockWindowState.showDockWindow = false
         }
     }
-    
+
     deinit {
         // 移除通知
         NotificationCenter.default.removeObserver(self, name: Notification.Name("SummonDock"), object: nil)
+
     }
 }

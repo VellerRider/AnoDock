@@ -12,6 +12,8 @@ struct DockOverlayView: View {
     @ObservedObject var dockWindowState: DockWindowState = .shared
     @ObservedObject var dockWindowManager: DockWindowManager = .shared
     
+    @ObservedObject var dockEditorSettings: DockEditorSettings = .shared
+    
     @State var inEditorTab: Bool
     @State var dockMaterial: NSVisualEffectView.Material
     @State var dockBlendingMode: NSVisualEffectView.BlendingMode
@@ -29,8 +31,7 @@ struct DockOverlayView: View {
 
             ZStack {
                 VisualEffectView(material: dockMaterial, blendingMode: dockBlendingMode)
-                    .border(Color.white.opacity(0.2), width: 0.75)
-                    .cornerRadius(24)
+
                 
                 // 1) Dock Items 区域
                 HStack {
@@ -50,58 +51,44 @@ struct DockOverlayView: View {
                             }
                         }
                     )
+                    
                 }
-                
                 .padding(8)
+                
             }
+            .border(Color.white.opacity(0.2), width: 0.75)
+            .cornerRadius(24)
+            .padding(8)
         }
         .fixedSize()
-//        .onHover { entered in
-//            if !inEditorTab {
-//                dockWindowState.mouseIn = entered
-//                if !entered {
-//                    dockWindowManager.hideDock()
-//                }
-//            }
-//        }
+        .onHover { entered in
+            if !inEditorTab {
+                dockWindowState.mouseIn = entered
+                if dockEditorSettings.cursorClose {
+                    if !entered {
+                        dockWindowManager.hideDock()
+                    }
+                }
+            }
+        }
+        .onDrop(of: [UTType.dockItem, UTType.fileURL], delegate: dropLeaveDockDelegate(inEditor: $inEditorTab))
         .onAppear {
             // 同步最新 DockItem 列表到 dragDropManager
             dragDropManager.updateOrderedItems()
         }
-        .onDrop(of: [UTType.dockItem, UTType.fileURL], delegate: dropLeaveDockDelegate(inEditor: $inEditorTab))
     
     }
 }
 struct dropLeaveDockDelegate: DropDelegate {
     @ObservedObject var dragDropManager: DragDropManager = .shared
     @ObservedObject var dockObserver: DockObserver = .shared
+    @ObservedObject var dockWindowManager: DockWindowManager = .shared
+    @ObservedObject var dockWindowState: DockWindowState = .shared
     @Binding var inEditor: Bool
     func performDrop(info: DropInfo) -> Bool {
         // 如果dock中的item drop进这里，应该让他返回原地
         dragDropManager.saveOrderedItems()
         return false
-    }
-    
-    func dropEntered(info: DropInfo) {
-        if !inEditor {
-            dragDropManager.draggedEnteredDeleteZone = false
-            
-        }
-    }
-    
-    func dropUpdated(info: DropInfo) -> DropProposal? {
-        // "move" means we accept the drop for reordering or similar.
-        // Here it's effectively "move" from the dock to 'delete zone'.
-        .init(operation: .move)
-    }
-    
-    func dropExited(info: DropInfo) {
-        if dragDropManager.draggingItem != nil {
-            if !inEditor {
-            // 内部拖出，或者内部卡缝drop
-                dragDropManager.draggedEnteredDeleteZone = true
-            }
-        }
     }
 }
 

@@ -7,7 +7,7 @@
 
 import Foundation
 class DockWindowState: ObservableObject {
+    static let shared = DockWindowState()
     @Published var showDockWindow: Bool = false
     @Published var mouseIn: Bool = false
-    static let shared = DockWindowState()
 }

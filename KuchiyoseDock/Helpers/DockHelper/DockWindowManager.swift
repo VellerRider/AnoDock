@@ -145,8 +145,8 @@ class DockWindowManager: ObservableObject {
         let newFrame = NSRect(x: globalOriginX, y: globalOriginY,
                               width: finalWidth, height: finalHeight)
         // 计算 deleteMaskFrame 的新尺寸
-        let deleteMaskWidth = newFrame.width * 1.5
-        let deleteMaskHeight = newFrame.height * 3
+        let deleteMaskWidth = newFrame.width * 16
+        let deleteMaskHeight = newFrame.height * 24
         let deleteMaskX = newFrame.midX - deleteMaskWidth / 2
         let deleteMaskY = newFrame.midY - deleteMaskHeight / 2
         let deleteMaskFrame = NSRect(
@@ -183,6 +183,7 @@ class DockWindowManager: ObservableObject {
             deleteZone.backgroundColor = .clear
             let deleteView = DeleteMaskView()
                 .environmentObject(dragDropManager)
+                .environmentObject(dockWindowState)
             deleteZone.contentViewController = NSHostingController(rootView: deleteView)
             self.deleteMask = deleteZone
         }

@@ -18,7 +18,6 @@ struct ReorderableForEach<Content: View>: View {
     let content: (DockItem) -> Content
     // 拖拽过程中
     @State private var hasChangedLocation: Bool = false
-//    @State private var draggingItem: DockItem?  // 只用 DockItem
     
 
     init(
@@ -45,7 +44,7 @@ struct ReorderableForEach<Content: View>: View {
             }
             
             content(item)
-                .opacity(dragDropManager.draggingItem == item ? 0 : 1)
+                .opacity(dragDropManager.draggingItem == item ? 0.3 : 1)
                 .onDrag {
                     dragDropManager.draggingItem = item
                     dragDropManager.draggedInDockItem = true
@@ -85,7 +84,6 @@ struct DragRelocateDelegate: DropDelegate {
     func dropEntered(info: DropInfo) {
         dragDropManager.isDragging = true
         let to = listData.firstIndex(of: item)
-        dragDropManager.draggedEnteredDeleteZone = false
         if dragDropManager.draggingItem == nil {
             print("dragging item is nil")
             
@@ -105,11 +103,14 @@ struct DragRelocateDelegate: DropDelegate {
                           let url = URL(dataRepresentation: data, relativeTo: nil),
                           let newDockItem = DockObserver.shared.createItemFromURL(url: url)
                     else { return }
-                    if dragDropManager.orderedItems.contains(where: { $0.bundleID == newDockItem.bundleID }) {
-                        print("can't add same item twice")
-                        return
-                    }
                     DispatchQueue.main.async {
+                        if dragDropManager.orderedItems.contains(where: { $0.bundleID == newDockItem.bundleID }) {
+                            let bundleID = newDockItem.bundleID
+                            dragDropManager.orderedItems.removeAll(where: { $0.bundleID == bundleID })
+                            dragDropManager.orderedRecents.removeAll(where: { $0.bundleID == bundleID })
+                            dragDropManager.orderedDockItems.removeAll(where: { $0.bundleID == bundleID })
+                            print("can't add same item twice")
+                        }
                         // 1) 插入( from = -1 表示外部新增 )
                         moveAction(IndexSet(integer: -1), to!, newDockItem)
                         print("Setting to dragging item")

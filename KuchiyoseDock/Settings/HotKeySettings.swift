@@ -114,13 +114,7 @@ class HotKeySettings: ObservableObject {
         
         // Hook up the actual callback
         newHotKey.keyDownHandler = {
-            // This is where you "summon the dock"
-            // Typically you'd post a notification or call a shared function
-            // Example:
             NotificationCenter.default.post(name: NSNotification.Name("SummonDock"), object: nil)
-            
-            // Or if you want direct logic here, do it, but often you want
-            // a place in the main app to do the actual UI logic.
         }
         
         // Publish the newly created hotkey
