@@ -62,16 +62,16 @@ struct DockOverlayView: View {
                     radius: dragDropManager.draggedOutItem != nil ? 12 : 0)
         }
         .fixedSize()
-        .onHover { entered in
-            if !inEditorTab {
-                dockWindowState.mouseIn = entered
-                if dockEditorSettings.cursorClose {
-                    if !entered && !dragDropManager.isDragging {
-                        dockWindowManager.hideDock()
-                    }
-                }
-            }
-        }
+//        .onHover { entered in
+//            if !inEditorTab {
+//                dockWindowState.mouseIn = entered
+//                if dockEditorSettings.cursorClose {
+//                    if !entered && !dragDropManager.isDragging {
+//                        dockWindowManager.hideDock()
+//                    }
+//                }
+//            }
+//        }
         .onDrop(of: [UTType.dockItem, UTType.fileURL], delegate: dropLeaveDockDelegate(inEditor: $inEditorTab))
         .onAppear {
             // 同步最新 DockItem 列表到 dragDropManager

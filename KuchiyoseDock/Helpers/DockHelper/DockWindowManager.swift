@@ -64,8 +64,8 @@ class DockWindowManager: ObservableObject {
 
         let proposedSize = NSSize(width: 600, height: 600)
         let idealSize = hostingController?.sizeThatFits(in: proposedSize) ?? proposedSize
-        let finalWidth = idealSize.width
-        let finalHeight = idealSize.height
+        let finalWidth = idealSize.width - 72 //减去padding * 2
+        let finalHeight = idealSize.height - 72
         
         let pointerGlobal = NSEvent.mouseLocation
         
@@ -140,11 +140,12 @@ class DockWindowManager: ObservableObject {
         }
         
         // 4. 把它转回全局坐标，用于创建 NSWindow
-        let globalOriginX = screenFrame.origin.x + localOriginX
-        let globalOriginY = screenFrame.origin.y + localOriginY
+        let globalOriginX = screenFrame.origin.x + localOriginX - 18 //offset padding/2 to align at mouse
+        let globalOriginY = screenFrame.origin.y + localOriginY + 18
         // 5. 创建窗口
         let newFrame = NSRect(x: globalOriginX, y: globalOriginY,
                               width: finalWidth, height: finalHeight)
+
         // 计算 deleteMaskFrame 的新尺寸
         let deleteMaskWidth = newFrame.width * 16
         let deleteMaskHeight = newFrame.height * 24

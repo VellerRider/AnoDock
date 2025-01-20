@@ -129,6 +129,7 @@ class DragDropManager: ObservableObject {
             if let newItem = dockObserver.createItemFromURL(url: url) {
                 dockObserver.addItemToPos(newItem, nil)
                 dockObserver.saveDockItems()
+                dockObserver.refreshDock()
                 updateOrderedItems()
             }
         }

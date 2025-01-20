@@ -8,6 +8,7 @@
 // View for single item in the dock UI
 import SwiftUI
 import Pow
+import ServiceManagement
 
 struct DockItemView: View {
     @EnvironmentObject var dockObserver: DockObserver
@@ -37,7 +38,7 @@ struct DockItemView: View {
                         .transition(.opacity)
                 }
             }
-                
+            
             if item.isRunning {
                 Circle()
                     .fill(Color.black.opacity(0.75))
@@ -127,21 +128,99 @@ struct DockItemView: View {
     // MARK: - Context Menu
     @ViewBuilder
     private func contextMenuItems(item: DockItem) -> some View {
-        Button("打开") {
-            launchOrActivateApplication(bundleIdentifier: item.bundleID, url: item.url)
-        }
+        // display all front windows
         if item.isRunning {
-            Button("退出") {
-                quitApplication(bundleIdentifier: item.bundleID)
+            applicationWindowItems(item: item)
+        }
+        Divider()
+        // keep/remove; open at login; show in finder
+        optionsMenu(item: item)
+        // miscellaneous
+        Divider()
+        if item.isRunning {
+            Button("Show All Windows") {
+                // 难搞
             }
-            Button("隐藏") {
+            Button("Hide") {
                 hideApplication(bundleIdentifier: item.bundleID)
             }
-        }
-        Button("显示在 Finder 中") {
-            NSWorkspace.shared.activateFileViewerSelecting([item.url])
+            Button("Quit") {
+                quitApplication(bundleIdentifier: item.bundleID)
+            }
+        } else {
+            Button("Show Recents") {
+                // 够呛能做
+            }
+            Button("Open") {
+                openItem(item)
+            }
         }
     }
+    
+    @ViewBuilder
+    private func applicationWindowItems(item: DockItem) -> some View {
+        let windows = getApplicationWindows(bundleIdentifier: item.bundleID)
+        if !windows.isEmpty {
+            ForEach(windows, id: \.self) { windowTitle in
+                Button(windowTitle) {
+                    switchToWindow(bundleIdentifier: item.bundleID, windowTitle: windowTitle)
+                }
+            }
+        }
+    }
+    @ViewBuilder
+    private func optionsMenu(item: DockItem) -> some View {
+        Menu("Options") {
+            
+            Button(action: {
+                toggleKeepInDock(item) // 切换状态
+            }) {
+                if dockObserver.dockItems.contains(where: { $0.bundleID == item.bundleID}) {
+                    Text("Remove from Dock")
+                } else {
+                    Text("Keep in Dock")
+                }
+            }
+            
+            Button("Show in Finder") {
+                NSWorkspace.shared.activateFileViewerSelecting([item.url])
+            }
+        }
+        
+    }
+    
+    // 具体实现逻辑
+    private func toggleKeepInDock(_ item: DockItem) {
+        if dockObserver.dockItems.contains(where: { $0.bundleID == item.bundleID }) {
+            dockObserver.removeItem(item.bundleID)
+        } else {
+            dockObserver.addItemToPos(item, nil)// add to last by default
+            dockObserver.refreshDock()
+        }
+    }
+    
+    
+    @ViewBuilder
+    private func basicActionsMenu(item: DockItem) -> some View {
+        if item.isRunning {
+            Button("Show All Windows") {
+                launchOrActivateApplication(bundleIdentifier: item.bundleID, url: item.url)
+            }
+            Button("Hide") {
+                hideApplication(bundleIdentifier: item.bundleID)
+            }
+            Button("Quit") {
+                quitApplication(bundleIdentifier: item.bundleID)
+            }
+        }
+    }
+    
+    
+    // 切换到指定窗口
+    private func switchToWindow(bundleIdentifier: String?, windowTitle: String) {
+        // TODO: 切换窗口的实现，这需要更深层次的 Accessibility API 使用。
+    }
+    
     // MARK: - Left-click. Just for Apps.
     private func openItem(_ dockItem: DockItem) {
         launchOrActivateApplication(bundleIdentifier: dockItem.bundleID, url: dockItem.url)
@@ -172,5 +251,32 @@ struct DockItemView: View {
               let runningApp = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).first
         else { return }
         runningApp.hide()
+    }
+    
+    private func getApplicationWindows(bundleIdentifier: String?) -> [String] {
+        guard let bundleIdentifier = bundleIdentifier else { return [] }
+        
+        let runningApps = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier)
+        guard let app = runningApps.first else { return [] }
+        
+        var windows: [String] = []
+        let appElement = AXUIElementCreateApplication(app.processIdentifier)
+        var value: CFTypeRef?
+        let result = AXUIElementCopyAttributeValue(appElement, kAXWindowsAttribute as CFString, &value)
+        if result == .success, let arrayRef = value {
+            // We know it's a CFArray, so cast it directly to [AXUIElement].
+            if let axWindowArray = arrayRef as? [AXUIElement] {
+                for axWindow in axWindowArray {
+                    var title: CFTypeRef?
+                    if AXUIElementCopyAttributeValue(axWindow, kAXTitleAttribute as CFString, &title) == .success,
+                       let titleString = title as? String,
+                       !titleString.isEmpty {
+                        windows.append(titleString)
+                    }
+                }
+            }
+            return windows
+        }
+        return []
     }
 }

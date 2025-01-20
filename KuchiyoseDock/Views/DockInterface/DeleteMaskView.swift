@@ -19,7 +19,7 @@ struct DeleteMaskView: View {
             
             
             Rectangle()
-                .fill(dragDropManager.isDragging ? Color.white.opacity(0.1) : Color.clear)
+                .fill(dragDropManager.isDragging ? Color.white.opacity(0.0001) : Color.clear)
                 
             
         }
