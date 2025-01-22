@@ -22,5 +22,7 @@
 		</dict>
 		<dict/>
 	</array>
+	<key>com.apple.security.temporary-exception.apple-events</key>
+	<string>com.geadro.KuchiyoseDock</string>
 </dict>
 </plist>

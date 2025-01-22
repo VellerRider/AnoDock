@@ -7,7 +7,6 @@
 
 // View for single item in the dock UI
 import SwiftUI
-import Pow
 import ServiceManagement
 
 struct DockItemView: View {
@@ -81,56 +80,72 @@ struct DockItemView: View {
                 .cornerRadius(8)
         }
     }
-    
-    // MARK: - Folder Thumbnail
-    @ViewBuilder
-    private func folderThumbnail(_ folderItems: [DockItem]) -> some View {
-        if folderItems.isEmpty {
-            ZStack {
-                Rectangle()
-                    .fill(Color.gray.opacity(0.2))
-                Image(systemName: "folder")
-                    .foregroundColor(.gray.opacity(0.7))
-                    .font(.system(size: 22))
-            }
-        } else {
-            GeometryReader { geo in
-                let cellSize = geo.size.width / 3
-                let slice = folderItems.prefix(9)
-                ZStack {
-                    ForEach(slice.indices, id: \.self) { i in
-                        let row = i / 3
-                        let col = i % 3
-                        if let subIcon = dockObserver.getIcon(slice[i]) {
-                            Image(nsImage: subIcon)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: cellSize, height: cellSize)
-                                .offset(
-                                    x: CGFloat(col) * cellSize - geo.size.width / 2 + cellSize / 2,
-                                    y: CGFloat(row) * cellSize - geo.size.height / 2 + cellSize / 2
-                                )
-                        } else {
-                            Rectangle()
-                                .fill(Color.gray.opacity(0.3))
-                                .frame(width: cellSize, height: cellSize)
-                                .offset(
-                                    x: CGFloat(col) * cellSize - geo.size.width / 2 + cellSize / 2,
-                                    y: CGFloat(row) * cellSize - geo.size.height / 2 + cellSize / 2
-                                )
-                        }
-                    }
-                }
-            }
-        }
-    }
+//    
+//    // MARK: - Folder Thumbnail
+//    @ViewBuilder
+//    private func folderThumbnail(_ folderItems: [DockItem]) -> some View {
+//        if folderItems.isEmpty {
+//            ZStack {
+//                Rectangle()
+//                    .fill(Color.gray.opacity(0.2))
+//                Image(systemName: "folder")
+//                    .foregroundColor(.gray.opacity(0.7))
+//                    .font(.system(size: 22))
+//            }
+//        } else {
+//            GeometryReader { geo in
+//                let cellSize = geo.size.width / 3
+//                let slice = folderItems.prefix(9)
+//                ZStack {
+//                    ForEach(slice.indices, id: \.self) { i in
+//                        let row = i / 3
+//                        let col = i % 3
+//                        if let subIcon = dockObserver.getIcon(slice[i]) {
+//                            Image(nsImage: subIcon)
+//                                .resizable()
+//                                .aspectRatio(contentMode: .fit)
+//                                .frame(width: cellSize, height: cellSize)
+//                                .offset(
+//                                    x: CGFloat(col) * cellSize - geo.size.width / 2 + cellSize / 2,
+//                                    y: CGFloat(row) * cellSize - geo.size.height / 2 + cellSize / 2
+//                                )
+//                        } else {
+//                            Rectangle()
+//                                .fill(Color.gray.opacity(0.3))
+//                                .frame(width: cellSize, height: cellSize)
+//                                .offset(
+//                                    x: CGFloat(col) * cellSize - geo.size.width / 2 + cellSize / 2,
+//                                    y: CGFloat(row) * cellSize - geo.size.height / 2 + cellSize / 2
+//                                )
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     // MARK: - Context Menu
     @ViewBuilder
     private func contextMenuItems(item: DockItem) -> some View {
         // display all front windows
         if item.isRunning {
-            applicationWindowItems(item: item)
+            let windowElements = dockObserver.appWindows[item.bundleID]
+            if windowElements != nil {
+                ForEach(windowElements ?? [], id: \.self) { window in
+                    if let title = getWindowTitle(window: window) {
+                        Button(action: { switchToWindow(window: window) }) {
+                            HStack {
+                                Image(systemName: "macwindow")
+                                Text(title)
+                            }
+                        }
+                    } else {
+                        Button(item.name) {
+                            switchToWindow(window: window)
+                        }
+                    }
+                }
+            }
         }
         Divider()
         // keep/remove; open at login; show in finder
@@ -141,8 +156,14 @@ struct DockItemView: View {
             Button("Show All Windows") {
                 // 难搞
             }
-            Button("Hide") {
-                hideApplication(bundleIdentifier: item.bundleID)
+            if dockObserver.appWindowsHidden[item.bundleID] ?? false { // is hiden
+                Button("Show") {
+                    showApplication(bundleIdentifier: item.bundleID)
+                }
+            } else {
+                Button("Hide") { // is showing
+                    hideApplication(bundleIdentifier: item.bundleID)
+                }
             }
             Button("Quit") {
                 quitApplication(bundleIdentifier: item.bundleID)
@@ -157,17 +178,50 @@ struct DockItemView: View {
         }
     }
     
-    @ViewBuilder
-    private func applicationWindowItems(item: DockItem) -> some View {
-        let windows = getApplicationWindows(bundleIdentifier: item.bundleID)
-        if !windows.isEmpty {
-            ForEach(windows, id: \.self) { windowTitle in
-                Button(windowTitle) {
-                    switchToWindow(bundleIdentifier: item.bundleID, windowTitle: windowTitle)
-                }
-            }
+
+    
+    // switch to some window
+    private func switchToWindow(window: AXUIElement) {
+        let raiseError = AXUIElementPerformAction(window, kAXRaiseAction as CFString)
+        if raiseError != .success {
+            print("Failed to raise window: \(raiseError.rawValue)")
         }
+        
+        let pressError = AXUIElementPerformAction(window, kAXPressAction as CFString)
+        if pressError != .success {
+            print("Failed to press window: \(pressError.rawValue)")
+        }
+        
+        let setMainError = AXUIElementSetAttributeValue(window, kAXMainAttribute as CFString, kCFBooleanTrue)
+        if setMainError != .success {
+            print("Failed to set window as main: \(setMainError.rawValue)")
+        }
+        
+        let setFocusError = AXUIElementSetAttributeValue(window, kAXFocusedAttribute as CFString, kCFBooleanTrue)
+        if setFocusError != .success {
+            print("Failed to set window as focused: \(setFocusError.rawValue)")
+        }
+        
+        let setFrontmostError = AXUIElementSetAttributeValue(window, kAXFrontmostAttribute as CFString, kCFBooleanTrue)
+        if setFrontmostError != .success {
+            print("Failed to set window as frontmost: \(setFrontmostError.rawValue)")
+        }
+        //只要上门正确地排列了窗口顺序，直接open似乎就可以
+        openItem(item)
+        
     }
+    // get AXUIElement window's title
+    private func getWindowTitle(window: AXUIElement) -> String? {
+        print("get title")
+        var title: CFTypeRef?
+        let error = AXUIElementCopyAttributeValue(window, kAXTitleAttribute as CFString, &title)
+        if error == .success, let title = title as? String, !title.isEmpty {
+            return title
+        }
+        return nil
+    }
+    
+    
     @ViewBuilder
     private func optionsMenu(item: DockItem) -> some View {
         Menu("Options") {
@@ -216,10 +270,6 @@ struct DockItemView: View {
     }
     
     
-    // 切换到指定窗口
-    private func switchToWindow(bundleIdentifier: String?, windowTitle: String) {
-        // TODO: 切换窗口的实现，这需要更深层次的 Accessibility API 使用。
-    }
     
     // MARK: - Left-click. Just for Apps.
     private func openItem(_ dockItem: DockItem) {
@@ -243,7 +293,9 @@ struct DockItemView: View {
         guard let bundleIdentifier = bundleIdentifier,
               let runningApp = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).first
         else { return }
-        runningApp.terminate()
+        print("Terminating \(bundleIdentifier)")
+        
+        runningApp.forceTerminate()
     }
     
     private func hideApplication(bundleIdentifier: String?) {
@@ -251,32 +303,16 @@ struct DockItemView: View {
               let runningApp = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).first
         else { return }
         runningApp.hide()
+        dockObserver.appWindowsHidden[bundleIdentifier] = true
     }
     
-    private func getApplicationWindows(bundleIdentifier: String?) -> [String] {
-        guard let bundleIdentifier = bundleIdentifier else { return [] }
-        
-        let runningApps = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier)
-        guard let app = runningApps.first else { return [] }
-        
-        var windows: [String] = []
-        let appElement = AXUIElementCreateApplication(app.processIdentifier)
-        var value: CFTypeRef?
-        let result = AXUIElementCopyAttributeValue(appElement, kAXWindowsAttribute as CFString, &value)
-        if result == .success, let arrayRef = value {
-            // We know it's a CFArray, so cast it directly to [AXUIElement].
-            if let axWindowArray = arrayRef as? [AXUIElement] {
-                for axWindow in axWindowArray {
-                    var title: CFTypeRef?
-                    if AXUIElementCopyAttributeValue(axWindow, kAXTitleAttribute as CFString, &title) == .success,
-                       let titleString = title as? String,
-                       !titleString.isEmpty {
-                        windows.append(titleString)
-                    }
-                }
-            }
-            return windows
-        }
-        return []
+    private func showApplication(bundleIdentifier: String?) {
+        guard let bundleIdentifier = bundleIdentifier,
+              let runningApp = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).first
+        else { return }
+        runningApp.unhide()
+        dockObserver.appWindowsHidden[bundleIdentifier] = false
+        openItem(item)
     }
+
 }

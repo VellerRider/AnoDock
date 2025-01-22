@@ -10,8 +10,6 @@
 // 1. Track dock configuration. Check what's added to dock, or removed from dock. Only main app and folder.
 // 2. Watch in-dock app when is opened or closed.
 // 3. dealing with special apps that does not send notification when terminated
-// TODO: implement folder logic later
-// TODO: implement system dock setting edit later
 
 import Foundation
 import Cocoa
@@ -28,6 +26,14 @@ class DockObserver: NSObject, ObservableObject {
     // 仍保留最近使用的应用
     @Published var recentApps: [DockItem] = []
     
+    // 每个app的window
+    @Published var appWindows: [String: [AXUIElement]] = [:]
+    // if an app got all window hidden
+    @Published var appWindowsHidden: [String: Bool] = [:]
+    // track whether a pid is observed
+    private var observers: [pid_t: AXObserver] = [:]
+
+    
     // item.BundleID : icon
     var appIcons: [String: NSImage] = [:]
     
@@ -35,6 +41,9 @@ class DockObserver: NSObject, ObservableObject {
     private var maxRecentApps: Int { 5 }  // max limit out-of-dock recent apps
     
     private var pollTimer: Timer?
+    
+    
+
     
     // MARK: - Init / Deinit
     override init() {
@@ -70,10 +79,6 @@ class DockObserver: NSObject, ObservableObject {
     }
     
     deinit {
-        // Stop observing
-        UserDefaults.standard.removeObserver(self, forKeyPath: "persistent-apps")
-        UserDefaults.standard.removeObserver(self, forKeyPath: "persistent-others")
-        
         NSWorkspace.shared.notificationCenter.removeObserver(
             self,
             name: NSWorkspace.didLaunchApplicationNotification,
@@ -85,6 +90,10 @@ class DockObserver: NSObject, ObservableObject {
             object: nil
         )
         
+        for app in NSWorkspace.shared.runningApplications where app.activationPolicy == .regular {
+            removeObserverForApp(app)
+        }
+        observers.removeAll()
         pollTimer?.invalidate()
     }
     
@@ -102,33 +111,8 @@ class DockObserver: NSObject, ObservableObject {
     
     // MARK: - Application Launch
     @objc private func appLaunched(_ notification: Notification) {
-        guard
-            let userInfo = notification.userInfo,
-            let runningApp = userInfo[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication,
-            let bundleID = runningApp.bundleIdentifier
-        else {
-            return
-        }
         DispatchQueue.main.async {
             withAnimation(.dockUpdateAnimation) {
-                // 如果已经在 dockItems 中，就更新 isRunning
-                if let dockIndex = self.dockItems.firstIndex(where: { $0.bundleID == bundleID }) {
-                    self.dockItems[dockIndex].isRunning = true
-                    
-                    // 如果在 recentApps 中，就更新并移到 front
-                } else if let index = self.recentApps.firstIndex(where: { $0.bundleID == bundleID }) {
-                    self.recentApps[index].isRunning = true
-                    if index != 0 {
-                        let app = self.recentApps.remove(at: index)
-                        self.recentApps.insert(app, at: 0)
-                    }
-                } else {
-                    // 不在 dock / recent，就创建一个新的 DockItem 插入 recent
-                    guard let url = runningApp.bundleURL else { return }
-                    guard let item = self.createItemFromURL(url: url) else { return }
-                    self.insertIntoRecent(item)
-                    self.loadIconFromWorkspace(item)
-                }
                 self.refreshDock()
             }
         }
@@ -137,27 +121,8 @@ class DockObserver: NSObject, ObservableObject {
     
     // MARK: - Application Termination
     @objc private func appTerminated(_ notification: Notification) {
-        guard
-            let userInfo = notification.userInfo,
-            let runningApp = userInfo[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication,
-            let bundleID = runningApp.bundleIdentifier
-        else {
-            return
-        }
         DispatchQueue.main.async {
             withAnimation(.dockUpdateAnimation) {
-                // 如果在 dockItems 中，则更新 isRunning
-                if let dockIndex = self.dockItems.firstIndex(where: { $0.bundleID == bundleID }) {
-                    self.dockItems[dockIndex].isRunning = false
-                }
-                // 如果在 recentApps 中
-                if let index = self.recentApps.firstIndex(where: { $0.bundleID == bundleID }) {
-                    self.recentApps[index].isRunning = false
-                    if self.recentApps.count > self.maxRecentApps {
-                        self.recentApps.remove(at: index)
-                    }
-                }
-                
                 self.refreshDock()
             }
         }
@@ -199,7 +164,6 @@ class DockObserver: NSObject, ObservableObject {
         let item = dockItems.remove(at: from)
         dockItems.insert(item, at: (to > from) ? (to - 1) : to)
     }
-    
     
     // MARK: - Remove an item from dock
     func removeItem(_ bundleID: String) {
@@ -243,33 +207,16 @@ class DockObserver: NSObject, ObservableObject {
     
     // MARK: - Load / Save (Persistent)
     func loadDockItems() {
-        // 从持久层加载
         let apps = DockDataManager.shared.loadDockItems()
-        // 将其作为 dockItems 的当前状态
         self.dockItems = apps
     }
     
     func saveDockItems() {
-        // 直接把 dockItems 持久化
         DockDataManager.shared.saveDockItems(dockItems)
     }
     
     
-    // MARK: - Load icon
-    private func loadIconFromWorkspace(_ item: DockItem) {
-        let icon = NSWorkspace.shared.icon(forFile: item.url.path)
-        icon.size = NSSize(width: 64, height: 64)
-        appIcons[item.bundleID] = icon
-    }
-    
-    func getIcon(_ item: DockItem) -> NSImage? {
-        if let icon = appIcons[item.bundleID] {
-            return icon
-        } else {
-            loadIconFromWorkspace(item)
-            return appIcons[item.bundleID]
-        }
-    }
+
     
     
     // MARK: - refreshDock
@@ -277,14 +224,19 @@ class DockObserver: NSObject, ObservableObject {
         
         let runningApps = NSWorkspace.shared.runningApplications
             .filter { $0.activationPolicy == .regular }
+        // Handle window related stuff here
+        for app in runningApps {
+            createObserverForApp(app)
+            updateAppWindows(for: app)
+        }
         // 使用 reduce(into:) 将 runningApps 转换为字典，键为 bundleIdentifier，值为 RunningApplication 实例
         var currentRunningDic = runningApps.reduce(into: [String: NSRunningApplication]()) { result, app in
             if let bundleID = app.bundleIdentifier {
                 result[bundleID] = app
             }
         }
-        // turn all apps in dock running if it's in curRunningApps.
-        // remove that app in currentRunningApp, the ones left add to recent
+        // turn all apps in dock isRunning if it's in curRunningDic.
+        // remove that app in currentRunningDic, the ones left at last added to recent
         for item in dockItems {
             let running = currentRunningDic[item.bundleID] != nil
             if running {
@@ -304,7 +256,6 @@ class DockObserver: NSObject, ObservableObject {
             }
         }
         // add every one in the rest of currentRunningApp to recent.
-        // 好像把syncRecent的逻辑吸收了。
         for app in currentRunningDic.values {
             guard let url = app.bundleURL else { return }
             guard let newRecent = self.createItemFromURL(url: url) else {
@@ -334,6 +285,7 @@ class DockObserver: NSObject, ObservableObject {
         runningRecents = recentApps.filter { $0.isRunning }.count
         
         // 如果 runningRecents 超过 maxRecentApps
+        // TODO: - remove observer for deleted apps
         if runningRecents > maxRecentApps {
             recentApps = Array(recentApps.prefix(runningRecents))
         } else {
@@ -354,6 +306,107 @@ class DockObserver: NSObject, ObservableObject {
         }
         for item in recentApps {
             loadIconFromWorkspace(item)
+        }
+    }
+    // MARK: - Load icon
+    private func loadIconFromWorkspace(_ item: DockItem) {
+        let icon = NSWorkspace.shared.icon(forFile: item.url.path)
+        icon.size = NSSize(width: 64, height: 64)
+        appIcons[item.bundleID] = icon
+    }
+    
+    func getIcon(_ item: DockItem) -> NSImage? {
+        if let icon = appIcons[item.bundleID] {
+            return icon
+        } else {
+            loadIconFromWorkspace(item)
+            return appIcons[item.bundleID]
+        }
+    }
+    
+    // MARK: - AXObserver 管理
+    private func createObserverForApp(_ app: NSRunningApplication) {
+        let pid = app.processIdentifier
+        guard observers[pid] == nil else { return }
+        var observer: AXObserver?
+        let result = AXObserverCreate(pid, axObserverCallback, &observer)
+        guard result == .success, let observer else { return }
+
+        let appElement = AXUIElementCreateApplication(pid)
+
+        AXObserverAddNotification(observer, appElement, kAXWindowCreatedNotification as CFString, UnsafeMutableRawPointer(bitPattern: Int(pid)))
+        AXObserverAddNotification(observer, appElement, kAXUIElementDestroyedNotification as CFString, UnsafeMutableRawPointer(bitPattern: Int(pid)))
+        AXObserverAddNotification(observer, appElement, kAXApplicationHiddenNotification as CFString, UnsafeMutableRawPointer(bitPattern: Int(pid)))
+        AXObserverAddNotification(observer, appElement, kAXApplicationShownNotification as CFString, UnsafeMutableRawPointer(bitPattern: Int(pid)))
+
+        CFRunLoopAddSource(CFRunLoopGetMain(), AXObserverGetRunLoopSource(observer), .defaultMode)
+
+        observers[pid] = observer
+    }
+
+    private func removeObserverForApp(_ app: NSRunningApplication) {
+        let pid = app.processIdentifier
+        guard let observer = observers[pid] else { return }
+
+        let appElement = AXUIElementCreateApplication(pid)
+
+        AXObserverRemoveNotification(observer, appElement, kAXWindowCreatedNotification as CFString)
+        AXObserverRemoveNotification(observer, appElement, kAXUIElementDestroyedNotification as CFString)
+        AXObserverRemoveNotification(observer, appElement, kAXApplicationHiddenNotification as CFString)
+        AXObserverRemoveNotification(observer, appElement, kAXApplicationShownNotification as CFString)
+
+        observers.removeValue(forKey: pid)
+    }
+
+    
+    // MARK: - 更新单个应用窗口状态 - 从refreshdock分离，因为窗口操作不影响大局
+    /// 从 AXUIElement 拉取窗口信息，更新到 appWindowStatus
+    func updateAppWindows(for app: NSRunningApplication) {
+        guard let bundleID = app.bundleIdentifier else { return }
+        let appElement = AXUIElementCreateApplication(app.processIdentifier)
+        
+        var windowsCF: CFArray?
+        let err = AXUIElementCopyAttributeValues(appElement, kAXWindowsAttribute as CFString, 0, 100, &windowsCF)
+        if err == .success, let windows = windowsCF as? [AXUIElement] {
+            appWindows[bundleID] = windows
+        } else {
+            appWindows[bundleID] = []
+        }
+        
+        // 检查应用是否被隐藏 (可选)
+        var hiddenValue: CFTypeRef?
+        let hideErr = AXUIElementCopyAttributeValue(appElement, kAXHiddenAttribute as CFString, &hiddenValue)
+        if hideErr == .success,
+           let isHidden = hiddenValue as? Bool {
+            appWindowsHidden[bundleID] = isHidden
+        } else {
+            // 未知时默认视为可见
+            appWindowsHidden[bundleID] = false
+        }
+    }
+    
+
+    
+}
+
+// MARK: - AXObserver 回调
+func axObserverCallback(observer: AXObserver, element: AXUIElement, notificationName: CFString, userData: UnsafeMutableRawPointer?) {
+    guard let userData else { return }
+    let pid = pid_t(Int(bitPattern: userData))
+
+    DispatchQueue.main.async {
+        if let app = NSRunningApplication(processIdentifier: pid) {
+            guard let bundleID = app.bundleIdentifier else { return }
+            switch notificationName as String {
+            case kAXUIElementDestroyedNotification, kAXWindowCreatedNotification:
+                DockObserver.shared.updateAppWindows(for: app)
+            case kAXApplicationHiddenNotification:
+                DockObserver.shared.appWindowsHidden[bundleID] = true
+            case kAXApplicationShownNotification:
+                DockObserver.shared.appWindowsHidden[bundleID] = false
+            default:
+                break
+            }
         }
     }
 }
