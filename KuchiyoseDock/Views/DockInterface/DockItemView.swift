@@ -13,29 +13,32 @@ struct DockItemView: View {
     @EnvironmentObject var dockObserver: DockObserver
     @EnvironmentObject var dockEditorSettings: DockEditorSettings
     @EnvironmentObject var dragDropManager: DragDropManager
+    @ObservedObject var dockWindowState: DockWindowState = .shared
+    
     @ObservedObject var item: DockItem
-    @State var isHovering: Bool = false
+    
+    @GestureState private var isPressed: Bool = false
     @State var deleted: Bool = false
+
     
     var inEditor: Bool // in editor or not
     
     var body: some View {
         ZStack {
-            ZStack {
-                loadIcon()
-                
-                
-                if inEditor && dockEditorSettings.isEditing {
-                    Image(systemName: "xmark.circle.fill")
-                        .resizable()
-                        .frame(width: 16, height: 16)
-                        .foregroundColor(.red)
-                        .position(x: 5, y: 5)
-                        .onTapGesture {
-                            deleteSelf()
-                        }
-                        .transition(.opacity)
-                }
+            loadIcon()
+                .brightness(isPressed ? -0.2 : 0)
+                .animation(.easeInOut, value: isPressed)
+            
+            if inEditor && dockEditorSettings.isEditing {
+                Image(systemName: "xmark.circle.fill")
+                    .resizable()
+                    .frame(width: 16, height: 16)
+                    .foregroundColor(.red)
+                    .position(x: 5, y: 5)
+                    .onTapGesture {
+                        deleteSelf()
+                    }
+                    .transition(.opacity)
             }
             
             if item.isRunning {
@@ -46,6 +49,7 @@ struct DockItemView: View {
             }
         }
         .animation(.easeInOut, value: deleted)
+        //TODO: Problematic gesture. Need to darken this view while tapping.
         .onTapGesture {
             openItem(item)
         }
@@ -55,12 +59,10 @@ struct DockItemView: View {
             }
         })
         .contextMenu {
-            contextMenuItems(item: item)
+            if !dragDropManager.isDragging {
+                contextMenuItems(item: item)
+            }
         }
-        .onHover { hovering in
-            isHovering = hovering
-        }
-        
         
     }
     
@@ -80,53 +82,11 @@ struct DockItemView: View {
                 .cornerRadius(8)
         }
     }
-//    
-//    // MARK: - Folder Thumbnail
-//    @ViewBuilder
-//    private func folderThumbnail(_ folderItems: [DockItem]) -> some View {
-//        if folderItems.isEmpty {
-//            ZStack {
-//                Rectangle()
-//                    .fill(Color.gray.opacity(0.2))
-//                Image(systemName: "folder")
-//                    .foregroundColor(.gray.opacity(0.7))
-//                    .font(.system(size: 22))
-//            }
-//        } else {
-//            GeometryReader { geo in
-//                let cellSize = geo.size.width / 3
-//                let slice = folderItems.prefix(9)
-//                ZStack {
-//                    ForEach(slice.indices, id: \.self) { i in
-//                        let row = i / 3
-//                        let col = i % 3
-//                        if let subIcon = dockObserver.getIcon(slice[i]) {
-//                            Image(nsImage: subIcon)
-//                                .resizable()
-//                                .aspectRatio(contentMode: .fit)
-//                                .frame(width: cellSize, height: cellSize)
-//                                .offset(
-//                                    x: CGFloat(col) * cellSize - geo.size.width / 2 + cellSize / 2,
-//                                    y: CGFloat(row) * cellSize - geo.size.height / 2 + cellSize / 2
-//                                )
-//                        } else {
-//                            Rectangle()
-//                                .fill(Color.gray.opacity(0.3))
-//                                .frame(width: cellSize, height: cellSize)
-//                                .offset(
-//                                    x: CGFloat(col) * cellSize - geo.size.width / 2 + cellSize / 2,
-//                                    y: CGFloat(row) * cellSize - geo.size.height / 2 + cellSize / 2
-//                                )
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
     
     // MARK: - Context Menu
     @ViewBuilder
     private func contextMenuItems(item: DockItem) -> some View {
+
         // display all front windows
         if item.isRunning {
             let windowElements = dockObserver.appWindows[item.bundleID]
@@ -154,7 +114,7 @@ struct DockItemView: View {
         Divider()
         if item.isRunning {
             Button("Show All Windows") {
-                // 难搞
+                showAllWindowsWithAppleScript(bundleID: item.bundleID)
             }
             if dockObserver.appWindowsHidden[item.bundleID] ?? false { // is hiden
                 Button("Show") {
@@ -169,9 +129,6 @@ struct DockItemView: View {
                 quitApplication(bundleIdentifier: item.bundleID)
             }
         } else {
-            Button("Show Recents") {
-                // 够呛能做
-            }
             Button("Open") {
                 openItem(item)
             }
@@ -243,7 +200,7 @@ struct DockItemView: View {
         
     }
     
-    // 具体实现逻辑
+    // MARK: - toggle item in dock
     private func toggleKeepInDock(_ item: DockItem) {
         if dockObserver.dockItems.contains(where: { $0.bundleID == item.bundleID }) {
             dockObserver.removeItem(item.bundleID)
@@ -252,24 +209,6 @@ struct DockItemView: View {
             dockObserver.refreshDock()
         }
     }
-    
-    
-    @ViewBuilder
-    private func basicActionsMenu(item: DockItem) -> some View {
-        if item.isRunning {
-            Button("Show All Windows") {
-                launchOrActivateApplication(bundleIdentifier: item.bundleID, url: item.url)
-            }
-            Button("Hide") {
-                hideApplication(bundleIdentifier: item.bundleID)
-            }
-            Button("Quit") {
-                quitApplication(bundleIdentifier: item.bundleID)
-            }
-        }
-    }
-    
-    
     
     // MARK: - Left-click. Just for Apps.
     private func openItem(_ dockItem: DockItem) {
@@ -313,6 +252,31 @@ struct DockItemView: View {
         runningApp.unhide()
         dockObserver.appWindowsHidden[bundleIdentifier] = false
         openItem(item)
+    }
+    
+    func showAllWindowsWithAppleScript(bundleID: String) {
+        let appleScriptSource = """
+        on showAllWindowsForApp(bundleID)
+            tell application "System Events"
+                -- Bring the desired app to the front
+                set theApp to first application process whose bundle identifier is bundleID
+                set frontmost of theApp to true
+
+                -- Simulate the "Show All Windows" key stroke (Control + Down Arrow)
+                key code 125 using control down
+            end tell
+        end showAllWindowsForApp
+
+        showAllWindowsForApp("\(bundleID)")
+        """
+
+        if let script = NSAppleScript(source: appleScriptSource) {
+            var error: NSDictionary?
+            script.executeAndReturnError(&error)
+            if let error = error {
+                print("AppleScript error: \(error)")
+            }
+        }
     }
 
 }
