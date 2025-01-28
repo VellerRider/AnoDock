@@ -52,6 +52,7 @@ struct DockOverlayView: View {
                             }
                         }
                     )
+                    .border(Color.black, width: 0.5)
                     
                 }
                 .padding(8)

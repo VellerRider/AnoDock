@@ -18,7 +18,6 @@ struct ReorderableForEach<Content: View>: View {
     let content: (DockItem) -> Content
     // 拖拽过程中
     @State private var hasChangedLocation: Bool = false
-    
 
     init(
         items: [DockItem],

@@ -13,11 +13,17 @@ struct DockItemView: View {
     @EnvironmentObject var dockObserver: DockObserver
     @EnvironmentObject var dockEditorSettings: DockEditorSettings
     @EnvironmentObject var dragDropManager: DragDropManager
+    
+    @ObservedObject var dockWindowManager: DockWindowManager = .shared
     @ObservedObject var dockWindowState: DockWindowState = .shared
     
     @ObservedObject var item: DockItem
     
-    @GestureState private var isPressed: Bool = false
+    @State private var isPressed: Bool = false
+    
+    @State private var viewBounds: CGRect = .zero // 记录视图范围
+    @State private var verticalOffset: CGFloat = 72 // vertical offset for mouse in item detection
+
     @State var deleted: Bool = false
 
     
@@ -27,7 +33,7 @@ struct DockItemView: View {
         ZStack {
             loadIcon()
                 .brightness(isPressed ? -0.2 : 0)
-                .animation(.easeInOut, value: isPressed)
+                .animation(.easeInOut(duration: 0.05), value: isPressed)
             
             if inEditor && dockEditorSettings.isEditing {
                 Image(systemName: "xmark.circle.fill")
@@ -49,15 +55,71 @@ struct DockItemView: View {
             }
         }
         .animation(.easeInOut, value: deleted)
-        //TODO: Problematic gesture. Need to darken this view while tapping.
-        .onTapGesture {
-            openItem(item)
-        }
-        .onLongPressGesture(perform: {
+//        .simultaneousGesture(
+////              NOT WORKING A BUG
+//            LongPressGesture(minimumDuration: inEditor ? 0.75 : 3)
+//                .onChanged { value in
+//                    print("onChanged: \(value)")
+//                }
+//                .updating(self.$pressGesture) { currentState, gestureState, transaction in
+//                    print("currentState: \(currentState)")
+//                    print("gestureState: \(gestureState)")
+//                    print("transaction: \(transaction)")
+//                    gestureState = currentState
+//                    if !isPressed && !inEditor {
+//                        openItem(item)
+//                    }
+//                }
+//                .onEnded { finished in
+//                    print("finished: \(finished)")
+//                }
+//        )
+        
+        // 现在onPressingChanged会将app换到前台。
+        .background(
+            GeometryReader { geometry in
+                Color.clear
+                    .onAppear {
+                        // 初始记录视图范围
+                        self.viewBounds = geometry.frame(in: .global)
+                        print("initial view bounds:\(self.viewBounds)")
+                    }
+                    .onChange(of: isPressed, { oldValue, newValue in
+                        if isPressed {
+                            
+                            self.viewBounds = geometry.frame(in: .global)
+                            print("new view bounds:\(self.viewBounds)")
+                        }
+                    })
+            }
+        )
+        .onLongPressGesture(
+            minimumDuration: inEditor ? 0.5 : .infinity,
+            maximumDistance: inEditor ? 10 : 50,
+            perform: {
             if inEditor {
                 dragDropManager.toggleEditingMode()
             }
+        }, onPressingChanged: { pressing in
+            isPressed = pressing
+            if (!pressing && !inEditor) {
+                let mousePos = mouseLocationInWindow()
+                print("mousePos: \(mousePos)")
+                print(viewBounds.minX)
+                print(viewBounds.maxX)
+                print(viewBounds.minY)
+                print(viewBounds.maxY)
+                
+                if viewBounds.contains(mousePos) {
+                    openItem(item) // 如果鼠标在范围内，打开项目
+                } else {
+                    print("Mouse left the view bounds, skipping openItem.")
+                }
+                
+            }
         })
+
+        
         .contextMenu {
             if !dragDropManager.isDragging {
                 contextMenuItems(item: item)
@@ -65,7 +127,16 @@ struct DockItemView: View {
         }
         
     }
-    
+    /// 获取鼠标的位置
+    func mouseLocationInWindow() -> CGPoint {
+        let mouseScreenPos = NSEvent.mouseLocation   // 屏幕坐标
+        print("dock UI: \(dockWindowManager.dockUIFrame)");
+        // 把屏幕坐标减去 window 的 origin，就得到了“窗口内”的坐标
+        return CGPoint(
+            x: mouseScreenPos.x - dockWindowManager.dockUIFrame.minX,
+            y: mouseScreenPos.y - dockWindowManager.dockUIFrame.minY + verticalOffset
+        )
+    }
     // MARK: - Icon Logic
     @ViewBuilder
     private func loadIcon() -> some View {
@@ -212,7 +283,9 @@ struct DockItemView: View {
     
     // MARK: - Left-click. Just for Apps.
     private func openItem(_ dockItem: DockItem) {
+        
         launchOrActivateApplication(bundleIdentifier: dockItem.bundleID, url: dockItem.url)
+    
     }
     
     // MARK: - Delete Item
