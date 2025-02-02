@@ -122,9 +122,10 @@ struct DockItemView: View {
         }
         
     }
-    /// 获取鼠标的位置
+    // get mouse location in window, converted to local pos
+    // must use this & local geometry reader update, since long press -> drag -> not opening item relies on this
     func mouseLocationInWindow() -> CGPoint {
-        let mouseScreenPos = NSEvent.mouseLocation   // 屏幕坐标
+        let mouseScreenPos = NSEvent.mouseLocation //pos of screen
 //        print("dock UI: \(dockWindowManager.dockUIFrame)");
         return CGPoint(
             x: mouseScreenPos.x - dockWindowManager.dockUIFrame.minX,
