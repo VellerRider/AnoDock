@@ -34,12 +34,11 @@ struct ReorderableForEach<Content: View>: View {
     var body: some View {
         ForEach(Array(items.enumerated()), id: \.1.id) { (index, item) in
             
-            // 在 “DockItems” 与 “Recents” 的分界处插入一条线
             if index == dragDropManager.orderedDockItems.count {
+                
                 Rectangle()
                     .fill(Color.black.opacity(0.6))
-                    .frame(width: 1, height: 48)
-                    .padding(.vertical, 8)
+                    .frame(width: 1, height: 64)
             }
             
             content(item)

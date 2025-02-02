@@ -7,6 +7,18 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
+
+
+// 上报各个 DockItem 的视图坐标用的 PreferenceKey
+struct ItemFrameKey: PreferenceKey {
+    static var defaultValue: [UUID: CGRect] = [:]
+    
+    static func reduce(value: inout [UUID: CGRect], nextValue: () -> [UUID: CGRect]) {
+        // 合并多个子视图上报的值
+        value.merge(nextValue()) { $1 }
+    }
+}
+
 struct DockOverlayView: View {
     @EnvironmentObject var dockObserver: DockObserver
     @EnvironmentObject var dragDropManager: DragDropManager
@@ -19,7 +31,9 @@ struct DockOverlayView: View {
     @State var dockMaterial: NSVisualEffectView.Material
     @State var dockBlendingMode: NSVisualEffectView.BlendingMode
     
+    @State private var itemFrames: [UUID: CGRect] = [:]
 
+    
     init (inEditorTab: Bool, dockMaterial: NSVisualEffectView.Material, dockBlendingMode: NSVisualEffectView.BlendingMode) {
         self.inEditorTab = inEditorTab
         self.dockMaterial = dockMaterial
@@ -39,7 +53,16 @@ struct DockOverlayView: View {
                     ReorderableForEach(
                         items: dragDropManager.orderedItems,
                         content: { item in
-                            DockItemView(item: item, inEditor: inEditorTab)
+                            DockItemView(item: item, itemFrames: $itemFrames, inEditor: inEditorTab)
+                                .background(
+                                    GeometryReader { geo in
+                                        Color.clear
+                                            .preference(
+                                                key: ItemFrameKey.self,
+                                                value: [item.id: geo.frame(in: .named("DockOverlayCoordSpace"))]
+                                            )
+                                    }
+                                )
                         },
                         moveAction: { from, to, item in
                             withAnimation(.dockUpdateAnimation) {
@@ -56,7 +79,8 @@ struct DockOverlayView: View {
                     
                 }
                 .padding(8)
-                
+                .coordinateSpace(name: "DockOverlayCoordSpace")
+
             }
             .border(Color.white.opacity(0.2), width: 0.75)
             .cornerRadius(24)
@@ -75,12 +99,12 @@ struct DockOverlayView: View {
 //                }
 //            }
 //        }
-        .onDrop(of: [UTType.dockItem, UTType.fileURL], delegate: dropLeaveDockDelegate(inEditor: $inEditorTab))
-        .onAppear {
-            // 同步最新 DockItem 列表到 dragDropManager
-            dragDropManager.updateOrderedItems()
-            
+        // 监听所有 item 坐标的变化
+        .onPreferenceChange(ItemFrameKey.self) { newFrames in
+            self.itemFrames = newFrames
         }
+        .onDrop(of: [UTType.dockItem, UTType.fileURL], delegate: dropLeaveDockDelegate(inEditor: $inEditorTab))
+
 
 
     

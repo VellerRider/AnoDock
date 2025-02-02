@@ -20,10 +20,14 @@ struct DockItemView: View {
     @ObservedObject var item: DockItem
     
     @State private var isPressed: Bool = false
+    @State private var isHovering: Bool = false
     
-    @State private var viewBounds: CGRect = .zero // 记录视图范围
-    @State private var verticalOffset: CGFloat = 72 // vertical offset for mouse in item detection
+    @State private var viewBounds: CGRect = .zero // 记录view frame
+    @State private var verticalOffset: CGFloat = 36 // vertical offset for mouse in item detection
 
+    @Binding var itemFrames: [UUID: CGRect]
+
+    
     @State var deleted: Bool = false
 
     
@@ -32,6 +36,7 @@ struct DockItemView: View {
     var body: some View {
         ZStack {
             loadIcon()
+            
                 .brightness(isPressed ? -0.2 : 0)
                 .animation(.easeInOut(duration: 0.05), value: isPressed)
             
@@ -54,45 +59,11 @@ struct DockItemView: View {
                     .offset(y: 34)
             }
         }
-        .animation(.easeInOut, value: deleted)
-//        .simultaneousGesture(
-////              NOT WORKING A BUG
-//            LongPressGesture(minimumDuration: inEditor ? 0.75 : 3)
-//                .onChanged { value in
-//                    print("onChanged: \(value)")
-//                }
-//                .updating(self.$pressGesture) { currentState, gestureState, transaction in
-//                    print("currentState: \(currentState)")
-//                    print("gestureState: \(gestureState)")
-//                    print("transaction: \(transaction)")
-//                    gestureState = currentState
-//                    if !isPressed && !inEditor {
-//                        openItem(item)
-//                    }
-//                }
-//                .onEnded { finished in
-//                    print("finished: \(finished)")
-//                }
-//        )
         
-        // 现在onPressingChanged会将app换到前台。
-        .background(
-            GeometryReader { geometry in
-                Color.clear
-                    .onAppear {
-                        // 初始记录视图范围
-                        self.viewBounds = geometry.frame(in: .global)
-                        print("initial view bounds:\(self.viewBounds)")
-                    }
-                    .onChange(of: isPressed, { oldValue, newValue in
-                        if isPressed {
-                            
-                            self.viewBounds = geometry.frame(in: .global)
-                            print("new view bounds:\(self.viewBounds)")
-                        }
-                    })
-            }
-        )
+
+
+        .animation(.easeInOut, value: deleted)
+
         .onLongPressGesture(
             minimumDuration: inEditor ? 0.5 : .infinity,
             maximumDistance: inEditor ? 10 : 50,
@@ -102,22 +73,46 @@ struct DockItemView: View {
             }
         }, onPressingChanged: { pressing in
             isPressed = pressing
+            TooltipManager.shared.hideTooltip()
             if (!pressing && !inEditor) {
                 let mousePos = mouseLocationInWindow()
-                print("mousePos: \(mousePos)")
-                print(viewBounds.minX)
-                print(viewBounds.maxX)
-                print(viewBounds.minY)
-                print(viewBounds.maxY)
                 
                 if viewBounds.contains(mousePos) {
-                    openItem(item) // 如果鼠标在范围内，打开项目
-                } else {
-                    print("Mouse left the view bounds, skipping openItem.")
+                    showApplication(item: item)
                 }
                 
             }
         })
+        .background(
+            GeometryReader { geometry in
+                Color.clear
+                    .onAppear {
+                        self.viewBounds = geometry.frame(in: .global)
+//                        print("initial view bounds:\(self.viewBounds)")
+                    }
+                    .onChange(of: isPressed, { oldValue, newValue in
+                        if isPressed {
+                            self.viewBounds = geometry.frame(in: .global)
+//                            print("new view bounds:\(self.viewBounds)")
+                        }
+                    })
+            }
+        )
+        .onHover { hovering in
+            isHovering = hovering
+            if !dragDropManager.isDragging && !inEditor {
+                if isHovering {
+                    // 通过父视图提供的 itemFrames[item.id]
+                    // 就能拿到本视图最新的坐标
+                    if let rect = itemFrames[item.id] {
+                        TooltipManager.shared.showTooltip(text: item.name, viewBound: rect)
+                    }
+                } else {
+                    TooltipManager.shared.hideTooltip()
+                }
+            }
+        }
+
 
         
         .contextMenu {
@@ -130,11 +125,10 @@ struct DockItemView: View {
     /// 获取鼠标的位置
     func mouseLocationInWindow() -> CGPoint {
         let mouseScreenPos = NSEvent.mouseLocation   // 屏幕坐标
-        print("dock UI: \(dockWindowManager.dockUIFrame)");
-        // 把屏幕坐标减去 window 的 origin，就得到了“窗口内”的坐标
+//        print("dock UI: \(dockWindowManager.dockUIFrame)");
         return CGPoint(
             x: mouseScreenPos.x - dockWindowManager.dockUIFrame.minX,
-            y: mouseScreenPos.y - dockWindowManager.dockUIFrame.minY + verticalOffset
+            y: mouseScreenPos.y - dockWindowManager.dockUIFrame.minY + verticalOffset*2
         )
     }
     // MARK: - Icon Logic
@@ -189,7 +183,7 @@ struct DockItemView: View {
             }
             if dockObserver.appWindowsHidden[item.bundleID] ?? false { // is hiden
                 Button("Show") {
-                    showApplication(bundleIdentifier: item.bundleID)
+                    showApplication(item: item)
                 }
             } else {
                 Button("Hide") { // is showing
@@ -201,7 +195,7 @@ struct DockItemView: View {
             }
         } else {
             Button("Open") {
-                openItem(item)
+                launchOrActivateApplication(bundleIdentifier: item.bundleID, url: item.url)
             }
         }
     }
@@ -210,6 +204,7 @@ struct DockItemView: View {
     
     // switch to some window
     private func switchToWindow(window: AXUIElement) {
+        launchOrActivateApplication(bundleIdentifier: item.bundleID, url: item.url)
         let raiseError = AXUIElementPerformAction(window, kAXRaiseAction as CFString)
         if raiseError != .success {
             print("Failed to raise window: \(raiseError.rawValue)")
@@ -234,8 +229,6 @@ struct DockItemView: View {
         if setFrontmostError != .success {
             print("Failed to set window as frontmost: \(setFrontmostError.rawValue)")
         }
-        //只要上门正确地排列了窗口顺序，直接open似乎就可以
-        openItem(item)
         
     }
     // get AXUIElement window's title
@@ -281,12 +274,6 @@ struct DockItemView: View {
         }
     }
     
-    // MARK: - Left-click. Just for Apps.
-    private func openItem(_ dockItem: DockItem) {
-        
-        launchOrActivateApplication(bundleIdentifier: dockItem.bundleID, url: dockItem.url)
-    
-    }
     
     // MARK: - Delete Item
     private func deleteSelf() {
@@ -318,13 +305,22 @@ struct DockItemView: View {
         dockObserver.appWindowsHidden[bundleIdentifier] = true
     }
     
-    private func showApplication(bundleIdentifier: String?) {
-        guard let bundleIdentifier = bundleIdentifier,
-              let runningApp = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).first
-        else { return }
-        runningApp.unhide()
-        dockObserver.appWindowsHidden[bundleIdentifier] = false
-        openItem(item)
+    // MARK: - show application, try launch it, then activate it, unhide it.
+    private func showApplication(item: DockItem) {
+        let bundleIdentifier = item.bundleID
+        launchOrActivateApplication(bundleIdentifier: item.bundleID, url: item.url)
+        guard let runningApp = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).first else {
+            return
+        }
+        if !runningApp.isActive {
+            print("Activting.")
+            runningApp.activate(options: .activateAllWindows)
+        }
+        if runningApp.isHidden {
+            print("Unhiding.")
+            runningApp.unhide()
+            dockObserver.appWindowsHidden[bundleIdentifier] = false
+        }
     }
     
     func showAllWindowsWithAppleScript(bundleID: String) {

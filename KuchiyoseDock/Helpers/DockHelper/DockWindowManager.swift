@@ -24,7 +24,6 @@ class DockWindowManager: ObservableObject {
     private var deleteMask: NSWindow?
     // publish position and size of dock
     @Published var dockUIFrame: CGRect = .zero
-    // for deleting mask
     
     
     
@@ -64,7 +63,7 @@ class DockWindowManager: ObservableObject {
 
         let proposedSize = NSSize(width: 600, height: 600)
         let idealSize = hostingController?.sizeThatFits(in: proposedSize) ?? proposedSize
-        let finalWidth = idealSize.width - 72 //减去padding * 2
+        let finalWidth = idealSize.width - 72 //减去dockOverlay内padding * 2
         let finalHeight = idealSize.height - 72
         
         let pointerGlobal = NSEvent.mouseLocation

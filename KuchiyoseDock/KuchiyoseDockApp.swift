@@ -40,7 +40,9 @@ struct KuchiyoseDockApp: App {
         // **在这里**触发 lazy 初始化
         _ = notificationHandler
         if AXIsProcessTrusted() {
-            dockWindowManager.showDock()// show dock at launch to initiate dockUIFrame
+            dockWindowManager.loadHostingController()// show dock at launch to initiate dockUIFrame
+            dockWindowManager.updateWindowPosition()
+            dockWindowManager.showDock()
         }
 
     }
