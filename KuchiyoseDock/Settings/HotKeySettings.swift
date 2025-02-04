@@ -125,7 +125,7 @@ class HotKeySettings: ObservableObject {
     
     private func resetToDefaultShortcut() {
         // If no user-provided shortcut, fallback
-        keyboardShortcut = KeyboardShortcut(.space, modifiers: [.option, .shift])
+        keyboardShortcut = KeyboardShortcut(.space, modifiers: [.control])
         saveToUserDefaults()
         updateHotKey()
     }
@@ -134,6 +134,7 @@ class HotKeySettings: ObservableObject {
     private func parseKeyEquivalent(_ s: String) -> KeyEquivalent? {
         switch s.lowercased() {
         case "space":  return .space
+        case "tab": return .tab
         case "return": return .return
         case "escape": return .escape
         case "delete": return .delete
@@ -150,6 +151,7 @@ class HotKeySettings: ObservableObject {
     private func describeKeyEquivalent(_ key: KeyEquivalent) -> String {
         switch key {
         case .space:  return "Space"
+        case .tab: return "Tab"
         case .return: return "Return"
         case .escape: return "Escape"
         case .delete: return "Delete"
@@ -169,6 +171,7 @@ class HotKeySettings: ObservableObject {
         print(s)
         switch s {
         case "space":  return .space
+        case "tab": return .tab
         case "return": return .return
         case "escape": return .escape
         case "delete": return .delete

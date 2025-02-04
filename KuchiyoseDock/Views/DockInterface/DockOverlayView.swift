@@ -130,7 +130,6 @@ struct dropLeaveDockDelegate: DropDelegate {
     let dockWindowManager = DockWindowManager.shared
     let dragDropManager = DragDropManager.shared
     let hotKeySettings = HotKeySettings.shared
-    let itemPopoverManager = ItemPopoverManager.shared
     let dockWindowState = DockWindowState.shared
     let dockEditorSettings = DockEditorSettings.shared
     DockOverlayView(inEditorTab: false, dockMaterial: .fullScreenUI, dockBlendingMode: .behindWindow)
@@ -138,7 +137,6 @@ struct dropLeaveDockDelegate: DropDelegate {
         .environmentObject(dockWindowManager)
         .environmentObject(dragDropManager)
         .environmentObject(hotKeySettings)
-        .environmentObject(itemPopoverManager)
         .environmentObject(dockWindowState)
         .environmentObject(dockEditorSettings)
 }

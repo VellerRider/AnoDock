@@ -39,9 +39,6 @@
 		1AEC4EF42CEA9E7500523CC1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EE42CEA9E7500523CC1 /* SettingsView.swift */; };
 		1AEC4EF52CEA9E7500523CC1 /* ShortcutsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EE52CEA9E7500523CC1 /* ShortcutsSettingsView.swift */; };
 		1AEC4EF62CEA9E7500523CC1 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EE62CEA9E7500523CC1 /* VisualEffectView.swift */; };
-		1AFAC59F2D349CAC00C28902 /* ItemPopoverManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFAC59E2D349CAC00C28902 /* ItemPopoverManager.swift */; };
-		1AFAC5A52D34A0DC00C28902 /* ItemPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFAC5A42D34A0DC00C28902 /* ItemPopoverView.swift */; };
-		1AFAC5A82D34BE0800C28902 /* Genie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFAC5A72D34BE0800C28902 /* Genie.swift */; };
 		1AFAC5B02D34D26200C28902 /* ReorderableForEach.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFAC5AF2D34D26200C28902 /* ReorderableForEach.swift */; };
 		1AFAC5B22D3502FE00C28902 /* DockEditorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFAC5B12D3502FE00C28902 /* DockEditorSettings.swift */; };
 /* End PBXBuildFile section */
@@ -129,9 +126,6 @@
 		1AEC4EE42CEA9E7500523CC1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		1AEC4EE52CEA9E7500523CC1 /* ShortcutsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsSettingsView.swift; sourceTree = "<group>"; };
 		1AEC4EE62CEA9E7500523CC1 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
-		1AFAC59E2D349CAC00C28902 /* ItemPopoverManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemPopoverManager.swift; sourceTree = "<group>"; };
-		1AFAC5A42D34A0DC00C28902 /* ItemPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemPopoverView.swift; sourceTree = "<group>"; };
-		1AFAC5A72D34BE0800C28902 /* Genie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genie.swift; sourceTree = "<group>"; };
 		1AFAC5AF2D34D26200C28902 /* ReorderableForEach.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReorderableForEach.swift; sourceTree = "<group>"; };
 		1AFAC5B12D3502FE00C28902 /* DockEditorSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockEditorSettings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -141,7 +135,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				test.swift,
-				testGenieEffect.swift,
 				testview.swift,
 			);
 			target = 1AA9EEDC2CE4019E002D8348 /* KuchiyoseDock */;
@@ -242,7 +235,6 @@
 				1AEC4EDF2CEA9E7500523CC1 /* DockItemView.swift */,
 				1AEC4EE62CEA9E7500523CC1 /* VisualEffectView.swift */,
 				1AA1CABD2D1FCBF700933295 /* DockOverlayView.swift */,
-				1AFAC5A42D34A0DC00C28902 /* ItemPopoverView.swift */,
 				1A6565222D3B3AD50063CE7B /* DeleteMaskView.swift */,
 				1AAFAF762D4F28AA001988A6 /* TooltipView.swift */,
 			);
@@ -307,7 +299,6 @@
 				1AFAC5AE2D34D24E00C28902 /* ContentManager */,
 				1AFAC5A12D34A03E00C28902 /* DockHelper */,
 				1AFAC5A62D34BCE600C28902 /* Animation */,
-				1AFAC5A22D34A04500C28902 /* PopoverHelper */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -391,18 +382,9 @@
 			path = DockHelper;
 			sourceTree = "<group>";
 		};
-		1AFAC5A22D34A04500C28902 /* PopoverHelper */ = {
-			isa = PBXGroup;
-			children = (
-				1AFAC59E2D349CAC00C28902 /* ItemPopoverManager.swift */,
-			);
-			path = PopoverHelper;
-			sourceTree = "<group>";
-		};
 		1AFAC5A62D34BCE600C28902 /* Animation */ = {
 			isa = PBXGroup;
 			children = (
-				1AFAC5A72D34BE0800C28902 /* Genie.swift */,
 				1ABA36B92D38460A00BF0FF1 /* DockAnimation.swift */,
 			);
 			path = Animation;
@@ -680,9 +662,7 @@
 				1ABBE4D22D33824200CCF124 /* DockWindowState.swift in Sources */,
 				1AA1CABE2D1FCBF700933295 /* DockOverlayView.swift in Sources */,
 				1AFAC5B22D3502FE00C28902 /* DockEditorSettings.swift in Sources */,
-				1AFAC59F2D349CAC00C28902 /* ItemPopoverManager.swift in Sources */,
 				1AEC4EF02CEA9E7500523CC1 /* DockItemView.swift in Sources */,
-				1AFAC5A82D34BE0800C28902 /* Genie.swift in Sources */,
 				1A66D77E2CEEF3F500BDE735 /* DockEditorView.swift in Sources */,
 				1AAFAF772D4F28AA001988A6 /* TooltipView.swift in Sources */,
 				1A8DB8402D13E15A00A2338B /* DockDataManager.swift in Sources */,
@@ -698,7 +678,6 @@
 				1AAFAF792D4F28C9001988A6 /* TooltipManager.swift in Sources */,
 				1ABBE4D42D3383F400CCF124 /* DockNotificationHandler.swift in Sources */,
 				1AC70B272CEAD627009BA776 /* KuchiyoseDockApp.swift in Sources */,
-				1AFAC5A52D34A0DC00C28902 /* ItemPopoverView.swift in Sources */,
 				1A93ED212CED74280064545A /* DockObserver.swift in Sources */,
 				1AC70B212CEACAA3009BA776 /* DockItem.swift in Sources */,
 				1AC70B2A2CEADB39009BA776 /* OnboardingView.swift in Sources */,

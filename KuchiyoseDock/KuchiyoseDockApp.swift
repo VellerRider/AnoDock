@@ -18,7 +18,6 @@ struct KuchiyoseDockApp: App {
     private var dragDropManager: DragDropManager = .shared
     private var dockWindowState: DockWindowState = .shared
     private let dockWindowManager: DockWindowManager = .shared
-    private var itemPopoverManager: ItemPopoverManager = .shared
         
     // settings
     private var dockEditorSettings: DockEditorSettings = .shared
@@ -71,7 +70,6 @@ struct KuchiyoseDockApp: App {
                     .environmentObject(dockWindowManager)
                     .environmentObject(dragDropManager)
                     .environmentObject(dockWindowState)
-                    .environmentObject(itemPopoverManager)
                     .environmentObject(hotKeySettings)
                     .environmentObject(dockEditorSettings)
                     .environmentObject(generalSettings)

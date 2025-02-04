@@ -45,6 +45,7 @@ struct ShortcutsSettingsView: View {
 
     let allowedKeys: [KeyEquivalent] = [
         .space,
+        .tab,
         .return,
         .escape,
         .delete,
@@ -127,6 +128,7 @@ struct ShortcutsSettingsView: View {
     func describeKeyEquivalent(_ key: KeyEquivalent) -> String {
         switch key {
         case .space:  return "Space"
+        case .tab: return "Tab"
         case .return: return "Return"
         case .escape: return "Escape"
         case .delete: return "Delete"
