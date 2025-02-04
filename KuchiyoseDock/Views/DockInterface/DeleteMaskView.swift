@@ -12,24 +12,18 @@ import FluidGradient
 struct DeleteMaskView: View {
     @EnvironmentObject var dragDropManager: DragDropManager
     @EnvironmentObject var dockWindowState: DockWindowState
+    @ObservedObject var dockEditorSettings: DockEditorSettings = .shared
     var body: some View {
-        // 1) Entire window area
-        
-        ZStack {
-            
-            
-            Rectangle()
-                .fill(dragDropManager.isDragging ? Color.white.opacity(0.001) : Color.clear)
-                
-            
-        }
-        .onDrop(
-            of: [UTType.dockItem, UTType.fileURL],
-            delegate: DeleteZoneDropDelegate()
-        )
-
-
+            ZStack {
+                Rectangle()
+                    .fill(dragDropManager.isDragging && !dragDropManager.editorOpen ? Color.white.opacity(0.001) : Color.clear)
+            }
+            .onDrop(
+                of: [UTType.dockItem, UTType.fileURL],
+                delegate: DeleteZoneDropDelegate()
+            )
     }
+    
 }
 
 /// Custom DropDelegate to track dragEnter/exit and final drop

@@ -11,11 +11,13 @@ import UniformTypeIdentifiers
 
 struct ReorderableForEach<Content: View>: View {
     @ObservedObject var dragDropManager: DragDropManager = .shared
+    @ObservedObject var dockEditorSettings: DockEditorSettings = .shared
     let items: [DockItem]
     // moveAction: (IndexSet, Int, DockItem?)
     let moveAction: (IndexSet, Int, DockItem?) -> Void
     let finishAction: () -> Void
     let content: (DockItem) -> Content
+    let inEditor: Bool
     // 拖拽过程中
     @State private var hasChangedLocation: Bool = false
 
@@ -23,22 +25,24 @@ struct ReorderableForEach<Content: View>: View {
         items: [DockItem],
         @ViewBuilder content: @escaping (DockItem) -> Content,
         moveAction: @escaping (IndexSet, Int, DockItem?) -> Void,
-        finishAction: @escaping () -> Void
+        finishAction: @escaping () -> Void,
+        inEditor: Bool
     ) {
         self.items = items
         self.content = content
         self.moveAction = moveAction
         self.finishAction = finishAction
+        self.inEditor = inEditor
     }
     
     var body: some View {
-        ForEach(Array(items.enumerated()), id: \.1.id) { (index, item) in
+        ForEach(Array(items.enumerated()), id: \.1.bundleID) { (index, item) in
             
             if index == dragDropManager.orderedDockItems.count {
                 
                 Rectangle()
                     .fill(Color.black.opacity(0.6))
-                    .frame(width: 1, height: 64)
+                    .frame(width: inEditor ? 0.85 : max(0.5, 0.85 * dockEditorSettings.dockZoom), height: inEditor ? 64 : 64 * dockEditorSettings.dockZoom)
             }
             
             content(item)

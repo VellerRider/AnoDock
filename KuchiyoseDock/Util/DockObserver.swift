@@ -291,8 +291,6 @@ class DockObserver: NSObject, ObservableObject {
         } else {
             recentApps = Array(recentApps.prefix(maxRecentApps))
         }
-        DragDropManager.shared.updateOrderedItems()
-
     }
     
 

@@ -27,6 +27,8 @@ class DragDropManager: ObservableObject {
     
     @Published var draggedInDockItem: Bool = false
     
+    @Published var editorOpen: Bool = false
+    
     private var dockObserver: DockObserver = .shared
     private var dockEditorSettings: DockEditorSettings = .shared
     
@@ -83,18 +85,13 @@ class DragDropManager: ObservableObject {
     func saveOrderedItems() {
         dockObserver.dockItems = orderedDockItems
         dockObserver.recentApps = orderedRecents
-        dockObserver.saveDockItems()
         isDragging = false
         draggingItem = nil
         draggedOutItem = nil
         draggedInDockItem = false
-        dockObserver.refreshDock()
-        // 这里不要call back updateOrderedItems了。
-        // 放到refresh里面了。updateOrderedItems()
     }
     
     // 更新 orderedDockItems 到最新 dockObserver 状态
-    // observer变，这里才需要变。
     func updateOrderedItems() {
         withAnimation(.dockUpdateAnimation) {
             self.orderedDockItems = dockObserver.dockItems
@@ -103,14 +100,16 @@ class DragDropManager: ObservableObject {
         }
     }
     
-    // self delete
+    // self delete here and sync back to observer
     func removeSingleItem(_ bundleID: String) {
         withAnimation(.dockUpdateAnimation) {
             self.orderedItems.removeAll(where: { $0.bundleID == bundleID })
             self.orderedRecents.removeAll(where: { $0.bundleID == bundleID })
             self.orderedDockItems.removeAll(where: { $0.bundleID == bundleID })
             saveOrderedItems()
+            dockObserver.saveDockItems()
             dockObserver.refreshDock()
+            updateOrderedItems()
         }
     }
     
@@ -127,6 +126,10 @@ class DragDropManager: ObservableObject {
         
         if panel.runModal() == .OK, let url = panel.url {
             if let newItem = dockObserver.createItemFromURL(url: url) {
+                if orderedDockItems.contains(where: { $0.bundleID == newItem.bundleID }) {// in dock, do nothing
+                    return
+                }
+                
                 dockObserver.addItemToPos(newItem, nil)
                 dockObserver.saveDockItems()
                 dockObserver.refreshDock()
@@ -158,7 +161,7 @@ class DragDropManager: ObservableObject {
                             self.dockObserver.addItemToPos(newItem, targetIndex)
                             self.dockObserver.saveDockItems()
                             self.dockObserver.refreshDock()
-//                            self.updateOrderedItems()
+                            self.updateOrderedItems()
                         }
                     }
                 }
@@ -170,11 +173,15 @@ class DragDropManager: ObservableObject {
     
     // MARK: - 切换编辑模式（示例）
     func toggleEditingMode() {
-        dockEditorSettings.isEditing.toggle()
-        if !dockEditorSettings.isEditing {
-            // 收尾动作
-            saveOrderedItems()
-            dockObserver.saveDockItems()
+        withAnimation(.easeInOut(duration: 0.1)) {
+            
+            dockEditorSettings.isEditing.toggle()
+            if !dockEditorSettings.isEditing {
+                // 收尾动作
+                saveOrderedItems()
+                dockObserver.saveDockItems()
+                dockObserver.refreshDock()
+            }
         }
     }
 }

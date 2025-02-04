@@ -16,35 +16,36 @@ struct DockEditorView : View {
     @EnvironmentObject var dockObserver: DockObserver
     @EnvironmentObject var dockWindowManager: DockWindowManager
     @EnvironmentObject var dragDropManager: DragDropManager
+    @EnvironmentObject var dockWindowState: DockWindowState
     @State var zoomChanging: Bool = false
-    @State var tempDockZoom: Double = 0
     
     var body : some View {
         VStack {
             VStack {
-                VStack(spacing: 8) { // spacing 控制两行文字的间距
+                VStack(spacing: 8) {
                     Text("Here are what's in your dock.")
-                        .font(.headline) // 可选：设置字体样式
+                        .font(.headline)
                     Text("Try drag and drop to reorder.")
-                        .font(.subheadline) // 可选：设置不同样式
+                        .font(.subheadline)
                 }
                 .padding(.bottom, 20)
                 HStack {
                     Button(action: dragDropManager.manualAddApp) {
                         Image(systemName: "plus")
                             .font(.title)
+                            .frame(width: 35, height: 30)
                     }
                     Button(action: dragDropManager.toggleEditingMode) {
                         Image(systemName: dockEditorSettings.isEditing ? "checkmark.circle" : "pencil")
                             .font(.title)
+                            .frame(width: 35, height: 30)
                     }
                 }
             }
-            .frame(minWidth: dockWindowManager.dockUIFrame.width)
             .padding(.bottom, 20)
 
                 
-            DockOverlayView(inEditorTab: true, dockMaterial: .sidebar, dockBlendingMode: .behindWindow)
+            DockOverlayView(inEditorTab: true)
                 .padding(.bottom, 40)
             
             
@@ -52,40 +53,46 @@ struct DockEditorView : View {
                 VStack {
                     Text("Zoom Dock")
                     Slider(
-                        value: $tempDockZoom,
-                        in: 0.2...2.5,
+                        value: $dockEditorSettings.dockZoom,
+                        in: 0.5...1.5,
                         onEditingChanged: { editing in
                             zoomChanging = editing
-                            if !editing {
-                                snapToClosestValue()
-                                updateSettingZoom()
+                            if editing {
+                                dockWindowManager.showDock()
+                                dockWindowState.mouseIn = true
+                            } else {
+                                dockWindowManager.hideDock()
                             }
                         }
                     )
+                    .onChange(of: dockEditorSettings.dockZoom) {
+                        dockEditorSettings.dockPadding = 36 * dockEditorSettings.dockZoom
+                        dockEditorSettings.iconWidth = 64 * dockEditorSettings.dockZoom
+                    }
                     
                     .overlay(
                         GeometryReader { geometry in
                             if zoomChanging {
                                 let sliderWidth = geometry.size.width
-                                let position = calculatePosition(for: tempDockZoom, in: sliderWidth)
-                                Text(String(format: "%.2f", tempDockZoom))
+                                let position = calculatePosition(for: dockEditorSettings.dockZoom, in: sliderWidth)
+                                Text(String(format: "%.2f", dockEditorSettings.dockZoom))
                                     .font(.caption)
                                     .padding(5)
                                     .background(Color.white)
                                     .cornerRadius(5)
-                                    .offset(x: position-9*(tempDockZoom-0.2/2.3)-4, y: -30)
+                                    .offset(x: position - 12 * dockEditorSettings.dockZoom, y: -30)
                             }
                         }
                     )
-                    
+                    	
                     HStack {
-                        Text("0.2x")
+                        Text("0.5x")
                         Spacer()
                         Text("1x")
                             .offset(x: calcZoomScale(for: 1.0, in: 200))
                             .padding(.leading, 6.3)
                         Spacer()
-                        Text("2.5x")
+                        Text("1.5x")
                     }
                     .font(.caption)
                 }
@@ -106,44 +113,34 @@ struct DockEditorView : View {
 
             }
         }
-        .onTapGesture {
+        .onTapGesture { // when editing tap empty space to return
             if dockEditorSettings.isEditing {
                 dragDropManager.toggleEditingMode()
             }
         }
+        
         .frame(minHeight: 600)
         .onAppear() {
-            retrieveSetting()
+            dragDropManager.editorOpen = true
+            print("Editor open")
+        }
+        .onDisappear() {
+            dragDropManager.editorOpen = false
+            print("Editor close")
         }
     }
     
-    func snapToClosestValue() {
-        let snapValues: [Double] = Array(stride(from: 1.0, through: 2.5, by: 0.1))
-        let threshold: Double = 0.05
-        if let closestValue = snapValues.min(by: { abs(tempDockZoom - $0) < abs(tempDockZoom - $1) }),
-           abs(tempDockZoom - closestValue) <= threshold {
-            tempDockZoom = closestValue
-        }
-    }
-    
-    func retrieveSetting() {
-        tempDockZoom = dockEditorSettings.dockZoom
-    }
-    
-    func updateSettingZoom() {
-        dockEditorSettings.dockZoom = tempDockZoom
-    }
     
     func calcZoomScale(for value: Double, in width: CGFloat) -> CGFloat {
-        let minValue: Double = 0.2
-        let maxValue: Double = 2.5
+        let minValue: Double = 0.5
+        let maxValue: Double = 1.5
         let position = (value - minValue) / (maxValue - minValue) * width
         return position - width / 2
     }
     
     func calculatePosition(for value: Double, in width: CGFloat) -> CGFloat {
-        let minValue: Double = 0.2
-        let maxValue: Double = 2.5
+        let minValue: Double = 0.5
+        let maxValue: Double = 1.5
         let relativePosition = (value - minValue) / (maxValue - minValue)
         return relativePosition * width
     }

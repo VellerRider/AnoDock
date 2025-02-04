@@ -11,8 +11,8 @@ import ServiceManagement
 
 struct DockItemView: View {
     @EnvironmentObject var dockObserver: DockObserver
-    @EnvironmentObject var dockEditorSettings: DockEditorSettings
     @EnvironmentObject var dragDropManager: DragDropManager
+    @ObservedObject var dockEditorSettings: DockEditorSettings = .shared
     
     @ObservedObject var dockWindowManager: DockWindowManager = .shared
     @ObservedObject var dockWindowState: DockWindowState = .shared
@@ -21,9 +21,7 @@ struct DockItemView: View {
     
     @State private var isPressed: Bool = false
     @State private var isHovering: Bool = false
-    
     @State private var viewBounds: CGRect = .zero // 记录view frame
-    @State private var verticalOffset: CGFloat = 36 // vertical offset for mouse in item detection
 
     @Binding var itemFrames: [UUID: CGRect]
 
@@ -40,23 +38,26 @@ struct DockItemView: View {
                 .brightness(isPressed ? -0.2 : 0)
                 .animation(.easeInOut(duration: 0.05), value: isPressed)
             
-            if inEditor && dockEditorSettings.isEditing {
-                Image(systemName: "xmark.circle.fill")
-                    .resizable()
-                    .frame(width: 16, height: 16)
-                    .foregroundColor(.red)
-                    .position(x: 5, y: 5)
-                    .onTapGesture {
-                        deleteSelf()
-                    }
-                    .transition(.opacity)
+            if inEditor && dockEditorSettings.isEditing && (!dragDropManager.orderedRecents.contains(where: { $0.bundleID == item.bundleID }) || !item.isRunning) {
+                ZStack {
+                    Circle()
+                        .fill(Color.white)
+                    Image(systemName: "xmark.circle.fill")
+                        .resizable()
+                        .foregroundColor(.red)
+                        .onTapGesture {
+                            deleteSelf()
+                        }
+                }
+                .frame(width: 16, height: 16)
+                .position(x: 9, y: 9)
             }
             
             if item.isRunning {
                 Circle()
-                    .fill(Color.black.opacity(0.75))
-                    .frame(width: 4, height: 4)
-                    .offset(y: 34)
+                    .fill(Color.black.opacity(0.65))
+                    .frame(width: inEditor ? 4 : 4  * dockEditorSettings.dockZoom, height: inEditor ? 4 : 4 * dockEditorSettings.dockZoom)
+                    .offset(y: inEditor ? 33 : 33 * dockEditorSettings.dockZoom)
             }
         }
         
@@ -66,7 +67,7 @@ struct DockItemView: View {
 
         .onLongPressGesture(
             minimumDuration: inEditor ? 0.5 : .infinity,
-            maximumDistance: inEditor ? 10 : 50,
+            maximumDistance: inEditor ? 10 * dockEditorSettings.dockZoom : 50 * dockEditorSettings.dockZoom,
             perform: {
             if inEditor {
                 dragDropManager.toggleEditingMode()
@@ -76,28 +77,17 @@ struct DockItemView: View {
             TooltipManager.shared.hideTooltip()
             if (!pressing && !inEditor) {
                 let mousePos = mouseLocationInWindow()
-                
-                if viewBounds.contains(mousePos) {
-                    showApplication(item: item)
+                if let rect = itemFrames[item.id] {
+                    print("Viewbound is \(rect)")
+                    print("mousePos is \(mousePos)")
+                    if rect.contains(mousePos) {
+                        showApplication(item: item)
+                    }
                 }
+                
                 
             }
         })
-        .background(
-            GeometryReader { geometry in
-                Color.clear
-                    .onAppear {
-                        self.viewBounds = geometry.frame(in: .global)
-//                        print("initial view bounds:\(self.viewBounds)")
-                    }
-                    .onChange(of: isPressed, { oldValue, newValue in
-                        if isPressed {
-                            self.viewBounds = geometry.frame(in: .global)
-//                            print("new view bounds:\(self.viewBounds)")
-                        }
-                    })
-            }
-        )
         .onHover { hovering in
             isHovering = hovering
             if !dragDropManager.isDragging && !inEditor {
@@ -122,14 +112,17 @@ struct DockItemView: View {
         }
         
     }
+    
+    
+    
     // get mouse location in window, converted to local pos
     // must use this & local geometry reader update, since long press -> drag -> not opening item relies on this
     func mouseLocationInWindow() -> CGPoint {
         let mouseScreenPos = NSEvent.mouseLocation //pos of screen
 //        print("dock UI: \(dockWindowManager.dockUIFrame)");
         return CGPoint(
-            x: mouseScreenPos.x - dockWindowManager.dockUIFrame.minX,
-            y: mouseScreenPos.y - dockWindowManager.dockUIFrame.minY + verticalOffset*2
+            x: mouseScreenPos.x - dockWindowManager.dockUIFrame.minX - dockEditorSettings.dockPadding,
+            y: mouseScreenPos.y - dockWindowManager.dockUIFrame.minY
         )
     }
     // MARK: - Icon Logic
@@ -138,14 +131,14 @@ struct DockItemView: View {
         if let nsImage = dockObserver.getIcon(item) {
             Image(nsImage: nsImage)
                 .resizable()
-                .frame(width: 64, height: 64)
-                .cornerRadius(8)
+                .frame(width: inEditor ? 64 : dockEditorSettings.iconWidth, height: inEditor ? 64 : dockEditorSettings.iconWidth)
+                .cornerRadius(inEditor ? 8 : 8 * dockEditorSettings.dockZoom)
         } else {
             Image(systemName: "app.fill")
                 .resizable()
                 .foregroundColor(.gray)
-                .frame(width: 64, height: 64)
-                .cornerRadius(8)
+                .frame(width: inEditor ? 64 : dockEditorSettings.iconWidth, height: inEditor ? 64 : dockEditorSettings.iconWidth)
+                .cornerRadius(inEditor ? 8 : 8 * dockEditorSettings.dockZoom)
         }
     }
     
@@ -279,7 +272,7 @@ struct DockItemView: View {
     // MARK: - Delete Item
     private func deleteSelf() {
         withAnimation(.dockUpdateAnimation) {
-            dockObserver.removeItem(item.bundleID)
+//            dockObserver.removeItem(item.bundleID)
             dragDropManager.removeSingleItem(item.bundleID)
         }
     }

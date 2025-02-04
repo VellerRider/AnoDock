@@ -28,16 +28,12 @@ struct DockOverlayView: View {
     @ObservedObject var dockEditorSettings: DockEditorSettings = .shared
     
     @State var inEditorTab: Bool
-    @State var dockMaterial: NSVisualEffectView.Material
-    @State var dockBlendingMode: NSVisualEffectView.BlendingMode
     
     @State private var itemFrames: [UUID: CGRect] = [:]
 
     
-    init (inEditorTab: Bool, dockMaterial: NSVisualEffectView.Material, dockBlendingMode: NSVisualEffectView.BlendingMode) {
+    init (inEditorTab: Bool) {
         self.inEditorTab = inEditorTab
-        self.dockMaterial = dockMaterial
-        self.dockBlendingMode = dockBlendingMode
     }
     
     var body: some View {
@@ -45,11 +41,12 @@ struct DockOverlayView: View {
             
 
             ZStack {
-                VisualEffectView(material: dockMaterial, blendingMode: dockBlendingMode)
+                VisualEffectView(material: inEditorTab ? .menu : .fullScreenUI, blendingMode: .behindWindow)
+
+    
 
                 
-                // 1) Dock Items 区域
-                HStack {
+                HStack(spacing: inEditorTab ? 6 : 6 * dockEditorSettings.dockZoom) {
                     ReorderableForEach(
                         items: dragDropManager.orderedItems,
                         content: { item in
@@ -73,38 +70,37 @@ struct DockOverlayView: View {
                             withAnimation(.dockUpdateAnimation) {
                                 dragDropManager.saveOrderedItems()
                             }
-                        }
+                        },
+                        inEditor: inEditorTab
                     )
-                    .border(Color.black, width: 0.5)
-                    
                 }
-                .padding(8)
+                .padding(inEditorTab ? 6 : 6 * dockEditorSettings.dockZoom)
                 .coordinateSpace(name: "DockOverlayCoordSpace")
 
             }
-            .border(Color.white.opacity(0.2), width: 0.75)
-            .cornerRadius(24)
-            .padding(36)
+            .cornerRadius(inEditorTab ? 24 : 24 * dockEditorSettings.dockZoom)
+            .padding(inEditorTab ? 36 : dockEditorSettings.dockPadding)
             .shadow(color: dragDropManager.draggedOutItem != nil ? Color.accentColor : Color.clear,
-                    radius: dragDropManager.draggedOutItem != nil ? 12 : 0)
+                    radius: dragDropManager.draggedOutItem != nil ? 12 * dockEditorSettings.dockZoom : 0)
         }
         .fixedSize()
-//        .onHover { entered in
-//            if !inEditorTab {
-//                dockWindowState.mouseIn = entered
-//                if dockEditorSettings.cursorClose {
-//                    if !entered && !dragDropManager.isDragging {
-//                        dockWindowManager.hideDock()
-//                    }
-//                }
-//            }
-//        }
-        // 监听所有 item 坐标的变化
+        .onHover { entered in
+            if !inEditorTab {
+                dockWindowState.mouseIn = entered
+                if dockEditorSettings.cursorClose {
+                    if !entered && !dragDropManager.isDragging {
+                        dockWindowManager.hideDock()
+                    }
+                }
+            }
+        }
+        // use pref key to listen dockitem change of pos
         .onPreferenceChange(ItemFrameKey.self) { newFrames in
             self.itemFrames = newFrames
         }
         .onDrop(of: [UTType.dockItem, UTType.fileURL], delegate: dropLeaveDockDelegate(inEditor: $inEditorTab))
-
+        .animation(.linear, value: dockEditorSettings.dockZoom)
+        .shadow(radius: inEditorTab ? 3 : 0)
 
 
     
@@ -132,7 +128,7 @@ struct dropLeaveDockDelegate: DropDelegate {
     let hotKeySettings = HotKeySettings.shared
     let dockWindowState = DockWindowState.shared
     let dockEditorSettings = DockEditorSettings.shared
-    DockOverlayView(inEditorTab: false, dockMaterial: .fullScreenUI, dockBlendingMode: .behindWindow)
+    DockOverlayView(inEditorTab: false)
         .environmentObject(dockObserver)
         .environmentObject(dockWindowManager)
         .environmentObject(dragDropManager)

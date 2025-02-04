@@ -11,7 +11,7 @@ import SwiftUI
 class TooltipManager {
     static let shared = TooltipManager()
     private var tooltipWindow: NSWindow?
-    private var horizontalOffset: CGFloat = 36
+    private var dockEditorSettings: DockEditorSettings = .shared
     /// 显示工具提示
     /// - Parameters:
     ///   - text: 要显示的文字（例如当前 view 的名称）
@@ -19,16 +19,16 @@ class TooltipManager {
     func showTooltip(text: String, viewBound: CGRect) {
         // 如果已有提示窗口，则先隐藏
         hideTooltip()
-        print("View bound passed: \(viewBound)")
+//        print("View bound passed: \(viewBound)")
         // 固定提示框大小（你也可以根据文字计算尺寸）
         let hostingController = NSHostingController(rootView: TooltipView(text: text))
         let tooltipSize = CGSize(width: 400, height: 200)
         let idealSize = hostingController.sizeThatFits(in: tooltipSize)
-        let tooltipX =  DockWindowManager.shared.dockUIFrame.minX + viewBound.midX - idealSize.width / 2 + horizontalOffset
-        let tooltipY =  DockWindowManager.shared.dockUIFrame.minY + viewBound.minY + 42
+        let tooltipX =  DockWindowManager.shared.dockUIFrame.minX + viewBound.midX - idealSize.width / 2 + dockEditorSettings.dockPadding
+        let tooltipY =  DockWindowManager.shared.dockUIFrame.minY + viewBound.minY + dockEditorSettings.dockPadding * 2.2
         
         let tooltipFrame = NSRect(x: tooltipX, y: tooltipY, width: idealSize.width, height: idealSize.height)
-        print("Frame is: \(tooltipFrame)")
+//        print("Frame is: \(tooltipFrame)")
                 
         let window = NSWindow(contentRect: tooltipFrame,
                               styleMask: .borderless,

@@ -20,6 +20,8 @@ class DockWindowManager: ObservableObject {
     private var dockWindowState: DockWindowState = .shared
     private var hostingController: NSHostingController<AnyView>?
     
+    private var dockEditorSettings: DockEditorSettings = .shared
+    
     private var window: NSWindow?
     private var deleteMask: NSWindow?
     // publish position and size of dock
@@ -39,6 +41,7 @@ class DockWindowManager: ObservableObject {
             return
         }
         dockObserver.refreshDock()
+        dragDropManager.updateOrderedItems()
         NSAnimationContext.runAnimationGroup { context in
             context.duration = 0.1
             window.animator().alphaValue = 1
@@ -51,7 +54,7 @@ class DockWindowManager: ObservableObject {
     // MARK: - load HostingController
     func loadHostingController() {
         // inject environement obj for live update
-        let overlayView = DockOverlayView(inEditorTab: false, dockMaterial: .fullScreenUI, dockBlendingMode: .behindWindow)
+        let overlayView = DockOverlayView(inEditorTab: false)
             .environmentObject(dockObserver)
             .environmentObject(dragDropManager)
 
@@ -61,10 +64,10 @@ class DockWindowManager: ObservableObject {
     // MARK: - update window position
     func updateWindowPosition() {
 
-        let proposedSize = NSSize(width: 600, height: 600)
+        let proposedSize = NSSize(width: 1600, height: 800)
         let idealSize = hostingController?.sizeThatFits(in: proposedSize) ?? proposedSize
-        let finalWidth = idealSize.width - 72 //减去dockOverlay内padding * 2
-        let finalHeight = idealSize.height - 72
+        let finalWidth = idealSize.width - dockEditorSettings.dockPadding * 2
+        let finalHeight = idealSize.height - dockEditorSettings.dockPadding
         
         let pointerGlobal = NSEvent.mouseLocation
         
@@ -78,7 +81,7 @@ class DockWindowManager: ObservableObject {
         let pointerLocalX = pointerGlobal.x - screenFrame.origin.x
         let pointerLocalY = pointerGlobal.y - screenFrame.origin.y
         
-        let offset: CGFloat = 4
+        let offset: CGFloat = 4 * dockEditorSettings.dockZoom
         
         // 1. 垂直方向
         var localOriginY: CGFloat
@@ -139,14 +142,14 @@ class DockWindowManager: ObservableObject {
         }
         
         // 4. 把它转回全局坐标，用于创建 NSWindow
-        let globalOriginX = screenFrame.origin.x + localOriginX - 18 //offset padding/2 to align at mouse
-        let globalOriginY = screenFrame.origin.y + localOriginY + 18
+        let globalOriginX = screenFrame.origin.x + localOriginX - dockEditorSettings.dockPadding / 2 //offset padding/2 to align at mouse
+        let globalOriginY = screenFrame.origin.y + localOriginY + dockEditorSettings.dockPadding / 2
         // 5. 创建窗口
         let newFrame = NSRect(x: globalOriginX, y: globalOriginY,
                               width: finalWidth, height: finalHeight)
 
         // 计算 deleteMaskFrame 的新尺寸
-        let deleteMaskWidth = newFrame.width * 16
+        let deleteMaskWidth = newFrame.width * 16 // random big numebr to cover whole screen
         let deleteMaskHeight = newFrame.height * 24
         let deleteMaskX = newFrame.midX - deleteMaskWidth / 2
         let deleteMaskY = newFrame.midY - deleteMaskHeight / 2
