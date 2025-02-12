@@ -80,8 +80,6 @@ struct DockOverlayView: View {
             }
             .cornerRadius(inEditorTab ? 24 : 24 * dockEditorSettings.dockZoom)
             .padding(inEditorTab ? 36 : dockEditorSettings.dockPadding)
-            .shadow(color: dragDropManager.draggedOutItem != nil ? Color.accentColor : Color.clear,
-                    radius: dragDropManager.draggedOutItem != nil ? 12 * dockEditorSettings.dockZoom : 0)
         }
         .fixedSize()
         .onHover { entered in
@@ -98,7 +96,7 @@ struct DockOverlayView: View {
         .onPreferenceChange(ItemFrameKey.self) { newFrames in
             self.itemFrames = newFrames
         }
-        .onDrop(of: [UTType.dockItem, UTType.fileURL], delegate: dropLeaveDockDelegate(inEditor: $inEditorTab))
+        .onDrop(of: [UTType.dockItem, UTType.fileURL], delegate: dropLeaveDockDelegate())
         .animation(.linear, value: dockEditorSettings.dockZoom)
         .shadow(radius: inEditorTab ? 3 : 0)
 
@@ -111,7 +109,13 @@ struct dropLeaveDockDelegate: DropDelegate {
     @ObservedObject var dockObserver: DockObserver = .shared
     @ObservedObject var dockWindowManager: DockWindowManager = .shared
     @ObservedObject var dockWindowState: DockWindowState = .shared
-    @Binding var inEditor: Bool
+    
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        // By this you inform user that something will be just relocated
+        // So the tiny green symbol is not showing anymore
+       return DropProposal(operation: .move)
+    }
+
     func performDrop(info: DropInfo) -> Bool {
         // 如果dock中的item drop进这里，应该让他返回原地
         dragDropManager.saveOrderedItems()

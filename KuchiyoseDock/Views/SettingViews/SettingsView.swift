@@ -15,7 +15,7 @@ struct SettingsView: View {
         TabView {
             DockEditorView()
                 .tabItem {
-                    Label("Dock Settings", systemImage: "pin.circle")
+                    Label("Dock Editor", systemImage: "pin.circle")
                 }
                 
             ShortcutsSettingsView()
@@ -23,19 +23,12 @@ struct SettingsView: View {
                     Label("Shortcuts", systemImage: "keyboard")
                 }
                 
-            GeneralSettingsView()
-                .tabItem {
-                    Label("General", systemImage: "gear")
-                }
-                
-            OtherSettingsView()
-                .tabItem {
-                    Label("Other", systemImage: "line.horizontal.3.circle.fill")
-                }
-                
+//            GeneralSettingsView()
+//                .tabItem {
+//                    Label("General", systemImage: "gear")
+//                }
         }
         .padding()
-        .modifier(WindowAnimationModifier())
     }
 }
 

@@ -1,5 +1,5 @@
 //
-//  DockSettingsView.swift
+//  OtherSettingsView.swift
 //  KuchiyoseDock
 //  Start at login, auto update, permission check-again etc.
 //  Maybe could allow user to change system dock settings from here.

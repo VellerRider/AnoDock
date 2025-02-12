@@ -10,6 +10,7 @@
 
 import Foundation
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct DockEditorView : View {
     @EnvironmentObject var dockEditorSettings: DockEditorSettings
@@ -30,7 +31,7 @@ struct DockEditorView : View {
                 }
                 .padding(.bottom, 20)
                 HStack {
-                    Button(action: dragDropManager.manualAddApp) {
+                    Button(action: dragDropManager.manualAddApps) {
                         Image(systemName: "plus")
                             .font(.title)
                             .frame(width: 35, height: 30)
@@ -47,6 +48,7 @@ struct DockEditorView : View {
                 
             DockOverlayView(inEditorTab: true)
                 .padding(.bottom, 40)
+                .padding(.horizontal, 20)
             
             
             VStack(spacing: 20) {
@@ -99,12 +101,20 @@ struct DockEditorView : View {
                 .frame(maxWidth: 200)
 
                 
-                Picker("Select an Dock Style", selection: $dockEditorSettings.dockStyle) {
-                    Text("Option 1").tag("Option 1")
-                    Text("Option 2").tag("Option 2")
-                    Text("Option 3").tag("Option 3")
+//                Picker("Select an Dock Style", selection: $dockEditorSettings.dockStyle) {
+//                    Text("Option 1").tag("Option 1")
+//                    Text("Option 2").tag("Option 2")
+//                    Text("Option 3").tag("Option 3")
+//                }
+//                .pickerStyle(.radioGroup)
+                
+                Picker("Keep closed recent apps in dock", selection: $dockEditorSettings.keepClosedRecents) {
+                    ForEach(0...10, id: \.self) { value in
+                        Text("\(value)").tag(value)
+                    }
                 }
-                .pickerStyle(.radioGroup)
+                .pickerStyle(.menu)
+                .frame(width: 250)
                 
                 Toggle(isOn: $dockEditorSettings.cursorClose) {
                     Text("Close when cursor moves out")
@@ -113,6 +123,11 @@ struct DockEditorView : View {
 
             }
         }
+        
+        
+        .onDrop(of: [UTType.dockItem, UTType.fileURL],
+                delegate: dockWindowState.showDockWindow ? dropLeaveDockDelegate() : DeleteZoneDropDelegate())
+        
         .onTapGesture { // when editing tap empty space to return
             if dockEditorSettings.isEditing {
                 dragDropManager.toggleEditingMode()
@@ -145,3 +160,4 @@ struct DockEditorView : View {
         return relativePosition * width
     }
 }
+

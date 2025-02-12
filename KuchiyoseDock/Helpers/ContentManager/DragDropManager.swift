@@ -15,10 +15,9 @@ import UniformTypeIdentifiers
 class DragDropManager: ObservableObject {
     static let shared = DragDropManager()
     
-    // 1) Dock 的临时有序数组，用于在编辑模式下重排（你之前就有的）
-    var orderedDockItems: [DockItem] = []
-    var orderedRecents: [DockItem] = []
-    @Published var orderedItems: [DockItem] = []
+    var orderedDockItems: [DockItem] = [] // items in dock area
+    var orderedRecents: [DockItem] = [] // items in recent area
+    @Published var orderedItems: [DockItem] = [] // combined item array of two area
     
     @Published var isDragging: Bool = false // for polling
     @Published var draggingItem: DockItem? = nil
@@ -32,9 +31,7 @@ class DragDropManager: ObservableObject {
     private var dockObserver: DockObserver = .shared
     private var dockEditorSettings: DockEditorSettings = .shared
     
-    // MARK: - Dock Reordering
-    // 排序和动画的过程是同时进行的。
-    
+    // MARK: - Core Dock Reordering Function
     func moveOrderedItems(from: Int, to: Int, Item: DockItem?) {
 //        print("from: \(from), to: \(to)")
         
@@ -69,7 +66,6 @@ class DragDropManager: ObservableObject {
                 orderedRecents.insert(draggedItem, at: realTo > realFrom ? realTo - 1  : realTo)
             }
         } else if from >= orderedDockItems.count && to <= orderedDockItems.count{
-            // 先调整combined数组，再动分开的
             orderedRecents.remove(at: from - orderedDockItems.count) // use real index
             orderedDockItems.insert(draggedItem, at: to)
             orderedItems.insert(draggedItem, at: to > from ? to - 1 : to)
@@ -81,7 +77,7 @@ class DragDropManager: ObservableObject {
         }
     }
     
-    // 将 这里 同步回 dockObserver
+    // MARK: - sync data here back to observer
     func saveOrderedItems() {
         dockObserver.dockItems = orderedDockItems
         dockObserver.recentApps = orderedRecents
@@ -91,7 +87,7 @@ class DragDropManager: ObservableObject {
         draggedInDockItem = false
     }
     
-    // 更新 orderedDockItems 到最新 dockObserver 状态
+    // MARK: - update date here from observer
     func updateOrderedItems() {
         withAnimation(.dockUpdateAnimation) {
             self.orderedDockItems = dockObserver.dockItems
@@ -116,68 +112,39 @@ class DragDropManager: ObservableObject {
     
     
     
-    // MARK: - 添加新 App 到 Dock
-    // 例如通过 NSOpenPanel 选取 .app
-    func manualAddApp() {
+    // MARK: - 添加多个新 App 到 Dock
+    func manualAddApps() {
         let panel = NSOpenPanel()
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
         panel.allowedContentTypes = [.application]
+        panel.allowsMultipleSelection = true // Enable multiple selection
         
-        if panel.runModal() == .OK, let url = panel.url {
-            if let newItem = dockObserver.createItemFromURL(url: url) {
-                if orderedDockItems.contains(where: { $0.bundleID == newItem.bundleID }) {// in dock, do nothing
-                    return
-                }
-                
-                dockObserver.addItemToPos(newItem, nil)
-                dockObserver.saveDockItems()
-                dockObserver.refreshDock()
-                updateOrderedItems()
-            }
-        }
-    }
-    
-    
-    // MARK: - 跨列表拖拽 (从 Finder 或 Recents 拖到 Dock)
-    func dropAddApp(providers: [NSItemProvider], targetIndex: Int?) -> Bool {
-        for provider in providers {
-            // 这里用 "public.file-url" 来判断是否是文件拖拽
-            if provider.hasItemConformingToTypeIdentifier("public.file-url") {
-                provider.loadItem(forTypeIdentifier: "public.file-url", options: nil) { (item, _) in
-                    guard
-                        let data = item as? Data,
-                        let url = URL(dataRepresentation: data, relativeTo: nil),
-                        url.pathExtension == "app"
-                    else {
-                        print("Not an .app or not supported!")
-                        return
+        if panel.runModal() == .OK {
+            for url in panel.urls { // Iterate over all selected apps
+                if let newItem = dockObserver.createItemFromURL(url: url) {
+                    if orderedDockItems.contains(where: { $0.bundleID == newItem.bundleID }) {
+                        continue // Skip if already in Dock
                     }
                     
-                    // 创建并插入 Dock
-                    if let newItem = self.dockObserver.createItemFromURL(url: url) {
-                        DispatchQueue.main.async {
-                            // 放入 dock
-                            self.dockObserver.addItemToPos(newItem, targetIndex)
-                            self.dockObserver.saveDockItems()
-                            self.dockObserver.refreshDock()
-                            self.updateOrderedItems()
-                        }
-                    }
+                    dockObserver.addItemToPos(newItem, nil)
                 }
             }
+            
+            dockObserver.saveDockItems()
+            dockObserver.refreshDock()
+            updateOrderedItems()
         }
-        return true
     }
     
     
-    // MARK: - 切换编辑模式（示例）
+    // MARK: - toggle editing mode
     func toggleEditingMode() {
         withAnimation(.easeInOut(duration: 0.1)) {
             
             dockEditorSettings.isEditing.toggle()
             if !dockEditorSettings.isEditing {
-                // 收尾动作
+                // wrap up
                 saveOrderedItems()
                 dockObserver.saveDockItems()
                 dockObserver.refreshDock()

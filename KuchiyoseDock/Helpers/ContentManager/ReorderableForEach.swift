@@ -13,12 +13,10 @@ struct ReorderableForEach<Content: View>: View {
     @ObservedObject var dragDropManager: DragDropManager = .shared
     @ObservedObject var dockEditorSettings: DockEditorSettings = .shared
     let items: [DockItem]
-    // moveAction: (IndexSet, Int, DockItem?)
     let moveAction: (IndexSet, Int, DockItem?) -> Void
     let finishAction: () -> Void
     let content: (DockItem) -> Content
     let inEditor: Bool
-    // 拖拽过程中
     @State private var hasChangedLocation: Bool = false
 
     init(
@@ -77,7 +75,6 @@ struct DragRelocateDelegate: DropDelegate {
     let item: DockItem
     let listData: [DockItem]
     
-//    @Binding var current: DockItem?
     @Binding var hasChangedLocation: Bool
     
     // 第三个参数 DockItem? 用来表示“外部插入的新DockItem”

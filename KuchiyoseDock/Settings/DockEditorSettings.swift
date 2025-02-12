@@ -40,23 +40,33 @@ class DockEditorSettings: ObservableObject {
             UserDefaults.standard.set(dockStyle, forKey: "dockStyle")
         }
     }
+    
+    @Published var keepClosedRecents: Int {
+        didSet {
+            UserDefaults.standard.set(keepClosedRecents, forKey: "keepClosedRecents")
+        }
+    }
+    
     @Published var isEditing: Bool = false
     
     static let shared = DockEditorSettings()
     
-    init() {
+    private init() {
         UserDefaults.standard.register(defaults: [
             "cursorClose": true,
             "dockZoom": 1.0,
             "dockPadding": 36.0,
             "iconWidth": 64.0,
-            "dockStyle": "native"
+            "dockStyle": "native",
+            "keepClosedRecents": 5
         ])
         
         self.cursorClose = UserDefaults.standard.bool(forKey: "cursorClose")
         self.dockZoom = UserDefaults.standard.double(forKey: "dockZoom")
         self.dockPadding = UserDefaults.standard.double(forKey: "dockPadding")
-        self.dockStyle = UserDefaults.standard.string(forKey: "dockStyle") ?? "native"
         self.iconWidth = UserDefaults.standard.double(forKey: "iconWidth")
+        self.dockStyle = UserDefaults.standard.string(forKey: "dockStyle") ?? "native"
+        self.keepClosedRecents = UserDefaults.standard.integer(forKey: "keepClosedRecents")
+        
     }
 }

@@ -12,15 +12,10 @@ class TooltipManager {
     static let shared = TooltipManager()
     private var tooltipWindow: NSWindow?
     private var dockEditorSettings: DockEditorSettings = .shared
-    /// 显示工具提示
-    /// - Parameters:
-    ///   - text: 要显示的文字（例如当前 view 的名称）
-    ///   - viewBound: 当前 view 在全局坐标中的 CGRect
+
     func showTooltip(text: String, viewBound: CGRect) {
-        // 如果已有提示窗口，则先隐藏
         hideTooltip()
 //        print("View bound passed: \(viewBound)")
-        // 固定提示框大小（你也可以根据文字计算尺寸）
         let hostingController = NSHostingController(rootView: TooltipView(text: text))
         let tooltipSize = CGSize(width: 400, height: 200)
         let idealSize = hostingController.sizeThatFits(in: tooltipSize)
@@ -45,7 +40,6 @@ class TooltipManager {
         self.tooltipWindow = window
     }
     
-    /// 隐藏提示框
     func hideTooltip() {
         tooltipWindow?.orderOut(nil)
         tooltipWindow = nil

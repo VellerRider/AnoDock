@@ -15,7 +15,7 @@ struct TooltipView: View {
         ZStack {
             VisualEffectView(material: .fullScreenUI, blendingMode: .behindWindow)
             Text(text)
-                .foregroundStyle(Color.black.opacity(0.75))
+                .foregroundStyle(Color.black.opacity(0.65))
                 .font(.system(size: 14, design: .rounded))
                 .padding(.horizontal, 9)
                 .padding(.vertical, 6)

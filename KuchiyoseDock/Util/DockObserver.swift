@@ -18,6 +18,8 @@ import AppKit
 import SwiftUI
 
 class DockObserver: NSObject, ObservableObject {
+    
+    
     static let shared = DockObserver()
     
     // 移除原来的字典 dockApps；现在只用这个数组来维护 dock 的应用和顺序
@@ -38,7 +40,6 @@ class DockObserver: NSObject, ObservableObject {
     var appIcons: [String: NSImage] = [:]
     
     private var runningRecents: Int = 0   // track how many running recent apps
-    private var maxRecentApps: Int { 5 }  // max limit out-of-dock recent apps
     
     private var pollTimer: Timer?
     
@@ -106,6 +107,8 @@ class DockObserver: NSObject, ObservableObject {
             return
         }
         refreshDock()
+        recycleIcons()
+        DragDropManager.shared.updateOrderedItems()
     }
     
     
@@ -114,6 +117,7 @@ class DockObserver: NSObject, ObservableObject {
         DispatchQueue.main.async {
             withAnimation(.dockUpdateAnimation) {
                 self.refreshDock()
+                DragDropManager.shared.updateOrderedItems()
             }
         }
     }
@@ -124,6 +128,7 @@ class DockObserver: NSObject, ObservableObject {
         DispatchQueue.main.async {
             withAnimation(.dockUpdateAnimation) {
                 self.refreshDock()
+                DragDropManager.shared.updateOrderedItems()
             }
         }
     }
@@ -169,13 +174,21 @@ class DockObserver: NSObject, ObservableObject {
     func removeItem(_ bundleID: String) {
         dockItems.removeAll(where: { $0.bundleID == bundleID })
         recentApps.removeAll(where: { $0.bundleID == bundleID })
+        appIcons.removeValue(forKey: bundleID)
+
         refreshDock()
     }
     
     
     // MARK: - Remove an item from recents
     func removeRecent(_ index: Int) {
+        guard index >= 0, index < recentApps.count else { return }
+        
+        let removedItem = recentApps[index]
         recentApps.remove(at: index)
+        
+        // 清理 appIcons 的缓存
+        appIcons.removeValue(forKey: removedItem.bundleID)
     }
     
     
@@ -229,6 +242,8 @@ class DockObserver: NSObject, ObservableObject {
             createObserverForApp(app)
             updateAppWindows(for: app)
         }
+        recycleAXObservers(runningApps: runningApps)
+        recycleAppWindows(runningApps: runningApps)
         // 使用 reduce(into:) 将 runningApps 转换为字典，键为 bundleIdentifier，值为 RunningApplication 实例
         var currentRunningDic = runningApps.reduce(into: [String: NSRunningApplication]()) { result, app in
             if let bundleID = app.bundleIdentifier {
@@ -283,14 +298,9 @@ class DockObserver: NSObject, ObservableObject {
         
         // 更新 runningRecents 计数
         runningRecents = recentApps.filter { $0.isRunning }.count
+        // 如果 closedRecents 超过 keepClosedRecents, truncate 后面的, closedRecent排序到后面了
+        recentApps = Array(recentApps.prefix(runningRecents + DockEditorSettings.shared.keepClosedRecents))
         
-        // 如果 runningRecents 超过 maxRecentApps
-        // TODO: - remove observer for deleted apps
-        if runningRecents > maxRecentApps {
-            recentApps = Array(recentApps.prefix(runningRecents))
-        } else {
-            recentApps = Array(recentApps.prefix(maxRecentApps))
-        }
     }
     
 
@@ -319,6 +329,15 @@ class DockObserver: NSObject, ObservableObject {
         } else {
             loadIconFromWorkspace(item)
             return appIcons[item.bundleID]
+        }
+    }
+    // MARK: - recycle icon memory
+    private func recycleIcons() {
+        let activeBundleIDs = Set(dockItems.map { $0.bundleID } + recentApps.map { $0.bundleID })
+        let allCachedIcons = Set(appIcons.keys)
+        
+        for bundleID in allCachedIcons.subtracting(activeBundleIDs) {
+            appIcons.removeValue(forKey: bundleID)
         }
     }
     
@@ -355,6 +374,23 @@ class DockObserver: NSObject, ObservableObject {
 
         observers.removeValue(forKey: pid)
     }
+    
+    // MARK: - 回收!isrunning app 的 AXObserver
+    private func recycleAXObservers(runningApps: [NSRunningApplication]) {
+        // 当前正在运行的 pid 集合
+        let activePids = Set(runningApps.map { $0.processIdentifier })
+        
+        // 遍历现有的 observers，检查是否需要移除
+        for (pid, _) in observers {
+            if !activePids.contains(pid) {
+                if let app = NSRunningApplication(processIdentifier: pid) {
+                    removeObserverForApp(app)
+                } else {
+                    observers.removeValue(forKey: pid)
+                }
+            }
+        }
+    }
 
     
     // MARK: - 更新单个应用窗口状态 - 从refreshdock分离，因为窗口操作不影响大局
@@ -380,6 +416,18 @@ class DockObserver: NSObject, ObservableObject {
         } else {
             // 未知时默认视为可见
             appWindowsHidden[bundleID] = false
+        }
+    }
+    // MARK: - Recycle unused app windows (only for non-running apps)
+    private func recycleAppWindows(runningApps: [NSRunningApplication]) {
+        // 提取当前运行的应用的 bundleIDs
+        let runningBundleIDs = Set(runningApps.compactMap { $0.bundleIdentifier })
+
+        // 找出 `appWindows` 中已经不再运行的应用，并清理它们的窗口信息
+        let allCachedWindows = Set(appWindows.keys)
+        for bundleID in allCachedWindows.subtracting(runningBundleIDs) {
+            appWindows.removeValue(forKey: bundleID)
+            appWindowsHidden.removeValue(forKey: bundleID) // 也清理隐藏状态
         }
     }
     

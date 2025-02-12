@@ -23,7 +23,6 @@ struct OnboardingView: View {
                 .padding()
 
             Button("Grant Permissions") {
-                // 在完成权限授权后隐藏 Onboarding
                 goGrantAccessibilityPermissions()
             }
             .padding()

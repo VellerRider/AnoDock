@@ -33,10 +33,8 @@ struct KuchiyoseDockApp: App {
     )
 
     init() {
-        // 让应用隐藏 Dock 图标
         NSApplication.shared.setActivationPolicy(.accessory)
         
-        // **在这里**触发 lazy 初始化
         _ = notificationHandler
         if AXIsProcessTrusted() {
             dockWindowManager.loadHostingController()// show dock at launch to initiate dockUIFrame
