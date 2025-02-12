@@ -23,7 +23,7 @@ struct AnodoDockHelperApp: App {
     }
 
     func launchMainApp() {
-        let mainAppPath = "/Applications/KuchiyoseDock.app" // or find the path more elegantly if needed
+        let mainAppPath = "/Applications/AnoDock.app" // or find the path more elegantly if needed
         let url = URL(fileURLWithPath: mainAppPath)
         NSWorkspace.shared.openApplication(at: url,
                                            configuration: .init(),

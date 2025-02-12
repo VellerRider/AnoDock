@@ -1,0 +1,1208 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1A156CCC2D37679C0052372C /* WindowAnimation in Frameworks */ = {isa = PBXBuildFile; productRef = 1A156CCB2D37679C0052372C /* WindowAnimation */; };
+		1A6565232D3B3AD50063CE7B /* DeleteMaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6565222D3B3AD50063CE7B /* DeleteMaskView.swift */; };
+		1A66D77E2CEEF3F500BDE735 /* DockEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A66D77D2CEEF3F500BDE735 /* DockEditorView.swift */; };
+		1A78BBEA2D000E7A003A8162 /* OtherSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A78BBE92D000E7A003A8162 /* OtherSettingsView.swift */; };
+		1A8DB8402D13E15A00A2338B /* DockDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8DB83F2D13E15A00A2338B /* DockDataManager.swift */; };
+		1A8DB8432D13FB8300A2338B /* HotKey in Frameworks */ = {isa = PBXBuildFile; productRef = 1A8DB8422D13FB8300A2338B /* HotKey */; };
+		1A8DB8452D13FCEA00A2338B /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8DB8442D13FCEA00A2338B /* AppSettings.swift */; };
+		1A93ED212CED74280064545A /* DockObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A93ED202CED74280064545A /* DockObserver.swift */; };
+		1AA1CABC2D1FCBBB00933295 /* DockWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA1CABB2D1FCBBB00933295 /* DockWindowManager.swift */; };
+		1AA1CABE2D1FCBF700933295 /* DockOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA1CABD2D1FCBF700933295 /* DockOverlayView.swift */; };
+		1AAFAF772D4F28AA001988A6 /* TooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAFAF762D4F28AA001988A6 /* TooltipView.swift */; };
+		1AAFAF792D4F28C9001988A6 /* TooltipManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAFAF782D4F28C9001988A6 /* TooltipManager.swift */; };
+		1AB463BB2D3E1D6000627FFE /* AnodoDockHelper.app in Resources */ = {isa = PBXBuildFile; fileRef = 1AB4638F2D3E1C8600627FFE /* AnodoDockHelper.app */; };
+		1ABA36B62D3835FC00BF0FF1 /* DragDropManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA36B52D3835FC00BF0FF1 /* DragDropManager.swift */; };
+		1ABA36BA2D38460A00BF0FF1 /* DockAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA36B92D38460A00BF0FF1 /* DockAnimation.swift */; };
+		1ABA36E02D38EACA00BF0FF1 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA36DF2D38EACA00BF0FF1 /* Test.swift */; };
+		1ABBE4D02D33480600CCF124 /* DockFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABBE4CF2D33480600CCF124 /* DockFolder.swift */; };
+		1ABBE4D22D33824200CCF124 /* DockWindowState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABBE4D12D33824200CCF124 /* DockWindowState.swift */; };
+		1ABBE4D42D3383F400CCF124 /* DockNotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABBE4D32D3383F400CCF124 /* DockNotificationHandler.swift */; };
+		1AC70B212CEACAA3009BA776 /* DockItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B202CEACAA3009BA776 /* DockItem.swift */; };
+		1AC70B272CEAD627009BA776 /* AnoDockApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B262CEAD627009BA776 /* AnoDockApp.swift */; };
+		1AC70B2A2CEADB39009BA776 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B292CEADB39009BA776 /* OnboardingView.swift */; };
+		1AC70B2C2CEADDB9009BA776 /* HotKeySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B2B2CEADDB9009BA776 /* HotKeySettings.swift */; };
+		1AC70B2F2CEAE7C2009BA776 /* GeneralSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC70B2E2CEAE7C2009BA776 /* GeneralSettings.swift */; };
+		1AEC4EE82CEA9E7500523CC1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AEC4ED62CEA9E7500523CC1 /* Preview Assets.xcassets */; };
+		1AEC4EE92CEA9E7500523CC1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AEC4EDA2CEA9E7500523CC1 /* Assets.xcassets */; };
+		1AEC4EEC2CEA9E7500523CC1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EDB2CEA9E7500523CC1 /* ContentView.swift */; };
+		1AEC4EF02CEA9E7500523CC1 /* DockItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EDF2CEA9E7500523CC1 /* DockItemView.swift */; };
+		1AEC4EF22CEA9E7500523CC1 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EE12CEA9E7500523CC1 /* GeneralSettingsView.swift */; };
+		1AEC4EF42CEA9E7500523CC1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EE42CEA9E7500523CC1 /* SettingsView.swift */; };
+		1AEC4EF52CEA9E7500523CC1 /* ShortcutsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EE52CEA9E7500523CC1 /* ShortcutsSettingsView.swift */; };
+		1AEC4EF62CEA9E7500523CC1 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC4EE62CEA9E7500523CC1 /* VisualEffectView.swift */; };
+		1AFAC5B02D34D26200C28902 /* ReorderableForEach.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFAC5AF2D34D26200C28902 /* ReorderableForEach.swift */; };
+		1AFAC5B22D3502FE00C28902 /* DockEditorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFAC5B12D3502FE00C28902 /* DockEditorSettings.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1AA9EEEF2CE4019F002D8348 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AA9EED52CE4019E002D8348 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1AA9EEDC2CE4019E002D8348;
+			remoteInfo = AnoDock;
+		};
+		1AA9EEF92CE4019F002D8348 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AA9EED52CE4019E002D8348 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1AA9EEDC2CE4019E002D8348;
+			remoteInfo = AnoDock;
+		};
+		1AB463A02D3E1C8800627FFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AA9EED52CE4019E002D8348 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1AB4638E2D3E1C8600627FFE;
+			remoteInfo = AnodoDockHelper;
+		};
+		1AB463AA2D3E1C8800627FFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AA9EED52CE4019E002D8348 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1AB4638E2D3E1C8600627FFE;
+			remoteInfo = AnodoDockHelper;
+		};
+		1AB463BC2D3E1D6000627FFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AA9EED52CE4019E002D8348 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1AB4638E2D3E1C8600627FFE;
+			remoteInfo = AnodoDockHelper;
+		};
+		1AB463BE2D3E1D7B00627FFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AA9EED52CE4019E002D8348 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1AB4638E2D3E1C8600627FFE;
+			remoteInfo = AnodoDockHelper;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1A6565222D3B3AD50063CE7B /* DeleteMaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteMaskView.swift; sourceTree = "<group>"; };
+		1A66D77D2CEEF3F500BDE735 /* DockEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockEditorView.swift; sourceTree = "<group>"; };
+		1A78BBE92D000E7A003A8162 /* OtherSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherSettingsView.swift; sourceTree = "<group>"; };
+		1A8DB83F2D13E15A00A2338B /* DockDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockDataManager.swift; sourceTree = "<group>"; };
+		1A8DB8442D13FCEA00A2338B /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		1A93ED202CED74280064545A /* DockObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockObserver.swift; sourceTree = "<group>"; };
+		1A93ED2E2CEDA6D70064545A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		1AA1CABB2D1FCBBB00933295 /* DockWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockWindowManager.swift; sourceTree = "<group>"; };
+		1AA1CABD2D1FCBF700933295 /* DockOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockOverlayView.swift; sourceTree = "<group>"; };
+		1AA9EEDD2CE4019E002D8348 /* AnoDock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnoDock.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AA9EEEE2CE4019F002D8348 /* AnoDockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnoDockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AA9EEF82CE4019F002D8348 /* AnoDockUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnoDockUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AAFAF762D4F28AA001988A6 /* TooltipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipView.swift; sourceTree = "<group>"; };
+		1AAFAF782D4F28C9001988A6 /* TooltipManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipManager.swift; sourceTree = "<group>"; };
+		1AB4638F2D3E1C8600627FFE /* AnodoDockHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnodoDockHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AB4639F2D3E1C8800627FFE /* AnodoDockHelperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnodoDockHelperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AB463A92D3E1C8800627FFE /* AnodoDockHelperUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnodoDockHelperUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1ABA36B52D3835FC00BF0FF1 /* DragDropManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragDropManager.swift; sourceTree = "<group>"; };
+		1ABA36B92D38460A00BF0FF1 /* DockAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockAnimation.swift; sourceTree = "<group>"; };
+		1ABA36DF2D38EACA00BF0FF1 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
+		1ABBE4CF2D33480600CCF124 /* DockFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockFolder.swift; sourceTree = "<group>"; };
+		1ABBE4D12D33824200CCF124 /* DockWindowState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockWindowState.swift; sourceTree = "<group>"; };
+		1ABBE4D32D3383F400CCF124 /* DockNotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockNotificationHandler.swift; sourceTree = "<group>"; };
+		1AC70B202CEACAA3009BA776 /* DockItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockItem.swift; sourceTree = "<group>"; };
+		1AC70B262CEAD627009BA776 /* AnoDockApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnoDockApp.swift; sourceTree = "<group>"; };
+		1AC70B292CEADB39009BA776 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		1AC70B2B2CEADDB9009BA776 /* HotKeySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKeySettings.swift; sourceTree = "<group>"; };
+		1AC70B2E2CEAE7C2009BA776 /* GeneralSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettings.swift; sourceTree = "<group>"; };
+		1AEC4ED62CEA9E7500523CC1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		1AEC4EDA2CEA9E7500523CC1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1AEC4EDB2CEA9E7500523CC1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		1AEC4EDF2CEA9E7500523CC1 /* DockItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockItemView.swift; sourceTree = "<group>"; };
+		1AEC4EE12CEA9E7500523CC1 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
+		1AEC4EE22CEA9E7500523CC1 /* AnoDock.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AnoDock.entitlements; sourceTree = "<group>"; };
+		1AEC4EE42CEA9E7500523CC1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		1AEC4EE52CEA9E7500523CC1 /* ShortcutsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsSettingsView.swift; sourceTree = "<group>"; };
+		1AEC4EE62CEA9E7500523CC1 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
+		1AFAC5AF2D34D26200C28902 /* ReorderableForEach.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReorderableForEach.swift; sourceTree = "<group>"; };
+		1AFAC5B12D3502FE00C28902 /* DockEditorSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockEditorSettings.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		1AA9EEF12CE4019F002D8348 /* AnoDockTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AnoDockTests;
+			sourceTree = "<group>";
+		};
+		1AA9EEFB2CE4019F002D8348 /* AnoDockUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AnoDockUITests;
+			sourceTree = "<group>";
+		};
+		1AB463902D3E1C8600627FFE /* AnodoDockHelper */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AnodoDockHelper;
+			sourceTree = "<group>";
+		};
+		1AB463A22D3E1C8800627FFE /* AnodoDockHelperTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AnodoDockHelperTests;
+			sourceTree = "<group>";
+		};
+		1AB463AC2D3E1C8800627FFE /* AnodoDockHelperUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AnodoDockHelperUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1AA9EEDA2CE4019E002D8348 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A8DB8432D13FB8300A2338B /* HotKey in Frameworks */,
+				1A156CCC2D37679C0052372C /* WindowAnimation in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AA9EEEB2CE4019F002D8348 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AA9EEF52CE4019F002D8348 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AB4638C2D3E1C8600627FFE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AB4639C2D3E1C8800627FFE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AB463A62D3E1C8800627FFE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1A78BBE42D000BD6003A8162 /* DockInterface */ = {
+			isa = PBXGroup;
+			children = (
+				1AEC4EDF2CEA9E7500523CC1 /* DockItemView.swift */,
+				1AEC4EE62CEA9E7500523CC1 /* VisualEffectView.swift */,
+				1AA1CABD2D1FCBF700933295 /* DockOverlayView.swift */,
+				1A6565222D3B3AD50063CE7B /* DeleteMaskView.swift */,
+				1AAFAF762D4F28AA001988A6 /* TooltipView.swift */,
+			);
+			path = DockInterface;
+			sourceTree = "<group>";
+		};
+		1A93ED242CED8E590064545A /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				1A93ED202CED74280064545A /* DockObserver.swift */,
+				1A8DB83F2D13E15A00A2338B /* DockDataManager.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		1AA9EED42CE4019E002D8348 = {
+			isa = PBXGroup;
+			children = (
+				1AA9EEF12CE4019F002D8348 /* AnoDockTests */,
+				1AA9EEFB2CE4019F002D8348 /* AnoDockUITests */,
+				1AB463902D3E1C8600627FFE /* AnodoDockHelper */,
+				1AB463A22D3E1C8800627FFE /* AnodoDockHelperTests */,
+				1AB463AC2D3E1C8800627FFE /* AnodoDockHelperUITests */,
+				1AA9EEDE2CE4019E002D8348 /* Products */,
+				1AEC4EE72CEA9E7500523CC1 /* AnoDock */,
+				1AB463BA2D3E1D6000627FFE /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		1AA9EEDE2CE4019E002D8348 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1AA9EEDD2CE4019E002D8348 /* AnoDock.app */,
+				1AA9EEEE2CE4019F002D8348 /* AnoDockTests.xctest */,
+				1AA9EEF82CE4019F002D8348 /* AnoDockUITests.xctest */,
+				1AB4638F2D3E1C8600627FFE /* AnodoDockHelper.app */,
+				1AB4639F2D3E1C8800627FFE /* AnodoDockHelperTests.xctest */,
+				1AB463A92D3E1C8800627FFE /* AnodoDockHelperUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1AB463BA2D3E1D6000627FFE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1AC70B1F2CEACA75009BA776 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				1AC70B202CEACAA3009BA776 /* DockItem.swift */,
+				1ABBE4CF2D33480600CCF124 /* DockFolder.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		1AC70B282CEADB30009BA776 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				1AFAC5AE2D34D24E00C28902 /* ContentManager */,
+				1AFAC5A12D34A03E00C28902 /* DockHelper */,
+				1AFAC5A62D34BCE600C28902 /* Animation */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		1AC70B2D2CEAE5B1009BA776 /* PermissionViews */ = {
+			isa = PBXGroup;
+			children = (
+				1AC70B292CEADB39009BA776 /* OnboardingView.swift */,
+			);
+			path = PermissionViews;
+			sourceTree = "<group>";
+		};
+		1AC70B322CEAE7D3009BA776 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				1AFAC5B12D3502FE00C28902 /* DockEditorSettings.swift */,
+				1AC70B2E2CEAE7C2009BA776 /* GeneralSettings.swift */,
+				1A8DB8442D13FCEA00A2338B /* AppSettings.swift */,
+				1AC70B2B2CEADDB9009BA776 /* HotKeySettings.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		1AEC4ED72CEA9E7500523CC1 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				1AEC4ED62CEA9E7500523CC1 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		1AEC4EE72CEA9E7500523CC1 /* AnoDock */ = {
+			isa = PBXGroup;
+			children = (
+				1A93ED2E2CEDA6D70064545A /* Info.plist */,
+				1AC70B262CEAD627009BA776 /* AnoDockApp.swift */,
+				1AEC4EF72CEA9E7800523CC1 /* Views */,
+				1AEC4EDA2CEA9E7500523CC1 /* Assets.xcassets */,
+				1AEC4EE22CEA9E7500523CC1 /* AnoDock.entitlements */,
+				1AEC4ED72CEA9E7500523CC1 /* Preview Content */,
+				1AC70B1F2CEACA75009BA776 /* Model */,
+				1AC70B322CEAE7D3009BA776 /* Settings */,
+				1A93ED242CED8E590064545A /* Util */,
+				1AC70B282CEADB30009BA776 /* Helpers */,
+			);
+			path = AnoDock;
+			sourceTree = "<group>";
+		};
+		1AEC4EF72CEA9E7800523CC1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1AEC4EDB2CEA9E7500523CC1 /* ContentView.swift */,
+				1AC70B2D2CEAE5B1009BA776 /* PermissionViews */,
+				1AEC4EF82CEA9EB100523CC1 /* SettingViews */,
+				1A78BBE42D000BD6003A8162 /* DockInterface */,
+				1ABA36DF2D38EACA00BF0FF1 /* Test.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1AEC4EF82CEA9EB100523CC1 /* SettingViews */ = {
+			isa = PBXGroup;
+			children = (
+				1AEC4EE42CEA9E7500523CC1 /* SettingsView.swift */,
+				1A66D77D2CEEF3F500BDE735 /* DockEditorView.swift */,
+				1AEC4EE12CEA9E7500523CC1 /* GeneralSettingsView.swift */,
+				1AEC4EE52CEA9E7500523CC1 /* ShortcutsSettingsView.swift */,
+				1A78BBE92D000E7A003A8162 /* OtherSettingsView.swift */,
+			);
+			path = SettingViews;
+			sourceTree = "<group>";
+		};
+		1AFAC5A12D34A03E00C28902 /* DockHelper */ = {
+			isa = PBXGroup;
+			children = (
+				1AA1CABB2D1FCBBB00933295 /* DockWindowManager.swift */,
+				1ABBE4D12D33824200CCF124 /* DockWindowState.swift */,
+				1ABBE4D32D3383F400CCF124 /* DockNotificationHandler.swift */,
+				1AAFAF782D4F28C9001988A6 /* TooltipManager.swift */,
+			);
+			path = DockHelper;
+			sourceTree = "<group>";
+		};
+		1AFAC5A62D34BCE600C28902 /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				1ABA36B92D38460A00BF0FF1 /* DockAnimation.swift */,
+			);
+			path = Animation;
+			sourceTree = "<group>";
+		};
+		1AFAC5AE2D34D24E00C28902 /* ContentManager */ = {
+			isa = PBXGroup;
+			children = (
+				1AFAC5AF2D34D26200C28902 /* ReorderableForEach.swift */,
+				1ABA36B52D3835FC00BF0FF1 /* DragDropManager.swift */,
+			);
+			path = ContentManager;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1AA9EEDC2CE4019E002D8348 /* AnoDock */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1AA9EF022CE4019F002D8348 /* Build configuration list for PBXNativeTarget "AnoDock" */;
+			buildPhases = (
+				1AA9EED92CE4019E002D8348 /* Sources */,
+				1AA9EEDA2CE4019E002D8348 /* Frameworks */,
+				1AA9EEDB2CE4019E002D8348 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1AB463BD2D3E1D6000627FFE /* PBXTargetDependency */,
+				1AB463BF2D3E1D7B00627FFE /* PBXTargetDependency */,
+			);
+			name = AnoDock;
+			packageProductDependencies = (
+				1A8DB8422D13FB8300A2338B /* HotKey */,
+				1A156CCB2D37679C0052372C /* WindowAnimation */,
+			);
+			productName = AnoDock;
+			productReference = 1AA9EEDD2CE4019E002D8348 /* AnoDock.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1AA9EEED2CE4019F002D8348 /* AnoDockTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1AA9EF052CE4019F002D8348 /* Build configuration list for PBXNativeTarget "AnoDockTests" */;
+			buildPhases = (
+				1AA9EEEA2CE4019F002D8348 /* Sources */,
+				1AA9EEEB2CE4019F002D8348 /* Frameworks */,
+				1AA9EEEC2CE4019F002D8348 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1AA9EEF02CE4019F002D8348 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1AA9EEF12CE4019F002D8348 /* AnoDockTests */,
+			);
+			name = AnoDockTests;
+			packageProductDependencies = (
+			);
+			productName = AnoDockTests;
+			productReference = 1AA9EEEE2CE4019F002D8348 /* AnoDockTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		1AA9EEF72CE4019F002D8348 /* AnoDockUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1AA9EF082CE4019F002D8348 /* Build configuration list for PBXNativeTarget "AnoDockUITests" */;
+			buildPhases = (
+				1AA9EEF42CE4019F002D8348 /* Sources */,
+				1AA9EEF52CE4019F002D8348 /* Frameworks */,
+				1AA9EEF62CE4019F002D8348 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1AA9EEFA2CE4019F002D8348 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1AA9EEFB2CE4019F002D8348 /* AnoDockUITests */,
+			);
+			name = AnoDockUITests;
+			packageProductDependencies = (
+			);
+			productName = AnoDockUITests;
+			productReference = 1AA9EEF82CE4019F002D8348 /* AnoDockUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		1AB4638E2D3E1C8600627FFE /* AnodoDockHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1AB463B12D3E1C8800627FFE /* Build configuration list for PBXNativeTarget "AnodoDockHelper" */;
+			buildPhases = (
+				1AB4638B2D3E1C8600627FFE /* Sources */,
+				1AB4638C2D3E1C8600627FFE /* Frameworks */,
+				1AB4638D2D3E1C8600627FFE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				1AB463902D3E1C8600627FFE /* AnodoDockHelper */,
+			);
+			name = AnodoDockHelper;
+			packageProductDependencies = (
+			);
+			productName = AnodoDockHelper;
+			productReference = 1AB4638F2D3E1C8600627FFE /* AnodoDockHelper.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1AB4639E2D3E1C8800627FFE /* AnodoDockHelperTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1AB463B42D3E1C8800627FFE /* Build configuration list for PBXNativeTarget "AnodoDockHelperTests" */;
+			buildPhases = (
+				1AB4639B2D3E1C8800627FFE /* Sources */,
+				1AB4639C2D3E1C8800627FFE /* Frameworks */,
+				1AB4639D2D3E1C8800627FFE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1AB463A12D3E1C8800627FFE /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1AB463A22D3E1C8800627FFE /* AnodoDockHelperTests */,
+			);
+			name = AnodoDockHelperTests;
+			packageProductDependencies = (
+			);
+			productName = AnodoDockHelperTests;
+			productReference = 1AB4639F2D3E1C8800627FFE /* AnodoDockHelperTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		1AB463A82D3E1C8800627FFE /* AnodoDockHelperUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1AB463B72D3E1C8800627FFE /* Build configuration list for PBXNativeTarget "AnodoDockHelperUITests" */;
+			buildPhases = (
+				1AB463A52D3E1C8800627FFE /* Sources */,
+				1AB463A62D3E1C8800627FFE /* Frameworks */,
+				1AB463A72D3E1C8800627FFE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1AB463AB2D3E1C8800627FFE /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1AB463AC2D3E1C8800627FFE /* AnodoDockHelperUITests */,
+			);
+			name = AnodoDockHelperUITests;
+			packageProductDependencies = (
+			);
+			productName = AnodoDockHelperUITests;
+			productReference = 1AB463A92D3E1C8800627FFE /* AnodoDockHelperUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1AA9EED52CE4019E002D8348 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1610;
+				TargetAttributes = {
+					1AA9EEDC2CE4019E002D8348 = {
+						CreatedOnToolsVersion = 16.1;
+					};
+					1AA9EEED2CE4019F002D8348 = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = 1AA9EEDC2CE4019E002D8348;
+					};
+					1AA9EEF72CE4019F002D8348 = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = 1AA9EEDC2CE4019E002D8348;
+					};
+					1AB4638E2D3E1C8600627FFE = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					1AB4639E2D3E1C8800627FFE = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 1AB4638E2D3E1C8600627FFE;
+					};
+					1AB463A82D3E1C8800627FFE = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 1AB4638E2D3E1C8600627FFE;
+					};
+				};
+			};
+			buildConfigurationList = 1AA9EED82CE4019E002D8348 /* Build configuration list for PBXProject "AnoDock" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1AA9EED42CE4019E002D8348;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				1A8DB8412D13FB8300A2338B /* XCRemoteSwiftPackageReference "HotKey" */,
+				1A156CCA2D37679C0052372C /* XCRemoteSwiftPackageReference "WindowAnimation" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 1AA9EEDE2CE4019E002D8348 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1AA9EEDC2CE4019E002D8348 /* AnoDock */,
+				1AA9EEED2CE4019F002D8348 /* AnoDockTests */,
+				1AA9EEF72CE4019F002D8348 /* AnoDockUITests */,
+				1AB4638E2D3E1C8600627FFE /* AnodoDockHelper */,
+				1AB4639E2D3E1C8800627FFE /* AnodoDockHelperTests */,
+				1AB463A82D3E1C8800627FFE /* AnodoDockHelperUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1AA9EEDB2CE4019E002D8348 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1AEC4EE82CEA9E7500523CC1 /* Preview Assets.xcassets in Resources */,
+				1AB463BB2D3E1D6000627FFE /* AnodoDockHelper.app in Resources */,
+				1AEC4EE92CEA9E7500523CC1 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AA9EEEC2CE4019F002D8348 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AA9EEF62CE4019F002D8348 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AB4638D2D3E1C8600627FFE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AB4639D2D3E1C8800627FFE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AB463A72D3E1C8800627FFE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1AA9EED92CE4019E002D8348 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1ABBE4D02D33480600CCF124 /* DockFolder.swift in Sources */,
+				1AA1CABC2D1FCBBB00933295 /* DockWindowManager.swift in Sources */,
+				1ABA36BA2D38460A00BF0FF1 /* DockAnimation.swift in Sources */,
+				1AC70B2F2CEAE7C2009BA776 /* GeneralSettings.swift in Sources */,
+				1AEC4EEC2CEA9E7500523CC1 /* ContentView.swift in Sources */,
+				1ABBE4D22D33824200CCF124 /* DockWindowState.swift in Sources */,
+				1AA1CABE2D1FCBF700933295 /* DockOverlayView.swift in Sources */,
+				1AFAC5B22D3502FE00C28902 /* DockEditorSettings.swift in Sources */,
+				1AEC4EF02CEA9E7500523CC1 /* DockItemView.swift in Sources */,
+				1A66D77E2CEEF3F500BDE735 /* DockEditorView.swift in Sources */,
+				1AAFAF772D4F28AA001988A6 /* TooltipView.swift in Sources */,
+				1A8DB8402D13E15A00A2338B /* DockDataManager.swift in Sources */,
+				1AFAC5B02D34D26200C28902 /* ReorderableForEach.swift in Sources */,
+				1AEC4EF22CEA9E7500523CC1 /* GeneralSettingsView.swift in Sources */,
+				1A6565232D3B3AD50063CE7B /* DeleteMaskView.swift in Sources */,
+				1AEC4EF42CEA9E7500523CC1 /* SettingsView.swift in Sources */,
+				1ABA36E02D38EACA00BF0FF1 /* Test.swift in Sources */,
+				1AEC4EF52CEA9E7500523CC1 /* ShortcutsSettingsView.swift in Sources */,
+				1A78BBEA2D000E7A003A8162 /* OtherSettingsView.swift in Sources */,
+				1AEC4EF62CEA9E7500523CC1 /* VisualEffectView.swift in Sources */,
+				1AC70B2C2CEADDB9009BA776 /* HotKeySettings.swift in Sources */,
+				1AAFAF792D4F28C9001988A6 /* TooltipManager.swift in Sources */,
+				1ABBE4D42D3383F400CCF124 /* DockNotificationHandler.swift in Sources */,
+				1AC70B272CEAD627009BA776 /* AnoDockApp.swift in Sources */,
+				1A93ED212CED74280064545A /* DockObserver.swift in Sources */,
+				1AC70B212CEACAA3009BA776 /* DockItem.swift in Sources */,
+				1AC70B2A2CEADB39009BA776 /* OnboardingView.swift in Sources */,
+				1ABA36B62D3835FC00BF0FF1 /* DragDropManager.swift in Sources */,
+				1A8DB8452D13FCEA00A2338B /* AppSettings.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AA9EEEA2CE4019F002D8348 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AA9EEF42CE4019F002D8348 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AB4638B2D3E1C8600627FFE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AB4639B2D3E1C8800627FFE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AB463A52D3E1C8800627FFE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1AA9EEF02CE4019F002D8348 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1AA9EEDC2CE4019E002D8348 /* AnoDock */;
+			targetProxy = 1AA9EEEF2CE4019F002D8348 /* PBXContainerItemProxy */;
+		};
+		1AA9EEFA2CE4019F002D8348 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1AA9EEDC2CE4019E002D8348 /* AnoDock */;
+			targetProxy = 1AA9EEF92CE4019F002D8348 /* PBXContainerItemProxy */;
+		};
+		1AB463A12D3E1C8800627FFE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1AB4638E2D3E1C8600627FFE /* AnodoDockHelper */;
+			targetProxy = 1AB463A02D3E1C8800627FFE /* PBXContainerItemProxy */;
+		};
+		1AB463AB2D3E1C8800627FFE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1AB4638E2D3E1C8600627FFE /* AnodoDockHelper */;
+			targetProxy = 1AB463AA2D3E1C8800627FFE /* PBXContainerItemProxy */;
+		};
+		1AB463BD2D3E1D6000627FFE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1AB4638E2D3E1C8600627FFE /* AnodoDockHelper */;
+			targetProxy = 1AB463BC2D3E1D6000627FFE /* PBXContainerItemProxy */;
+		};
+		1AB463BF2D3E1D7B00627FFE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1AB4638E2D3E1C8600627FFE /* AnodoDockHelper */;
+			targetProxy = 1AB463BE2D3E1D7B00627FFE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1AA9EF002CE4019F002D8348 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		1AA9EF012CE4019F002D8348 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		1AA9EF032CE4019F002D8348 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = AnoDock/AnoDock.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"AnoDock/Preview Content\"";
+				DEVELOPMENT_TEAM = G7ZSY874L2;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AnoDock/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AnoDock;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "This app need to know what apps in your dock to make a perfect replicate. Your privacy is in your hands.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnoDock;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		1AA9EF042CE4019F002D8348 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = AnoDock/AnoDock.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"AnoDock/Preview Content\"";
+				DEVELOPMENT_TEAM = G7ZSY874L2;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AnoDock/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AnoDock;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "This app need to know what apps in your dock to make a perfect replicate. Your privacy is in your hands.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnoDock;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		1AA9EF062CE4019F002D8348 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnoDockTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AnoDock.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AnoDock";
+			};
+			name = Debug;
+		};
+		1AA9EF072CE4019F002D8348 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnoDockTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AnoDock.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AnoDock";
+			};
+			name = Release;
+		};
+		1AA9EF092CE4019F002D8348 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnoDockUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = AnoDock;
+			};
+			name = Debug;
+		};
+		1AA9EF0A2CE4019F002D8348 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnoDockUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = AnoDock;
+			};
+			name = Release;
+		};
+		1AB463B22D3E1C8800627FFE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = AnodoDockHelper/AnodoDockHelper.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"AnodoDockHelper/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSBackgroundOnly = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnodoDockHelper;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		1AB463B32D3E1C8800627FFE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = AnodoDockHelper/AnodoDockHelper.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"AnodoDockHelper/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSBackgroundOnly = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnodoDockHelper;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		1AB463B52D3E1C8800627FFE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnodoDockHelperTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AnodoDockHelper.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AnodoDockHelper";
+			};
+			name = Debug;
+		};
+		1AB463B62D3E1C8800627FFE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnodoDockHelperTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AnodoDockHelper.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AnodoDockHelper";
+			};
+			name = Release;
+		};
+		1AB463B82D3E1C8800627FFE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnodoDockHelperUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = AnodoDockHelper;
+			};
+			name = Debug;
+		};
+		1AB463B92D3E1C8800627FFE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnodoDockHelperUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = AnodoDockHelper;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1AA9EED82CE4019E002D8348 /* Build configuration list for PBXProject "AnoDock" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1AA9EF002CE4019F002D8348 /* Debug */,
+				1AA9EF012CE4019F002D8348 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1AA9EF022CE4019F002D8348 /* Build configuration list for PBXNativeTarget "AnoDock" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1AA9EF032CE4019F002D8348 /* Debug */,
+				1AA9EF042CE4019F002D8348 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1AA9EF052CE4019F002D8348 /* Build configuration list for PBXNativeTarget "AnoDockTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1AA9EF062CE4019F002D8348 /* Debug */,
+				1AA9EF072CE4019F002D8348 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1AA9EF082CE4019F002D8348 /* Build configuration list for PBXNativeTarget "AnoDockUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1AA9EF092CE4019F002D8348 /* Debug */,
+				1AA9EF0A2CE4019F002D8348 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1AB463B12D3E1C8800627FFE /* Build configuration list for PBXNativeTarget "AnodoDockHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1AB463B22D3E1C8800627FFE /* Debug */,
+				1AB463B32D3E1C8800627FFE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1AB463B42D3E1C8800627FFE /* Build configuration list for PBXNativeTarget "AnodoDockHelperTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1AB463B52D3E1C8800627FFE /* Debug */,
+				1AB463B62D3E1C8800627FFE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1AB463B72D3E1C8800627FFE /* Build configuration list for PBXNativeTarget "AnodoDockHelperUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1AB463B82D3E1C8800627FFE /* Debug */,
+				1AB463B92D3E1C8800627FFE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1A156CCA2D37679C0052372C /* XCRemoteSwiftPackageReference "WindowAnimation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Lakr233/WindowAnimation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.5;
+			};
+		};
+		1A8DB8412D13FB8300A2338B /* XCRemoteSwiftPackageReference "HotKey" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/soffes/HotKey";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1A156CCB2D37679C0052372C /* WindowAnimation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1A156CCA2D37679C0052372C /* XCRemoteSwiftPackageReference "WindowAnimation" */;
+			productName = WindowAnimation;
+		};
+		1A8DB8422D13FB8300A2338B /* HotKey */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1A8DB8412D13FB8300A2338B /* XCRemoteSwiftPackageReference "HotKey" */;
+			productName = HotKey;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 1AA9EED52CE4019E002D8348 /* Project object */;
+}
