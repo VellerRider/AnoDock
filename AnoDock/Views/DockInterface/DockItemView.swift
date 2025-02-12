@@ -264,15 +264,17 @@ struct DockItemView: View {
             dockObserver.removeItem(item.bundleID)
         } else {
             dockObserver.addItemToPos(item, nil)// add to last by default
-            dockObserver.refreshDock()
         }
+        dockObserver.saveDockItems()
+        dockObserver.refreshDock()
+        dragDropManager.updateOrderedItems()
+        
     }
     
     
     // MARK: - Delete Item
     private func deleteSelf() {
         withAnimation(.dockUpdateAnimation) {
-//            dockObserver.removeItem(item.bundleID)
             dragDropManager.removeSingleItem(item.bundleID)
         }
     }

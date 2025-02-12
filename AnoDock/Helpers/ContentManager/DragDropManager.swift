@@ -81,6 +81,7 @@ class DragDropManager: ObservableObject {
     func saveOrderedItems() {
         dockObserver.dockItems = orderedDockItems
         dockObserver.recentApps = orderedRecents
+        dockObserver.saveDockItems()
         isDragging = false
         draggingItem = nil
         draggedOutItem = nil
@@ -103,7 +104,6 @@ class DragDropManager: ObservableObject {
             self.orderedRecents.removeAll(where: { $0.bundleID == bundleID })
             self.orderedDockItems.removeAll(where: { $0.bundleID == bundleID })
             saveOrderedItems()
-            dockObserver.saveDockItems()
             dockObserver.refreshDock()
             updateOrderedItems()
         }
@@ -146,8 +146,8 @@ class DragDropManager: ObservableObject {
             if !dockEditorSettings.isEditing {
                 // wrap up
                 saveOrderedItems()
-                dockObserver.saveDockItems()
                 dockObserver.refreshDock()
+                updateOrderedItems()
             }
         }
     }

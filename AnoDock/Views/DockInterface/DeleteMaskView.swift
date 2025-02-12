@@ -54,7 +54,7 @@ struct DeleteZoneDropDelegate: DropDelegate {
     func performDrop(info: DropInfo) -> Bool {
         DispatchQueue.main.async {
             withAnimation(.easeOut) {
-                // after dropping, send notification of hide deletemask
+                // this item is deleted
                 dragDropManager.saveOrderedItems()
             }
         }

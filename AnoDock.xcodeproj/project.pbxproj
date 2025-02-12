@@ -311,11 +311,11 @@
 			isa = PBXGroup;
 			children = (
 				1A93ED2E2CEDA6D70064545A /* Info.plist */,
-				1AC70B262CEAD627009BA776 /* AnoDockApp.swift */,
-				1AEC4EF72CEA9E7800523CC1 /* Views */,
 				1AEC4EDA2CEA9E7500523CC1 /* Assets.xcassets */,
 				1AEC4EE22CEA9E7500523CC1 /* AnoDock.entitlements */,
 				1AEC4ED72CEA9E7500523CC1 /* Preview Content */,
+				1AC70B262CEAD627009BA776 /* AnoDockApp.swift */,
+				1AEC4EF72CEA9E7800523CC1 /* Views */,
 				1AC70B1F2CEACA75009BA776 /* Model */,
 				1AC70B322CEAE7D3009BA776 /* Settings */,
 				1A93ED242CED8E590064545A /* Util */,

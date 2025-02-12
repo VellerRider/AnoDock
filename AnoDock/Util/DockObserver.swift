@@ -175,8 +175,6 @@ class DockObserver: NSObject, ObservableObject {
         dockItems.removeAll(where: { $0.bundleID == bundleID })
         recentApps.removeAll(where: { $0.bundleID == bundleID })
         appIcons.removeValue(forKey: bundleID)
-
-        refreshDock()
     }
     
     
