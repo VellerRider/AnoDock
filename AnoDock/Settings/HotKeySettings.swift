@@ -13,10 +13,6 @@ class HotKeySettings: ObservableObject {
     @Published var globalHotKey: HotKey? {
         didSet {
             print("globalHotKey updated to \(String(describing: globalHotKey?.keyCombo))")
-
-
-            // Optionally, you can do debugging logs or further side effects here.
-            // e.g., print("globalHotKey updated to \(String(describing: globalHotKey))")
         }
     }
     static let shared = HotKeySettings()
@@ -29,7 +25,7 @@ class HotKeySettings: ObservableObject {
         // 2) If no saved shortcut, or it was invalid, use the default
         if keyboardShortcut == nil {
             // default: Option + Shift + Space
-            keyboardShortcut = KeyboardShortcut(.space, modifiers: [.option, .shift])
+            keyboardShortcut = KeyboardShortcut(.tab, modifiers: [.option])
         }
         
         // 3) Update the Soffes HotKey to reflect the final (saved or default) shortcut
