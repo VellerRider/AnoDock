@@ -3,11 +3,11 @@
 //  AnodoDockHelper
 //
 //  Created by John Yang on 1/20/25.
-//
+//  Helper to launch Anodock. Implement later. 
 import SwiftUI
 
 @main
-struct AnodoDockHelperApp: App {
+struct AnoDockHelperApp: App {
     var body: some Scene {
         WindowGroup {
             EmptyView()

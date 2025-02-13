@@ -19,7 +19,7 @@
 		1AA1CABE2D1FCBF700933295 /* DockOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA1CABD2D1FCBF700933295 /* DockOverlayView.swift */; };
 		1AAFAF772D4F28AA001988A6 /* TooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAFAF762D4F28AA001988A6 /* TooltipView.swift */; };
 		1AAFAF792D4F28C9001988A6 /* TooltipManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAFAF782D4F28C9001988A6 /* TooltipManager.swift */; };
-		1AB463BB2D3E1D6000627FFE /* AnodoDockHelper.app in Resources */ = {isa = PBXBuildFile; fileRef = 1AB4638F2D3E1C8600627FFE /* AnodoDockHelper.app */; };
+		1AB463BB2D3E1D6000627FFE /* AnoDockHelper.app in Resources */ = {isa = PBXBuildFile; fileRef = 1AB4638F2D3E1C8600627FFE /* AnoDockHelper.app */; };
 		1ABA36B62D3835FC00BF0FF1 /* DragDropManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA36B52D3835FC00BF0FF1 /* DragDropManager.swift */; };
 		1ABA36BA2D38460A00BF0FF1 /* DockAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA36B92D38460A00BF0FF1 /* DockAnimation.swift */; };
 		1ABA36E02D38EACA00BF0FF1 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA36DF2D38EACA00BF0FF1 /* Test.swift */; };
@@ -103,9 +103,9 @@
 		1AA9EEF82CE4019F002D8348 /* AnoDockUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnoDockUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AAFAF762D4F28AA001988A6 /* TooltipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipView.swift; sourceTree = "<group>"; };
 		1AAFAF782D4F28C9001988A6 /* TooltipManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipManager.swift; sourceTree = "<group>"; };
-		1AB4638F2D3E1C8600627FFE /* AnodoDockHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnodoDockHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		1AB4639F2D3E1C8800627FFE /* AnodoDockHelperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnodoDockHelperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		1AB463A92D3E1C8800627FFE /* AnodoDockHelperUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnodoDockHelperUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AB4638F2D3E1C8600627FFE /* AnoDockHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnoDockHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AB4639F2D3E1C8800627FFE /* AnoDockHelperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnoDockHelperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AB463A92D3E1C8800627FFE /* AnoDockHelperUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnoDockHelperUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ABA36B52D3835FC00BF0FF1 /* DragDropManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragDropManager.swift; sourceTree = "<group>"; };
 		1ABA36B92D38460A00BF0FF1 /* DockAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockAnimation.swift; sourceTree = "<group>"; };
 		1ABA36DF2D38EACA00BF0FF1 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
@@ -141,19 +141,19 @@
 			path = AnoDockUITests;
 			sourceTree = "<group>";
 		};
-		1AB463902D3E1C8600627FFE /* AnodoDockHelper */ = {
+		1AB463902D3E1C8600627FFE /* AnoDockHelper */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AnodoDockHelper;
+			path = AnoDockHelper;
 			sourceTree = "<group>";
 		};
-		1AB463A22D3E1C8800627FFE /* AnodoDockHelperTests */ = {
+		1AB463A22D3E1C8800627FFE /* AnoDockHelperTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AnodoDockHelperTests;
+			path = AnoDockHelperTests;
 			sourceTree = "<group>";
 		};
-		1AB463AC2D3E1C8800627FFE /* AnodoDockHelperUITests */ = {
+		1AB463AC2D3E1C8800627FFE /* AnoDockHelperUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AnodoDockHelperUITests;
+			path = AnoDockHelperUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -232,9 +232,9 @@
 			children = (
 				1AA9EEF12CE4019F002D8348 /* AnoDockTests */,
 				1AA9EEFB2CE4019F002D8348 /* AnoDockUITests */,
-				1AB463902D3E1C8600627FFE /* AnodoDockHelper */,
-				1AB463A22D3E1C8800627FFE /* AnodoDockHelperTests */,
-				1AB463AC2D3E1C8800627FFE /* AnodoDockHelperUITests */,
+				1AB463902D3E1C8600627FFE /* AnoDockHelper */,
+				1AB463A22D3E1C8800627FFE /* AnoDockHelperTests */,
+				1AB463AC2D3E1C8800627FFE /* AnoDockHelperUITests */,
 				1AA9EEDE2CE4019E002D8348 /* Products */,
 				1AEC4EE72CEA9E7500523CC1 /* AnoDock */,
 				1AB463BA2D3E1D6000627FFE /* Frameworks */,
@@ -247,9 +247,9 @@
 				1AA9EEDD2CE4019E002D8348 /* AnoDock.app */,
 				1AA9EEEE2CE4019F002D8348 /* AnoDockTests.xctest */,
 				1AA9EEF82CE4019F002D8348 /* AnoDockUITests.xctest */,
-				1AB4638F2D3E1C8600627FFE /* AnodoDockHelper.app */,
-				1AB4639F2D3E1C8800627FFE /* AnodoDockHelperTests.xctest */,
-				1AB463A92D3E1C8800627FFE /* AnodoDockHelperUITests.xctest */,
+				1AB4638F2D3E1C8600627FFE /* AnoDockHelper.app */,
+				1AB4639F2D3E1C8800627FFE /* AnoDockHelperTests.xctest */,
+				1AB463A92D3E1C8800627FFE /* AnoDockHelperUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -448,9 +448,9 @@
 			productReference = 1AA9EEF82CE4019F002D8348 /* AnoDockUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		1AB4638E2D3E1C8600627FFE /* AnodoDockHelper */ = {
+		1AB4638E2D3E1C8600627FFE /* AnoDockHelper */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1AB463B12D3E1C8800627FFE /* Build configuration list for PBXNativeTarget "AnodoDockHelper" */;
+			buildConfigurationList = 1AB463B12D3E1C8800627FFE /* Build configuration list for PBXNativeTarget "AnoDockHelper" */;
 			buildPhases = (
 				1AB4638B2D3E1C8600627FFE /* Sources */,
 				1AB4638C2D3E1C8600627FFE /* Frameworks */,
@@ -461,18 +461,18 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				1AB463902D3E1C8600627FFE /* AnodoDockHelper */,
+				1AB463902D3E1C8600627FFE /* AnoDockHelper */,
 			);
-			name = AnodoDockHelper;
+			name = AnoDockHelper;
 			packageProductDependencies = (
 			);
 			productName = AnodoDockHelper;
-			productReference = 1AB4638F2D3E1C8600627FFE /* AnodoDockHelper.app */;
+			productReference = 1AB4638F2D3E1C8600627FFE /* AnoDockHelper.app */;
 			productType = "com.apple.product-type.application";
 		};
-		1AB4639E2D3E1C8800627FFE /* AnodoDockHelperTests */ = {
+		1AB4639E2D3E1C8800627FFE /* AnoDockHelperTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1AB463B42D3E1C8800627FFE /* Build configuration list for PBXNativeTarget "AnodoDockHelperTests" */;
+			buildConfigurationList = 1AB463B42D3E1C8800627FFE /* Build configuration list for PBXNativeTarget "AnoDockHelperTests" */;
 			buildPhases = (
 				1AB4639B2D3E1C8800627FFE /* Sources */,
 				1AB4639C2D3E1C8800627FFE /* Frameworks */,
@@ -484,18 +484,18 @@
 				1AB463A12D3E1C8800627FFE /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				1AB463A22D3E1C8800627FFE /* AnodoDockHelperTests */,
+				1AB463A22D3E1C8800627FFE /* AnoDockHelperTests */,
 			);
-			name = AnodoDockHelperTests;
+			name = AnoDockHelperTests;
 			packageProductDependencies = (
 			);
 			productName = AnodoDockHelperTests;
-			productReference = 1AB4639F2D3E1C8800627FFE /* AnodoDockHelperTests.xctest */;
+			productReference = 1AB4639F2D3E1C8800627FFE /* AnoDockHelperTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		1AB463A82D3E1C8800627FFE /* AnodoDockHelperUITests */ = {
+		1AB463A82D3E1C8800627FFE /* AnoDockHelperUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1AB463B72D3E1C8800627FFE /* Build configuration list for PBXNativeTarget "AnodoDockHelperUITests" */;
+			buildConfigurationList = 1AB463B72D3E1C8800627FFE /* Build configuration list for PBXNativeTarget "AnoDockHelperUITests" */;
 			buildPhases = (
 				1AB463A52D3E1C8800627FFE /* Sources */,
 				1AB463A62D3E1C8800627FFE /* Frameworks */,
@@ -507,13 +507,13 @@
 				1AB463AB2D3E1C8800627FFE /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				1AB463AC2D3E1C8800627FFE /* AnodoDockHelperUITests */,
+				1AB463AC2D3E1C8800627FFE /* AnoDockHelperUITests */,
 			);
-			name = AnodoDockHelperUITests;
+			name = AnoDockHelperUITests;
 			packageProductDependencies = (
 			);
 			productName = AnodoDockHelperUITests;
-			productReference = 1AB463A92D3E1C8800627FFE /* AnodoDockHelperUITests.xctest */;
+			productReference = 1AB463A92D3E1C8800627FFE /* AnoDockHelperUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -571,9 +571,9 @@
 				1AA9EEDC2CE4019E002D8348 /* AnoDock */,
 				1AA9EEED2CE4019F002D8348 /* AnoDockTests */,
 				1AA9EEF72CE4019F002D8348 /* AnoDockUITests */,
-				1AB4638E2D3E1C8600627FFE /* AnodoDockHelper */,
-				1AB4639E2D3E1C8800627FFE /* AnodoDockHelperTests */,
-				1AB463A82D3E1C8800627FFE /* AnodoDockHelperUITests */,
+				1AB4638E2D3E1C8600627FFE /* AnoDockHelper */,
+				1AB4639E2D3E1C8800627FFE /* AnoDockHelperTests */,
+				1AB463A82D3E1C8800627FFE /* AnoDockHelperUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -584,7 +584,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AEC4EE82CEA9E7500523CC1 /* Preview Assets.xcassets in Resources */,
-				1AB463BB2D3E1D6000627FFE /* AnodoDockHelper.app in Resources */,
+				1AB463BB2D3E1D6000627FFE /* AnoDockHelper.app in Resources */,
 				1AEC4EE92CEA9E7500523CC1 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -713,22 +713,22 @@
 		};
 		1AB463A12D3E1C8800627FFE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 1AB4638E2D3E1C8600627FFE /* AnodoDockHelper */;
+			target = 1AB4638E2D3E1C8600627FFE /* AnoDockHelper */;
 			targetProxy = 1AB463A02D3E1C8800627FFE /* PBXContainerItemProxy */;
 		};
 		1AB463AB2D3E1C8800627FFE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 1AB4638E2D3E1C8600627FFE /* AnodoDockHelper */;
+			target = 1AB4638E2D3E1C8600627FFE /* AnoDockHelper */;
 			targetProxy = 1AB463AA2D3E1C8800627FFE /* PBXContainerItemProxy */;
 		};
 		1AB463BD2D3E1D6000627FFE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 1AB4638E2D3E1C8600627FFE /* AnodoDockHelper */;
+			target = 1AB4638E2D3E1C8600627FFE /* AnoDockHelper */;
 			targetProxy = 1AB463BC2D3E1D6000627FFE /* PBXContainerItemProxy */;
 		};
 		1AB463BF2D3E1D7B00627FFE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 1AB4638E2D3E1C8600627FFE /* AnodoDockHelper */;
+			target = 1AB4638E2D3E1C8600627FFE /* AnoDockHelper */;
 			targetProxy = 1AB463BE2D3E1D7B00627FFE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -987,11 +987,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = AnodoDockHelper/AnodoDockHelper.entitlements;
+				CODE_SIGN_ENTITLEMENTS = AnoDockHelper/AnoDockHelper.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"AnodoDockHelper/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"AnoDockHelper/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSBackgroundOnly = YES;
@@ -1001,9 +1001,9 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnodoDockHelper;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnoDockHelper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1015,11 +1015,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = AnodoDockHelper/AnodoDockHelper.entitlements;
+				CODE_SIGN_ENTITLEMENTS = AnoDockHelper/AnoDockHelper.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"AnodoDockHelper/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"AnoDockHelper/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSBackgroundOnly = YES;
@@ -1029,9 +1029,9 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnodoDockHelper;
+				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnoDockHelper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1143,7 +1143,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1AB463B12D3E1C8800627FFE /* Build configuration list for PBXNativeTarget "AnodoDockHelper" */ = {
+		1AB463B12D3E1C8800627FFE /* Build configuration list for PBXNativeTarget "AnoDockHelper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1AB463B22D3E1C8800627FFE /* Debug */,
@@ -1152,7 +1152,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1AB463B42D3E1C8800627FFE /* Build configuration list for PBXNativeTarget "AnodoDockHelperTests" */ = {
+		1AB463B42D3E1C8800627FFE /* Build configuration list for PBXNativeTarget "AnoDockHelperTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1AB463B52D3E1C8800627FFE /* Debug */,
@@ -1161,7 +1161,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1AB463B72D3E1C8800627FFE /* Build configuration list for PBXNativeTarget "AnodoDockHelperUITests" */ = {
+		1AB463B72D3E1C8800627FFE /* Build configuration list for PBXNativeTarget "AnoDockHelperUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1AB463B82D3E1C8800627FFE /* Debug */,
