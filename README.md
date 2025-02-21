@@ -1,7 +1,10 @@
 # AnoDock
 
 A complementary macOS dock app.
-
+![basics](showcase/basics.gif)
+![dragging](showcase/dragging.gif)
+![show windows](showcase/show_window.gif)
+![changing size](showcase/changing_size.gif)
 This app is designed for mainly two types of user:
 
    1. **People using multiple monitors or a big wide monitor**. It's hard to reach macOS native dock under these setups. Unlike Windows, macOS only allows one dock across many screens, and moving it from one screen to another is slow and inefficient, especially when auto-hiding is turned on.
