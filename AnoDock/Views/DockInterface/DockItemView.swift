@@ -241,14 +241,17 @@ struct DockItemView: View {
     private func optionsMenu(item: DockItem) -> some View {
         Menu("Options") {
             
-            Button(action: {
-                toggleKeepInDock(item) // 切换状态
-            }) {
-                if dockObserver.dockItems.contains(where: { $0.bundleID == item.bundleID}) {
-                    Text("Remove from Dock")
-                } else {
+            if !dockObserver.dockItems.contains(where: { $0.bundleID == item.bundleID}) {
+                Button(action: {
+                    keepInDock(item)
+                }) {
                     Text("Keep in Dock")
                 }
+            }
+            Button(action: {
+                deleteSelf()
+            }) {
+                Text("Remove from Dock")
             }
             
             Button("Show in Finder") {
@@ -259,12 +262,8 @@ struct DockItemView: View {
     }
     
     // MARK: - toggle item in dock
-    private func toggleKeepInDock(_ item: DockItem) {
-        if dockObserver.dockItems.contains(where: { $0.bundleID == item.bundleID }) {
-            dockObserver.removeItem(item.bundleID)
-        } else {
-            dockObserver.addItemToPos(item, nil)// add to last by default
-        }
+    private func keepInDock(_ item: DockItem) {
+        dockObserver.addItemToPos(item, nil)// add to last by default
         dockObserver.saveDockItems()
         dockObserver.refreshDock()
         dragDropManager.updateOrderedItems()

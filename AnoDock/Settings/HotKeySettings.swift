@@ -24,7 +24,6 @@ class HotKeySettings: ObservableObject {
         
         // 2) If no saved shortcut, or it was invalid, use the default
         if keyboardShortcut == nil {
-            // default: Option + Shift + Space
             keyboardShortcut = KeyboardShortcut(.tab, modifiers: [.option])
         }
         

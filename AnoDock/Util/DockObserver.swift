@@ -22,15 +22,15 @@ class DockObserver: NSObject, ObservableObject {
     
     static let shared = DockObserver()
     
-    // 移除原来的字典 dockApps；现在只用这个数组来维护 dock 的应用和顺序
+    // in dock apps
     @Published var dockItems: [DockItem] = []
     
-    // 仍保留最近使用的应用
+    // recent apps
     @Published var recentApps: [DockItem] = []
     
-    // 每个app的window
+    // AXUIElement window for all apps
     @Published var appWindows: [String: [AXUIElement]] = [:]
-    // if an app got all window hidden
+    // if an app is hidden
     @Published var appWindowsHidden: [String: Bool] = [:]
     // track whether a pid is observed
     private var observers: [pid_t: AXObserver] = [:]
@@ -161,7 +161,6 @@ class DockObserver: NSObject, ObservableObject {
     }
     
     // MARK: - Move items in the dock
-    /// 用于拖拽重排 DockItem 的顺序
     func moveItem(from: Int, to: Int) {
         guard from >= 0, from < dockItems.count,
               to >= 0, to <= dockItems.count else { return }
@@ -185,7 +184,6 @@ class DockObserver: NSObject, ObservableObject {
         let removedItem = recentApps[index]
         recentApps.remove(at: index)
         
-        // 清理 appIcons 的缓存
         appIcons.removeValue(forKey: removedItem.bundleID)
     }
     
@@ -196,11 +194,11 @@ class DockObserver: NSObject, ObservableObject {
             print("Error: Attempted to add nil to dockItems")
             return
         }
-        // 如果之前在 recentApps，就先移除
+        // if in recents before, remove first
         if let idx = recentApps.firstIndex(where: { $0.bundleID == newItem.bundleID }) {
             removeRecent(idx)
         }
-        // 插入到指定位置（或末尾）
+        // insert in to index, end by default
         let insertIndex = index ?? dockItems.count
         dockItems.insert(newItem, at: min(insertIndex, dockItems.count))
     }
@@ -280,23 +278,21 @@ class DockObserver: NSObject, ObservableObject {
         }
         
         
-        // 让 running = true 的 recentApps 在前面
         recentApps = recentApps.enumerated()
             .sorted { lhs, rhs in
                 let (lhsIndex, lhsApp) = lhs
                 let (rhsIndex, rhsApp) = rhs
-                // 如果 isRunning 不同，则把 running=true 的排前面
+                // running=true sorted to front
                 if lhsApp.isRunning != rhsApp.isRunning {
                     return lhsApp.isRunning && !rhsApp.isRunning
                 }
-                // 否则保持稳定排序
                 return lhsIndex < rhsIndex
             }
             .map { $0.element }
         
-        // 更新 runningRecents 计数
+        // update running recents
         runningRecents = recentApps.filter { $0.isRunning }.count
-        // 如果 closedRecents 超过 keepClosedRecents, truncate 后面的, closedRecent排序到后面了
+        // if closedRecents >  keepClosedRecents, truncate excess.
         recentApps = Array(recentApps.prefix(runningRecents + DockEditorSettings.shared.keepClosedRecents))
         
     }
@@ -306,7 +302,7 @@ class DockObserver: NSObject, ObservableObject {
     
     // MARK: - retrieveIcons
     func retrieveIcons() {
-        // 为 dockItems 和 recentApps 中的每个 DockItem 加载图标
+        // load icons for all
         for item in dockItems {
             loadIconFromWorkspace(item)
         }
@@ -339,7 +335,7 @@ class DockObserver: NSObject, ObservableObject {
         }
     }
     
-    // MARK: - AXObserver 管理
+    // MARK: - AXObserver for app
     private func createObserverForApp(_ app: NSRunningApplication) {
         let pid = app.processIdentifier
         guard observers[pid] == nil else { return }
@@ -373,12 +369,12 @@ class DockObserver: NSObject, ObservableObject {
         observers.removeValue(forKey: pid)
     }
     
-    // MARK: - 回收!isrunning app 的 AXObserver
+    // MARK: - recycle !isrunning app's AXObserver
     private func recycleAXObservers(runningApps: [NSRunningApplication]) {
-        // 当前正在运行的 pid 集合
+        // all running pids
         let activePids = Set(runningApps.map { $0.processIdentifier })
         
-        // 遍历现有的 observers，检查是否需要移除
+        // iterate through observers, remove if app not running
         for (pid, _) in observers {
             if !activePids.contains(pid) {
                 if let app = NSRunningApplication(processIdentifier: pid) {
@@ -392,7 +388,7 @@ class DockObserver: NSObject, ObservableObject {
 
     
     // MARK: - 更新单个应用窗口状态 - 从refreshdock分离，因为窗口操作不影响大局
-    /// 从 AXUIElement 拉取窗口信息，更新到 appWindowStatus
+    /// use AXUIElement  to get window status, update appWindowStatus
     func updateAppWindows(for app: NSRunningApplication) {
         guard let bundleID = app.bundleIdentifier else { return }
         let appElement = AXUIElementCreateApplication(app.processIdentifier)
@@ -405,27 +401,24 @@ class DockObserver: NSObject, ObservableObject {
             appWindows[bundleID] = []
         }
         
-        // 检查应用是否被隐藏 (可选)
         var hiddenValue: CFTypeRef?
         let hideErr = AXUIElementCopyAttributeValue(appElement, kAXHiddenAttribute as CFString, &hiddenValue)
         if hideErr == .success,
            let isHidden = hiddenValue as? Bool {
             appWindowsHidden[bundleID] = isHidden
         } else {
-            // 未知时默认视为可见
             appWindowsHidden[bundleID] = false
         }
     }
     // MARK: - Recycle unused app windows (only for non-running apps)
     private func recycleAppWindows(runningApps: [NSRunningApplication]) {
-        // 提取当前运行的应用的 bundleIDs
         let runningBundleIDs = Set(runningApps.compactMap { $0.bundleIdentifier })
 
-        // 找出 `appWindows` 中已经不再运行的应用，并清理它们的窗口信息
+        // update app window and hidden status if no longer running
         let allCachedWindows = Set(appWindows.keys)
         for bundleID in allCachedWindows.subtracting(runningBundleIDs) {
             appWindows.removeValue(forKey: bundleID)
-            appWindowsHidden.removeValue(forKey: bundleID) // 也清理隐藏状态
+            appWindowsHidden.removeValue(forKey: bundleID)
         }
     }
     
@@ -433,7 +426,7 @@ class DockObserver: NSObject, ObservableObject {
     
 }
 
-// MARK: - AXObserver 回调
+// MARK: - AXObserver callback
 func axObserverCallback(observer: AXObserver, element: AXUIElement, notificationName: CFString, userData: UnsafeMutableRawPointer?) {
     guard let userData else { return }
     let pid = pid_t(Int(bitPattern: userData))
