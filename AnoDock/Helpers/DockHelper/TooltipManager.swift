@@ -32,9 +32,9 @@ class TooltipManager {
         window.isOpaque = false
         window.backgroundColor = .clear
         window.contentViewController = hostingController
-        // 使用浮动窗口级别，确保提示框显示在最前面
         window.level = .floating
-        // 忽略鼠标事件，避免阻挡下面的交互
+        window.hasShadow = true
+        // ignore mouse event, don't disturb other actions
         window.ignoresMouseEvents = true
         window.orderFrontRegardless()
         self.tooltipWindow = window
