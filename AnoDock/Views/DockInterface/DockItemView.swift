@@ -253,12 +253,21 @@ struct DockItemView: View {
                 }) {
                     Text("Keep in Dock")
                 }
+                if !item.isRunning {
+                    Button(action: {
+                        deleteSelf()
+                    }) {
+                        Text("Remove from Dock")
+                    }
+                }
+            } else {
+                Button(action: {
+                    deleteSelf()
+                }) {
+                    Text("Remove from Dock")
+                }
             }
-            Button(action: {
-                deleteSelf()
-            }) {
-                Text("Remove from Dock")
-            }
+
             
             Button("Show in Finder") {
                 NSWorkspace.shared.activateFileViewerSelecting([item.url])
