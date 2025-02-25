@@ -240,7 +240,6 @@ class DockObserver: NSObject, ObservableObject {
         }
         recycleAXObservers(runningApps: runningApps)
         recycleAppWindows(runningApps: runningApps)
-        // 使用 reduce(into:) 将 runningApps 转换为字典，键为 bundleIdentifier，值为 RunningApplication 实例
         var currentRunningDic = runningApps.reduce(into: [String: NSRunningApplication]()) { result, app in
             if let bundleID = app.bundleIdentifier {
                 result[bundleID] = app
@@ -337,6 +336,7 @@ class DockObserver: NSObject, ObservableObject {
     
     // MARK: - AXObserver for app
     private func createObserverForApp(_ app: NSRunningApplication) {
+        if ProcessInfo.processInfo.isSandboxed { return }
         let pid = app.processIdentifier
         guard observers[pid] == nil else { return }
         var observer: AXObserver?
@@ -356,6 +356,7 @@ class DockObserver: NSObject, ObservableObject {
     }
 
     private func removeObserverForApp(_ app: NSRunningApplication) {
+        if ProcessInfo.processInfo.isSandboxed { return }
         let pid = app.processIdentifier
         guard let observer = observers[pid] else { return }
 
@@ -371,6 +372,7 @@ class DockObserver: NSObject, ObservableObject {
     
     // MARK: - recycle !isrunning app's AXObserver
     private func recycleAXObservers(runningApps: [NSRunningApplication]) {
+        if ProcessInfo.processInfo.isSandboxed { return }
         // all running pids
         let activePids = Set(runningApps.map { $0.processIdentifier })
         
@@ -390,14 +392,17 @@ class DockObserver: NSObject, ObservableObject {
     // MARK: - 更新单个应用窗口状态 - 从refreshdock分离，因为窗口操作不影响大局
     /// use AXUIElement  to get window status, update appWindowStatus
     func updateAppWindows(for app: NSRunningApplication) {
+        if ProcessInfo.processInfo.isSandboxed { return }
         guard let bundleID = app.bundleIdentifier else { return }
         let appElement = AXUIElementCreateApplication(app.processIdentifier)
         
         var windowsCF: CFArray?
         let err = AXUIElementCopyAttributeValues(appElement, kAXWindowsAttribute as CFString, 0, 100, &windowsCF)
         if err == .success, let windows = windowsCF as? [AXUIElement] {
+            print("success, \(windows.count) is retrieved")
             appWindows[bundleID] = windows
         } else {
+            print("Nah can't get window: \(err)")
             appWindows[bundleID] = []
         }
         
@@ -412,6 +417,7 @@ class DockObserver: NSObject, ObservableObject {
     }
     // MARK: - Recycle unused app windows (only for non-running apps)
     private func recycleAppWindows(runningApps: [NSRunningApplication]) {
+        if ProcessInfo.processInfo.isSandboxed { return }
         let runningBundleIDs = Set(runningApps.compactMap { $0.bundleIdentifier })
 
         // update app window and hidden status if no longer running
@@ -428,6 +434,7 @@ class DockObserver: NSObject, ObservableObject {
 
 // MARK: - AXObserver callback
 func axObserverCallback(observer: AXObserver, element: AXUIElement, notificationName: CFString, userData: UnsafeMutableRawPointer?) {
+    if ProcessInfo.processInfo.isSandboxed { return }
     guard let userData else { return }
     let pid = pid_t(Int(bitPattern: userData))
 

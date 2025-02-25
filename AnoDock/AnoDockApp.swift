@@ -39,12 +39,15 @@ struct AnoDockApp: App {
         if AXIsProcessTrusted() {
             dockWindowManager.loadHostingController()// show dock at launch to initiate dockUIFrame
             dockWindowManager.updateWindowPosition()
-            dockWindowManager.showDock()
+            dockWindowManager.showDock() // if only call once, first showDock will not correctly compute tooltipview and item pos for clicking
+            dockWindowManager.showDock() // call again so frame pos can be correctly intialized
         }
 
     }
     	
     var body: some Scene {
+        
+        
 
         MenuBarExtra("AnoDock", systemImage: "dock.rectangle") {
             Divider()
@@ -58,9 +61,9 @@ struct AnoDockApp: App {
             }
         }
         .menuBarExtraStyle(.automatic)
-
+        
         Settings {
-            if !AXIsProcessTrusted() {
+            if !checkAccessibilityPermission() {
                     OnboardingView()
             } else {
                 SettingsView()
@@ -78,6 +81,11 @@ struct AnoDockApp: App {
 
             }
         }
+    }
+    
+    private func checkAccessibilityPermission() -> Bool {
+        let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true] as CFDictionary
+        return AXIsProcessTrustedWithOptions(options)
     }
 }
 

@@ -25,6 +25,10 @@ struct OnboardingView: View {
             Button("Grant Permissions") {
                 goGrantAccessibilityPermissions()
             }
+            Button("I've granted permission, Restart app") {
+                NSApplication.shared.terminate(nil)
+            }
+            
             .padding()
         }
         .frame(width: 400, height: 300)
