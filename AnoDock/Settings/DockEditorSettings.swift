@@ -53,7 +53,7 @@ class DockEditorSettings: ObservableObject {
     
     private init() {
         UserDefaults.standard.register(defaults: [
-            "cursorClose": true,
+            "cursorClose": false,
             "dockZoom": 1.0,
             "dockPadding": 36.0,
             "iconWidth": 64.0,

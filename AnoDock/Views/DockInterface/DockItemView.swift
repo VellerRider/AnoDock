@@ -9,6 +9,7 @@
 import SwiftUI
 import ServiceManagement
 
+
 struct DockItemView: View {
     @EnvironmentObject var dockObserver: DockObserver
     @EnvironmentObject var dragDropManager: DragDropManager
@@ -92,8 +93,7 @@ struct DockItemView: View {
             isHovering = hovering
             if !dragDropManager.isDragging && !inEditor {
                 if isHovering {
-                    // 通过父视图提供的 itemFrames[item.id]
-                    // 就能拿到本视图最新的坐标
+                    // use parent view's itemFrames[item.id] to get real position here
                     if let rect = itemFrames[item.id] {
                         TooltipManager.shared.showTooltip(text: item.name, viewBound: rect)
                     }
@@ -147,7 +147,8 @@ struct DockItemView: View {
     private func contextMenuItems(item: DockItem) -> some View {
 
         // display all front windows
-        if item.isRunning {
+
+        if item.isRunning && !ProcessInfo.processInfo.isSandboxed {
             let windowElements = dockObserver.appWindows[item.bundleID]
             if windowElements != nil {
                 ForEach(windowElements ?? [], id: \.self) { window in
@@ -169,23 +170,28 @@ struct DockItemView: View {
         Divider()
         // keep/remove; open at login; show in finder
         optionsMenu(item: item)
-        // miscellaneous
         Divider()
-        if item.isRunning {
-            Button("Show All Windows") {
-                showAllWindowsWithAppleScript(bundleID: item.bundleID)
-            }
-            if dockObserver.appWindowsHidden[item.bundleID] ?? false { // is hiden
-                Button("Show") {
-                    showApplication(item: item)
+        
+        // MARK: If this app is sandboxed, all of below can't work properly
+        if item.isRunning{
+            if !ProcessInfo.processInfo.isSandboxed {
+                Button("Show All Windows") {
+                    showAllWindowsWithAppleScript(bundleID: item.bundleID)
                 }
-            } else {
-                Button("Hide") { // is showing
-                    hideApplication(bundleIdentifier: item.bundleID)
+            if dockObserver.appWindowsHidden[item.bundleID] ?? false { // is hidden
+                    Button("Show") {
+                        showApplication(item: item)
+                    }
+                } else {
+                    Button("Hide") { // is showing
+                        hideApplication(bundleIdentifier: item.bundleID)
+                    }
                 }
-            }
-            Button("Quit") {
-                quitApplication(bundleIdentifier: item.bundleID)
+                if !ProcessInfo.processInfo.isSandboxed {
+                    Button("Quit") {
+                        quitApplication(bundleIdentifier: item.bundleID)
+                    }
+                }
             }
         } else {
             Button("Open") {
@@ -297,6 +303,7 @@ struct DockItemView: View {
               let runningApp = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).first
         else { return }
         runningApp.hide()
+        print("App is hidden")
         dockObserver.appWindowsHidden[bundleIdentifier] = true
     }
     
@@ -315,6 +322,7 @@ struct DockItemView: View {
             print("Unhiding.")
             runningApp.unhide()
             dockObserver.appWindowsHidden[bundleIdentifier] = false
+            print("App showed")
         }
     }
     

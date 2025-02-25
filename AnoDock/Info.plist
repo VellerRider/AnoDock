@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSAccessibilityUsageDescription</key>
-	<string>您的应用程序需要使用辅助功能 API 来获取 Dock 中的应用程序列表。</string>
+	<string>This app need Accessibility to create dock windows.</string>
 	<key>NSFileUsageDescription</key>
 	<string>This app needs access to select and add applications to the custom dock.</string>
 	<key>UTExportedTypeDeclarations</key>
