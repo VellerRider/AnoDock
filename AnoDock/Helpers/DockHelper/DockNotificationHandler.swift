@@ -19,7 +19,7 @@ class DockNotificationHandler: NSObject {
         self.dockWindowState = dockWindowState
         super.init()
         
-        // 注册通知
+        // register notification
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(toggleDockWindow),
@@ -30,6 +30,8 @@ class DockNotificationHandler: NSObject {
     }
     
     @objc private func toggleDockWindow() {
+        // if no permission granted just do nothing
+        if !AXIsProcessTrusted() { return }
         if !dockWindowState.showDockWindow {
             dockWindowManager.showDock()
             dockWindowState.showDockWindow = true
@@ -40,7 +42,6 @@ class DockNotificationHandler: NSObject {
     }
 
     deinit {
-        // 移除通知
         NotificationCenter.default.removeObserver(self, name: Notification.Name("SummonDock"), object: nil)
 
     }

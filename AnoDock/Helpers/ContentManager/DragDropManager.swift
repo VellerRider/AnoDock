@@ -112,7 +112,8 @@ class DragDropManager: ObservableObject {
     
     
     
-    // MARK: - 添加多个新 App 到 Dock
+    // MARK: - add one or more apps to dock
+    // need sandbox entitlement
     func manualAddApps() {
         let panel = NSOpenPanel()
         panel.canChooseFiles = true

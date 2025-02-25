@@ -76,7 +76,7 @@ struct DockItemView: View {
         }, onPressingChanged: { pressing in
             isPressed = pressing
             TooltipManager.shared.hideTooltip()
-            if (!pressing && !inEditor) {
+            if (!pressing && !inEditor) { // if in editor, don't open app
                 let mousePos = mouseLocationInWindow()
                 if let rect = itemFrames[item.id] {
                     print("Viewbound is \(rect)")

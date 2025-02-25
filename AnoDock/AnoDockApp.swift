@@ -39,7 +39,8 @@ struct AnoDockApp: App {
         if AXIsProcessTrusted() {
             dockWindowManager.loadHostingController()// show dock at launch to initiate dockUIFrame
             dockWindowManager.updateWindowPosition()
-            dockWindowManager.showDock()
+            dockWindowManager.showDock() // if only call once, first showDock will not correctly compute tooltipview and item pos for clicking
+            dockWindowManager.showDock() // call again so frame pos can be correctly intialized
         }
 
     }
