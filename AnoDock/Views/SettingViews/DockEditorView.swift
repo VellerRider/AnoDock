@@ -137,11 +137,11 @@ struct DockEditorView : View {
         .frame(minHeight: 600)
         .onAppear() {
             dragDropManager.editorOpen = true
-            print("Editor open")
+//            print("Editor open")
         }
         .onDisappear() {
             dragDropManager.editorOpen = false
-            print("Editor close")
+//            print("Editor close")
         }
     }
     

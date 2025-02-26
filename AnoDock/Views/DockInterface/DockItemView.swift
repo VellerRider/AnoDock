@@ -79,8 +79,8 @@ struct DockItemView: View {
             if (!pressing && !inEditor) { // if in editor, don't open app
                 let mousePos = mouseLocationInWindow()
                 if let rect = itemFrames[item.id] {
-                    print("Viewbound is \(rect)")
-                    print("mousePos is \(mousePos)")
+//                    print("Viewbound is \(rect)")
+//                    print("mousePos is \(mousePos)")
                     if rect.contains(mousePos) {
                         showApplication(item: item)
                     }
