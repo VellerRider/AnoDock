@@ -69,6 +69,7 @@
 
 /* Begin PBXFileReference section */
 		1A05F6982D6D4B2100043A80 /* SandboxCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxCheck.swift; sourceTree = "<group>"; };
+		1A3A8AEE2D6ED7720011BD66 /* AnoDock.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AnoDock.entitlements; sourceTree = "<group>"; };
 		1A6565222D3B3AD50063CE7B /* DeleteMaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteMaskView.swift; sourceTree = "<group>"; };
 		1A66D77D2CEEF3F500BDE735 /* DockEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockEditorView.swift; sourceTree = "<group>"; };
 		1A78BBE92D000E7A003A8162 /* OtherSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherSettingsView.swift; sourceTree = "<group>"; };
@@ -101,7 +102,6 @@
 		1AEC4EDB2CEA9E7500523CC1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		1AEC4EDF2CEA9E7500523CC1 /* DockItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockItemView.swift; sourceTree = "<group>"; };
 		1AEC4EE12CEA9E7500523CC1 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
-		1AEC4EE22CEA9E7500523CC1 /* AnoDock.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AnoDock.entitlements; sourceTree = "<group>"; };
 		1AEC4EE42CEA9E7500523CC1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		1AEC4EE52CEA9E7500523CC1 /* ShortcutsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsSettingsView.swift; sourceTree = "<group>"; };
 		1AEC4EE62CEA9E7500523CC1 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
@@ -276,9 +276,9 @@
 		1AEC4EE72CEA9E7500523CC1 /* AnoDock */ = {
 			isa = PBXGroup;
 			children = (
+				1A3A8AEE2D6ED7720011BD66 /* AnoDock.entitlements */,
 				1A93ED2E2CEDA6D70064545A /* Info.plist */,
 				1AEC4EDA2CEA9E7500523CC1 /* Assets.xcassets */,
-				1AEC4EE22CEA9E7500523CC1 /* AnoDock.entitlements */,
 				1AEC4ED72CEA9E7500523CC1 /* Preview Content */,
 				1AC70B262CEAD627009BA776 /* AnoDockApp.swift */,
 				1AEC4EF72CEA9E7800523CC1 /* Views */,
@@ -786,7 +786,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.01;
 				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnoDock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -819,7 +819,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.01;
 				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnoDock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
