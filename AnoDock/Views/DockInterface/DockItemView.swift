@@ -172,7 +172,7 @@ struct DockItemView: View {
         optionsMenu(item: item)
         Divider()
         
-        // MARK: If this app is sandboxed, all of below can't work properly
+        // MARK: If this app is sandboxed, all of below can't work
         if item.isRunning{
             if !ProcessInfo.processInfo.isSandboxed {
                 Button("Show All Windows") {

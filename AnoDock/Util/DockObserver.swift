@@ -71,7 +71,7 @@ class DockObserver: NSObject, ObservableObject {
         
         // Polling timer
         pollTimer = Timer.scheduledTimer(
-            timeInterval: recentApps.count > 7 ? 10 : 20,
+            timeInterval: DockWindowState.shared.showDockWindow ? 15 : 3,
             target: self,
             selector: #selector(pollUpdate),
             userInfo: nil,
@@ -102,10 +102,11 @@ class DockObserver: NSObject, ObservableObject {
     // MARK: - Timer Polling
     @objc private func pollUpdate() {
         if DragDropManager.shared.isDragging {
-            print("Skipping pollUpdate because dragging is in progress.")
+//            print("Skipping pollUpdate because dragging is in progress.")
             DragDropManager.shared.isDragging = false
             return
         }
+//        print("polling updates..., showdock is ", DockWindowState.shared.showDockWindow)
         refreshDock()
         recycleIcons()
         DragDropManager.shared.updateOrderedItems()
@@ -399,10 +400,10 @@ class DockObserver: NSObject, ObservableObject {
         var windowsCF: CFArray?
         let err = AXUIElementCopyAttributeValues(appElement, kAXWindowsAttribute as CFString, 0, 100, &windowsCF)
         if err == .success, let windows = windowsCF as? [AXUIElement] {
-            print("success, \(windows.count) is retrieved")
+//            print("success, \(windows.count) is retrieved")
             appWindows[bundleID] = windows
         } else {
-            print("Nah can't get window: \(err)")
+//            print("Nah can't get window: \(err)")
             appWindows[bundleID] = []
         }
         

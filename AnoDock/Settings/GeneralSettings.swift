@@ -11,7 +11,7 @@
 // 5. put shortcuts here too
 //  Created by John Yang on 11/17/24.
 //
-
+// place holder for now, to be implemented
 import Foundation
 class GeneralSettings: ObservableObject {
     @Published var mirrorSystem: Bool// dock content mirror system or not

@@ -20,6 +20,10 @@
 		1AA1CABE2D1FCBF700933295 /* DockOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA1CABD2D1FCBF700933295 /* DockOverlayView.swift */; };
 		1AAFAF772D4F28AA001988A6 /* TooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAFAF762D4F28AA001988A6 /* TooltipView.swift */; };
 		1AAFAF792D4F28C9001988A6 /* TooltipManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAFAF782D4F28C9001988A6 /* TooltipManager.swift */; };
+		1AB442A82DCDCB9A003DF5F4 /* NewUserGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB442A72DCDCB8A003DF5F4 /* NewUserGuideView.swift */; };
+		1AB442B52DCEDEE0003DF5F4 /* SSSwiftUIGIFView in Frameworks */ = {isa = PBXBuildFile; productRef = 1AB442B42DCEDEE0003DF5F4 /* SSSwiftUIGIFView */; };
+		1AB442BB2DCEE0FE003DF5F4 /* showhide.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1AB442BA2DCEE0FE003DF5F4 /* showhide.gif */; };
+		1AB442BD2DCEE50B003DF5F4 /* dragging.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1AB442BC2DCEE50B003DF5F4 /* dragging.gif */; };
 		1ABA36B62D3835FC00BF0FF1 /* DragDropManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA36B52D3835FC00BF0FF1 /* DragDropManager.swift */; };
 		1ABA36BA2D38460A00BF0FF1 /* DockAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA36B92D38460A00BF0FF1 /* DockAnimation.swift */; };
 		1ABA36E02D38EACA00BF0FF1 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA36DF2D38EACA00BF0FF1 /* Test.swift */; };
@@ -84,6 +88,9 @@
 		1AA9EEF82CE4019F002D8348 /* AnoDockUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnoDockUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AAFAF762D4F28AA001988A6 /* TooltipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipView.swift; sourceTree = "<group>"; };
 		1AAFAF782D4F28C9001988A6 /* TooltipManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipManager.swift; sourceTree = "<group>"; };
+		1AB442A72DCDCB8A003DF5F4 /* NewUserGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUserGuideView.swift; sourceTree = "<group>"; };
+		1AB442BA2DCEE0FE003DF5F4 /* showhide.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = showhide.gif; sourceTree = "<group>"; };
+		1AB442BC2DCEE50B003DF5F4 /* dragging.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = dragging.gif; sourceTree = "<group>"; };
 		1AB4639F2D3E1C8800627FFE /* AnoDockHelperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnoDockHelperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AB463A92D3E1C8800627FFE /* AnoDockHelperUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnoDockHelperUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ABA36B52D3835FC00BF0FF1 /* DragDropManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragDropManager.swift; sourceTree = "<group>"; };
@@ -138,6 +145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A8DB8432D13FB8300A2338B /* HotKey in Frameworks */,
+				1AB442B52DCEDEE0003DF5F4 /* SSSwiftUIGIFView in Frameworks */,
 				1A156CCC2D37679C0052372C /* WindowAnimation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -246,12 +254,15 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		1AC70B2D2CEAE5B1009BA776 /* PermissionViews */ = {
+		1AC70B2D2CEAE5B1009BA776 /* IntroViews */ = {
 			isa = PBXGroup;
 			children = (
+				1AB442A72DCDCB8A003DF5F4 /* NewUserGuideView.swift */,
 				1AC70B292CEADB39009BA776 /* OnboardingView.swift */,
+				1AB442BC2DCEE50B003DF5F4 /* dragging.gif */,
+				1AB442BA2DCEE0FE003DF5F4 /* showhide.gif */,
 			);
-			path = PermissionViews;
+			path = IntroViews;
 			sourceTree = "<group>";
 		};
 		1AC70B322CEAE7D3009BA776 /* Settings */ = {
@@ -294,7 +305,7 @@
 			isa = PBXGroup;
 			children = (
 				1AEC4EDB2CEA9E7500523CC1 /* ContentView.swift */,
-				1AC70B2D2CEAE5B1009BA776 /* PermissionViews */,
+				1AC70B2D2CEAE5B1009BA776 /* IntroViews */,
 				1AEC4EF82CEA9EB100523CC1 /* SettingViews */,
 				1A78BBE42D000BD6003A8162 /* DockInterface */,
 				1ABA36DF2D38EACA00BF0FF1 /* Test.swift */,
@@ -362,6 +373,7 @@
 			packageProductDependencies = (
 				1A8DB8422D13FB8300A2338B /* HotKey */,
 				1A156CCB2D37679C0052372C /* WindowAnimation */,
+				1AB442B42DCEDEE0003DF5F4 /* SSSwiftUIGIFView */,
 			);
 			productName = AnoDock;
 			productReference = 1AA9EEDD2CE4019E002D8348 /* AnoDock.app */;
@@ -500,6 +512,7 @@
 			packageReferences = (
 				1A8DB8412D13FB8300A2338B /* XCRemoteSwiftPackageReference "HotKey" */,
 				1A156CCA2D37679C0052372C /* XCRemoteSwiftPackageReference "WindowAnimation" */,
+				1AB442B32DCEDEE0003DF5F4 /* XCRemoteSwiftPackageReference "SSSwiftUIGIFView" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1AA9EEDE2CE4019E002D8348 /* Products */;
@@ -522,6 +535,8 @@
 			files = (
 				1AEC4EE82CEA9E7500523CC1 /* Preview Assets.xcassets in Resources */,
 				1AEC4EE92CEA9E7500523CC1 /* Assets.xcassets in Resources */,
+				1AB442BB2DCEE0FE003DF5F4 /* showhide.gif in Resources */,
+				1AB442BD2DCEE50B003DF5F4 /* dragging.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -586,6 +601,7 @@
 				1ABBE4D42D3383F400CCF124 /* DockNotificationHandler.swift in Sources */,
 				1AC70B272CEAD627009BA776 /* AnoDockApp.swift in Sources */,
 				1A93ED212CED74280064545A /* DockObserver.swift in Sources */,
+				1AB442A82DCDCB9A003DF5F4 /* NewUserGuideView.swift in Sources */,
 				1AC70B212CEACAA3009BA776 /* DockItem.swift in Sources */,
 				1AC70B2A2CEADB39009BA776 /* OnboardingView.swift in Sources */,
 				1ABA36B62D3835FC00BF0FF1 /* DragDropManager.swift in Sources */,
@@ -1041,6 +1057,14 @@
 				kind = branch;
 			};
 		};
+		1AB442B32DCEDEE0003DF5F4 /* XCRemoteSwiftPackageReference "SSSwiftUIGIFView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SimformSolutionsPvtLtd/SSSwiftUIGIFView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1053,6 +1077,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1A8DB8412D13FB8300A2338B /* XCRemoteSwiftPackageReference "HotKey" */;
 			productName = HotKey;
+		};
+		1AB442B42DCEDEE0003DF5F4 /* SSSwiftUIGIFView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1AB442B32DCEDEE0003DF5F4 /* XCRemoteSwiftPackageReference "SSSwiftUIGIFView" */;
+			productName = SSSwiftUIGIFView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

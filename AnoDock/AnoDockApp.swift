@@ -11,6 +11,8 @@
 
 import SwiftUI
 
+
+
 @main
 struct AnoDockApp: App {
     // managers and observers
@@ -25,6 +27,7 @@ struct AnoDockApp: App {
     private var appSettings: AppSettings = .shared
     private var hotKeySettings: HotKeySettings = .shared
     
+
     // delegate notification
     private lazy var notificationHandler = DockNotificationHandler(
         dockWindowManager: dockWindowManager,
@@ -36,7 +39,7 @@ struct AnoDockApp: App {
         NSApplication.shared.setActivationPolicy(.accessory)
         
         _ = notificationHandler
-        if AXIsProcessTrusted() {
+        if AXIsProcessTrusted() && appSettings.guideShown {
             dockWindowManager.loadHostingController()// show dock at launch to initiate dockUIFrame
             dockWindowManager.updateWindowPosition()
             dockWindowManager.showDock() // if only call once, first showDock will not correctly compute tooltipview and item pos for clicking
@@ -46,7 +49,17 @@ struct AnoDockApp: App {
     }
     	
     var body: some Scene {
-        
+        WindowGroup {
+                
+            if !AXIsProcessTrusted() {
+                OnboardingView()
+            } else if !appSettings.guideShown {
+                NewUserGuideView()
+            }
+            
+        }
+        .windowStyle(.hiddenTitleBar)
+        .windowResizability(.contentSize)
         
 
         MenuBarExtra("AnoDock", systemImage: "dock.rectangle") {
@@ -63,7 +76,7 @@ struct AnoDockApp: App {
         .menuBarExtraStyle(.automatic)
         
         Settings {
-            if !checkAccessibilityPermission() {
+            if !AXIsProcessTrusted() {
                     OnboardingView()
             } else {
                 SettingsView()
@@ -83,10 +96,9 @@ struct AnoDockApp: App {
         }
     }
     
-    private func checkAccessibilityPermission() -> Bool {
-        let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true] as CFDictionary
-        return AXIsProcessTrustedWithOptions(options)
-    }
+
+    
+
 }
 
 

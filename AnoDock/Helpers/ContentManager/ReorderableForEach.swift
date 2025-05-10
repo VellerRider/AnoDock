@@ -123,7 +123,6 @@ struct DragRelocateDelegate: DropDelegate {
 //        print("Proceed normal")
         // 内部重排
         guard let currentDockItem = dragDropManager.draggingItem else { return }
-        // 在 Swift 中可以这样：
         guard let from = listData.firstIndex(of: currentDockItem),
               let to = listData.firstIndex(of: item) else { return }
         

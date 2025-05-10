@@ -30,12 +30,21 @@ class DragDropManager: ObservableObject {
     
     private var dockObserver: DockObserver = .shared
     private var dockEditorSettings: DockEditorSettings = .shared
+    // need to throttle reordering or cpu overhead too high
+//    private var lastReorderTime = Date.distantPast
+//    private let reorderThrottle: TimeInterval = 0.05
     
     // MARK: - Core Dock Reordering Function
     func moveOrderedItems(from: Int, to: Int, Item: DockItem?) {
-//        print("from: \(from), to: \(to)")
+        // throttle to reduce cost
+//        let now = Date()
+//        guard now.timeIntervalSince(lastReorderTime) > reorderThrottle else {
+//            return
+//        }
+//        lastReorderTime = now
         
-        // 1) 如果是外部 Finder 拖来的 .app => fromIndex = -1
+//        print("from: \(from), to: \(to)")
+        // CASE1: 如果是外部 Finder 拖来的 .app => fromIndex = -1
         if from == -1 {
             guard let newItem = Item else { return }
             // 把新 item 插入到 orderedItems
@@ -52,7 +61,7 @@ class DragDropManager: ObservableObject {
         }
         
         let draggedItem = orderedItems.remove(at: from)
-        // in same area rearrange
+        // CASE2: in same area rearrange
         if (from < orderedDockItems.count && to <= orderedDockItems.count) ||
             (from >= orderedDockItems.count && to > orderedDockItems.count) {
             orderedItems.insert(draggedItem, at: to > from ? to - 1 : to)

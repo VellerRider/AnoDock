@@ -29,6 +29,10 @@ struct SettingsView: View {
 //                }
         }
         .padding()
+        .onAppear {
+            NSApp.activate(ignoringOtherApps: true)
+            
+        }
     }
 }
 
