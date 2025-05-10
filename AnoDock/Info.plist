@@ -3,9 +3,10 @@
 <plist version="1.0">
 <dict>
 	<key>NSAccessibilityUsageDescription</key>
-	<string>This app need Accessibility to create dock windows.</string>
+	<string>This app needs Accessibility to create dock windows.</string>
 	<key>NSFileUsageDescription</key>
 	<string>This app needs access to select and add applications to the custom dock.</string>
+    
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>

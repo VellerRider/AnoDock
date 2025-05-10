@@ -14,37 +14,46 @@ struct OnboardingView: View {
 
     @State private var isTrusted = AXIsProcessTrusted()
     @State private var timer: Timer?
-    
+    @State private var permissionSlides: Int = 0
+    private var imgName = ["ax_0", "ax_1", "ax_2", "ax_3", "ax_4"]
     var body: some View {
         VStack {
             Text("Welcome to AnoDock")
                 .font(.largeTitle)
-                .padding()
-
+                .padding(.top, 20)
+            ZStack {
+                    Image(imgName[permissionSlides])
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .transition(.slide)
+            }
+            .frame(width: 650, height: 450)
             Text("Please enable the required permissions.")
                 .multilineTextAlignment(.center)
-                .padding()
-
-            Button("Grant Permissions") {
-                if !AXIsProcessTrusted() {
-                    checkAccessibilityPermission()
+            HStack {
+                
+                Button("Grant Permissions") {
+                    ProcessInfo.processInfo.isSandboxed ? giveAccessibilityManual() : giveAccessibilitySyspromp()
                 }
+                Button("I've granted permission, restart the app") {
+                    restartApp()
+                }
+                .disabled(!isTrusted)
             }
-            Button("I've granted permission, restart the app") {
-                restartApp()
-            }
-            .disabled(!isTrusted)
-            
-            .padding()
+            .padding(.bottom, 20)
         }
-        .frame(width: 400, height: 300)
+        .frame(width: 750, height: 600)
         .onAppear {
             NSApp.activate(ignoringOtherApps: true)
-            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { _ in
                 let trusted = AXIsProcessTrusted()
                 if trusted {
                     isTrusted = true
                     timer?.invalidate()
+                } else {
+                    withAnimation(.spring) {
+                        permissionSlides = (permissionSlides + 1) % imgName.count
+                    }
                 }
             }
         }
@@ -55,9 +64,17 @@ struct OnboardingView: View {
 
 
     
-    private func checkAccessibilityPermission() {
-        let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true] as CFDictionary
-        _ = AXIsProcessTrustedWithOptions(options)
+    private func giveAccessibilityManual() {
+        if let url = URL(string:
+        "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"
+        ) {
+            NSWorkspace.shared.open(url)
+        }
+    }
+    private func giveAccessibilitySyspromp() {
+        let promptFlag = kAXTrustedCheckOptionPrompt.takeRetainedValue() as NSString
+        let myDict: CFDictionary = NSDictionary(dictionary: [promptFlag: true])
+        AXIsProcessTrustedWithOptions(myDict)
     }
     
     private func restartApp() {
@@ -68,4 +85,8 @@ struct OnboardingView: View {
                                            completionHandler: nil)
         NSApp.terminate(nil)
     }
+}
+
+#Preview {
+    OnboardingView()
 }
