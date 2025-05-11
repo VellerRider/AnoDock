@@ -31,16 +31,16 @@ class DragDropManager: ObservableObject {
     private var dockObserver: DockObserver = .shared
     private var dockEditorSettings: DockEditorSettings = .shared
     // need to throttle reordering or cpu overhead too high
-//    private var lastReorderTime = Date.distantPast
-//    private let reorderThrottle: TimeInterval = 0.05
+    private var lastReorderTime = Date.distantPast
+    private let reorderThrottle: TimeInterval = 0.025
     
     // MARK: - Core Dock Reordering Function
     func moveOrderedItems(from: Int, to: Int, Item: DockItem?) {
         // throttle to reduce cost
-//        let now = Date()
-//        guard now.timeIntervalSince(lastReorderTime) > reorderThrottle else {
-//            return
-//        }
+        let now = Date()
+        guard now.timeIntervalSince(lastReorderTime) > reorderThrottle else {
+            return
+        }
 //        lastReorderTime = now
         
 //        print("from: \(from), to: \(to)")
