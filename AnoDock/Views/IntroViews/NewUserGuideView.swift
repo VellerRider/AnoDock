@@ -5,7 +5,7 @@
 //  Created by Qihang Yang on 5/9/25.
 //
 import SwiftUI
-import SSSwiftUIGIFView
+
 
 struct NewUserGuideView: View {
     @ObservedObject private var appsettings = AppSettings.shared
@@ -15,7 +15,7 @@ struct NewUserGuideView: View {
     @State private var functionPageIndex = 0
     var body: some View {
         VStack(spacing: 0) {
-            // 标题
+        
             HStack(alignment: .center) {
                 Button {
                     if (currentPage == 1 && functionPageIndex > 0) {
@@ -60,7 +60,6 @@ struct NewUserGuideView: View {
             .padding(.top, 20)
             .padding(.horizontal, 20)
 
-            // 内容区
             ZStack {
                 switch currentPage {
                 case 0:
@@ -99,18 +98,13 @@ struct ShortcutIntroPage: View {
             Spacer()
 
             VStack(spacing: 30) {
-                // TODO: add gif here
+
+
                 
-                SwiftUIGIFPlayerView(gifName: "showhide.gif", isShowProgressView: true)
-                    .frame(width: 511, height: 192)
-                    .padding(.top, 150)
-                    
-
-
-
 
                 Text("Press")
                     .font(.title.bold())
+                    .padding(.top, 150)
 
                 HStack(spacing: 8) {
                     ForEach(modifierSymbols(), id: \.self) { symbol in
@@ -168,12 +162,12 @@ struct ShowFunctionPage: View {
     @Binding var innerIndex: Int
     private let messages = [
         "Enter settings page here.",
-        "You can drag the items in the dock to reorder, or remove.",
         "You can add apps to the dock, running apps will be added to the 'recent' area automatically.",
-        "If you want, you can hide dock automatically by moving your mouse out."
+        "If you want, you can hide dock automatically by moving your mouse out.",
+        "You can drag the items in the dock to reorder, or remove."
     ]
     var imgname = [
-        "where", "", "addnew", "hideauto"
+        "where", "addnew", "hideauto"
     ]
 
 
@@ -181,19 +175,13 @@ struct ShowFunctionPage: View {
         VStack {
 
             Spacer()
-            if (innerIndex != 1) {
+            if (innerIndex != 3) {
                 Image(imgname[innerIndex])
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .padding(20)
             }
-            if (innerIndex == 1) {
-                SwiftUIGIFPlayerView(gifName: "dragging.gif", isShowProgressView: true)
-                    .frame(width: 500, height: 93.75)
-                    .padding(.vertical, 50)
-            }
             
-            // 中间文本
             Text(messages[innerIndex])
                 .font(.title3.bold())
                 .multilineTextAlignment(.center)

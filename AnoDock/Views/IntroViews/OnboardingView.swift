@@ -77,13 +77,15 @@ struct OnboardingView: View {
         AXIsProcessTrustedWithOptions(myDict)
     }
     
-    private func restartApp() {
-        let bundleURL = URL(fileURLWithPath: Bundle.main.bundlePath)
-        let config = NSWorkspace.OpenConfiguration()
-        NSWorkspace.shared.openApplication(at: bundleURL,
-                                           configuration: config,
-                                           completionHandler: nil)
-        NSApp.terminate(nil)
+    func restartApp() {
+        let bundlePath = Bundle.main.bundlePath
+
+        let task = Process()
+        task.executableURL = URL(fileURLWithPath: "/bin/bash")
+        task.arguments = ["-c", "sleep 0.1; open \"\(bundlePath)\""]
+
+        try? task.run()
+        exit(0)
     }
 }
 

@@ -21,9 +21,6 @@
 		1AAFAF772D4F28AA001988A6 /* TooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAFAF762D4F28AA001988A6 /* TooltipView.swift */; };
 		1AAFAF792D4F28C9001988A6 /* TooltipManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAFAF782D4F28C9001988A6 /* TooltipManager.swift */; };
 		1AB442A82DCDCB9A003DF5F4 /* NewUserGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB442A72DCDCB8A003DF5F4 /* NewUserGuideView.swift */; };
-		1AB442B52DCEDEE0003DF5F4 /* SSSwiftUIGIFView in Frameworks */ = {isa = PBXBuildFile; productRef = 1AB442B42DCEDEE0003DF5F4 /* SSSwiftUIGIFView */; };
-		1AB442BB2DCEE0FE003DF5F4 /* showhide.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1AB442BA2DCEE0FE003DF5F4 /* showhide.gif */; };
-		1AB442BD2DCEE50B003DF5F4 /* dragging.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1AB442BC2DCEE50B003DF5F4 /* dragging.gif */; };
 		1ABA36B62D3835FC00BF0FF1 /* DragDropManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA36B52D3835FC00BF0FF1 /* DragDropManager.swift */; };
 		1ABA36BA2D38460A00BF0FF1 /* DockAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA36B92D38460A00BF0FF1 /* DockAnimation.swift */; };
 		1ABA36E02D38EACA00BF0FF1 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA36DF2D38EACA00BF0FF1 /* Test.swift */; };
@@ -89,8 +86,6 @@
 		1AAFAF762D4F28AA001988A6 /* TooltipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipView.swift; sourceTree = "<group>"; };
 		1AAFAF782D4F28C9001988A6 /* TooltipManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipManager.swift; sourceTree = "<group>"; };
 		1AB442A72DCDCB8A003DF5F4 /* NewUserGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUserGuideView.swift; sourceTree = "<group>"; };
-		1AB442BA2DCEE0FE003DF5F4 /* showhide.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = showhide.gif; sourceTree = "<group>"; };
-		1AB442BC2DCEE50B003DF5F4 /* dragging.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = dragging.gif; sourceTree = "<group>"; };
 		1AB4639F2D3E1C8800627FFE /* AnoDockHelperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnoDockHelperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AB463A92D3E1C8800627FFE /* AnoDockHelperUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnoDockHelperUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ABA36B52D3835FC00BF0FF1 /* DragDropManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragDropManager.swift; sourceTree = "<group>"; };
@@ -145,7 +140,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A8DB8432D13FB8300A2338B /* HotKey in Frameworks */,
-				1AB442B52DCEDEE0003DF5F4 /* SSSwiftUIGIFView in Frameworks */,
 				1A156CCC2D37679C0052372C /* WindowAnimation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -259,8 +253,6 @@
 			children = (
 				1AB442A72DCDCB8A003DF5F4 /* NewUserGuideView.swift */,
 				1AC70B292CEADB39009BA776 /* OnboardingView.swift */,
-				1AB442BC2DCEE50B003DF5F4 /* dragging.gif */,
-				1AB442BA2DCEE0FE003DF5F4 /* showhide.gif */,
 			);
 			path = IntroViews;
 			sourceTree = "<group>";
@@ -373,7 +365,6 @@
 			packageProductDependencies = (
 				1A8DB8422D13FB8300A2338B /* HotKey */,
 				1A156CCB2D37679C0052372C /* WindowAnimation */,
-				1AB442B42DCEDEE0003DF5F4 /* SSSwiftUIGIFView */,
 			);
 			productName = AnoDock;
 			productReference = 1AA9EEDD2CE4019E002D8348 /* AnoDock.app */;
@@ -512,7 +503,6 @@
 			packageReferences = (
 				1A8DB8412D13FB8300A2338B /* XCRemoteSwiftPackageReference "HotKey" */,
 				1A156CCA2D37679C0052372C /* XCRemoteSwiftPackageReference "WindowAnimation" */,
-				1AB442B32DCEDEE0003DF5F4 /* XCRemoteSwiftPackageReference "SSSwiftUIGIFView" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1AA9EEDE2CE4019E002D8348 /* Products */;
@@ -535,8 +525,6 @@
 			files = (
 				1AEC4EE82CEA9E7500523CC1 /* Preview Assets.xcassets in Resources */,
 				1AEC4EE92CEA9E7500523CC1 /* Assets.xcassets in Resources */,
-				1AB442BB2DCEE0FE003DF5F4 /* showhide.gif in Resources */,
-				1AB442BD2DCEE50B003DF5F4 /* dragging.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -786,7 +774,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 19;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"AnoDock/Preview Content\"";
 				DEVELOPMENT_TEAM = G7ZSY874L2;
@@ -802,7 +790,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.02;
+				MARKETING_VERSION = 1.04;
 				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnoDock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -819,7 +807,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 19;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"AnoDock/Preview Content\"";
 				DEVELOPMENT_TEAM = G7ZSY874L2;
@@ -835,7 +823,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.02;
+				MARKETING_VERSION = 1.04;
 				PRODUCT_BUNDLE_IDENTIFIER = geadro.AnoDock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1057,14 +1045,6 @@
 				kind = branch;
 			};
 		};
-		1AB442B32DCEDEE0003DF5F4 /* XCRemoteSwiftPackageReference "SSSwiftUIGIFView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SimformSolutionsPvtLtd/SSSwiftUIGIFView.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1077,11 +1057,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1A8DB8412D13FB8300A2338B /* XCRemoteSwiftPackageReference "HotKey" */;
 			productName = HotKey;
-		};
-		1AB442B42DCEDEE0003DF5F4 /* SSSwiftUIGIFView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1AB442B32DCEDEE0003DF5F4 /* XCRemoteSwiftPackageReference "SSSwiftUIGIFView" */;
-			productName = SSSwiftUIGIFView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
