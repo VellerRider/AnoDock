@@ -1,3 +1,5 @@
+
+
 # AnoDock
 
 A complementary macOS dock app.
@@ -24,5 +26,4 @@ I tried to make this app as close to macOS's native dock, but there are still ma
 
 I'm not sure if there is a need to add more features to it, because as a dock accessory instead of a replacement, simplicity is kinda important.
 
-If you want to build more features on it, you are welcome to folk this repo.
-
+If you want to build more features on it, you are welcome to fork this repo.
